@@ -49,7 +49,7 @@ permalink: /
         Featured Articles
     </h2>
     <div class="featured-grid" id="featuredArticles">
-        <article class="featured-article">
+        <article class="featured-article" onclick="viewFeaturedArticle('half-mile-record-1937')" style="cursor: pointer;">
             <img src="{{ '/raw-files/1937-07-24_morning-tribune_half-mile-record.jpg' | relative_url }}" 
                  alt="Half-mile Record Broken" 
                  class="featured-image"
@@ -69,7 +69,7 @@ permalink: /
             </div>
         </article>
 
-        <article class="featured-article">
+        <article class="featured-article" onclick="viewFeaturedArticle('sikh-ladies-meet-1949')" style="cursor: pointer;">
             <img src="{{ '/raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg' | relative_url }}" 
                  alt="First Malayan Sikh Ladies Athletic Meet" 
                  class="featured-image"
@@ -89,7 +89,7 @@ permalink: /
             </div>
         </article>
 
-        <article class="featured-article">
+        <article class="featured-article" onclick="viewFeaturedArticle('sikh-runners-record-1957')" style="cursor: pointer;">
             <img src="{{ '/raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg' | relative_url }}" 
                  alt="Sikh Runner's State Record" 
                  class="featured-image"
@@ -208,7 +208,7 @@ permalink: /
         Explore the Archive
     </h2>
     <div class="search-categories">
-        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=athletics'">'
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=athletics'">
             <div class="category-icon">
                 <i class="fas fa-running"></i>
             </div>
@@ -217,7 +217,7 @@ permalink: /
             <span class="category-count">25+ articles</span>
         </div>
 
-        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=hockey'">'
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=hockey'">
             <div class="category-icon">
                 <i class="fas fa-hockey-puck"></i>
             </div>
@@ -226,7 +226,7 @@ permalink: /
             <span class="category-count">8+ articles</span>
         </div>
 
-        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=cross-country'">'
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=cross-country'">
             <div class="category-icon">
                 <i class="fas fa-mountain"></i>
             </div>
@@ -822,4 +822,10 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(stat);
     });
 });
+
+// Function to handle featured article clicks
+function viewFeaturedArticle(articleId) {
+    // Redirect to articles page with the specific article
+    window.location.href = '{{ "/articles/" | relative_url }}?article=' + articleId;
+}
 </script>

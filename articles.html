@@ -906,7 +906,8 @@ function setupCitationModal() {
     }
 }
 
-function viewArticleDetail(articleId) {
+// Make viewArticleDetail global so it can be called from dynamically generated HTML
+window.viewArticleDetail = function(articleId) {
     if (typeof archive === 'undefined') return;
     
     const article = archive.articles.find(a => a.id === articleId);
@@ -932,7 +933,8 @@ function viewArticleDetail(articleId) {
     document.getElementById('articleModal').style.display = 'block';
 }
 
-function generateCitation(articleId) {
+// Make generateCitation global
+window.generateCitation = function(articleId) {
     let article;
     
     if (articleId) {

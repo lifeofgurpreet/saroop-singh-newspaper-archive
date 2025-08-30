@@ -38,6 +38,7 @@ class ArchiveApp {
             this.updateStats();
             this.renderCurrentPage();
             this.initScrollAnimations();
+            this.handleDirectLinks();
         } catch (error) {
             console.error('Error initializing archive:', error);
             this.showError('Failed to load archive data. Please refresh the page.');
@@ -79,14 +80,25 @@ class ArchiveApp {
         const mobileSheet = document.getElementById('mobileFilterSheet');
         const overlay = document.getElementById('mobileFilterOverlay');
         
-        if (floatingBtn && mobileSheet && overlay) {
-            floatingBtn.addEventListener('click', () => {
-                mobileSheet.classList.add('active');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                this.populateMobileFilters();
+        if (floatingBtn) {
+            floatingBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (mobileSheet && overlay) {
+                    mobileSheet.classList.add('active');
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    this.populateMobileFilters();
+                } else {
+                    // Fallback: scroll to sidebar if mobile sheet doesn't exist
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar) {
+                        sidebar.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
             });
-            
+        }
+        
+        if (mobileSheet && overlay) {
             const closeBtn = document.getElementById('sheetCloseBtn');
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
@@ -495,7 +507,7 @@ The following generous contributions have been received from various sources whi
         // Populate source filter with unique sources
         const sourcesSet = new Set();
         this.articles.forEach(article => {
-            const source = article.source.split(',')[0]; // Get newspaper name only
+            const source = article.source.split(',')[0].trim(); // Get newspaper name only and trim whitespace
             sourcesSet.add(source);
         });
 
@@ -547,8 +559,11 @@ The following generous contributions have been received from various sources whi
                 }
 
                 // Source filter
-                if (this.currentFilters.source && !article.source.includes(this.currentFilters.source)) {
-                    return false;
+                if (this.currentFilters.source) {
+                    const articleSource = article.source.split(',')[0].trim();
+                    if (articleSource !== this.currentFilters.source) {
+                        return false;
+                    }
                 }
 
                 // People filter
@@ -558,11 +573,35 @@ The following generous contributions have been received from various sources whi
 
                 // Quick filter
                 if (this.currentFilters.quickFilter) {
-                    const hasTag = article.tags.some(tag => 
-                        tag.includes(this.currentFilters.quickFilter) || 
-                        this.currentFilters.quickFilter.includes(tag)
+                    let hasMatch = false;
+                    const filter = this.currentFilters.quickFilter.toLowerCase();
+                    
+                    // Check tags
+                    hasMatch = article.tags.some(tag => 
+                        tag.toLowerCase().includes(filter) || 
+                        filter.includes(tag.toLowerCase())
                     );
-                    if (!hasTag) {
+                    
+                    // Check title and content for sport-related keywords
+                    if (!hasMatch) {
+                        const textToCheck = (article.title + ' ' + article.content).toLowerCase();
+                        switch (filter) {
+                            case 'athletics':
+                                hasMatch = textToCheck.includes('athletic') || textToCheck.includes('track') || textToCheck.includes('field') || textToCheck.includes('running');
+                                break;
+                            case 'hockey':
+                                hasMatch = textToCheck.includes('hockey');
+                                break;
+                            case 'cross-country':
+                                hasMatch = textToCheck.includes('cross-country') || textToCheck.includes('harriers');
+                                break;
+                            case 'record':
+                                hasMatch = textToCheck.includes('record');
+                                break;
+                        }
+                    }
+                    
+                    if (!hasMatch) {
                         return false;
                     }
                 }
@@ -577,6 +616,11 @@ The following generous contributions have been received from various sources whi
             this.renderCurrentPage();
             this.showLoadingWithPulse(false);
         }, 300); // Slightly longer delay for better UX
+    }
+    
+    // Add a direct apply filters method that doesn't use animation
+    applyFilters() {
+        this.applyFiltersWithAnimation();
     }
 
     toggleModernQuickFilter(filter, btnElement) {
@@ -713,7 +757,7 @@ The following generous contributions have been received from various sources whi
         const moreCount = article.people.length > 5 ? article.people.length - 5 : 0;
 
         return `
-            <article class="article-card">
+            <article class="article-card" onclick="viewArticleDetail('${article.id}')" style="cursor: pointer;">
                 <div class="article-image-container">
                     <img src="${article.image}" 
                          alt="${article.title}" 
@@ -1255,12 +1299,32 @@ The following generous contributions have been received from various sources whi
     }
 
     updateFilterCounts() {
-        // Update quick filter counts
+        // Update quick filter counts using the same logic as the filter
         const pillCounts = {
-            'athletics': this.articles.filter(a => a.tags.some(tag => tag.includes('athletic'))).length,
-            'hockey': this.articles.filter(a => a.tags.some(tag => tag.includes('hockey'))).length,
-            'cross-country': this.articles.filter(a => a.tags.some(tag => tag.includes('cross-country'))).length,
-            'record': this.articles.filter(a => a.tags.some(tag => tag.includes('record'))).length
+            'athletics': this.articles.filter(a => {
+                const hasTag = a.tags.some(tag => tag.toLowerCase().includes('athletic'));
+                const hasText = (a.title + ' ' + a.content).toLowerCase().includes('athletic') || 
+                               (a.title + ' ' + a.content).toLowerCase().includes('track') ||
+                               (a.title + ' ' + a.content).toLowerCase().includes('field') ||
+                               (a.title + ' ' + a.content).toLowerCase().includes('running');
+                return hasTag || hasText;
+            }).length,
+            'hockey': this.articles.filter(a => {
+                const hasTag = a.tags.some(tag => tag.toLowerCase().includes('hockey'));
+                const hasText = (a.title + ' ' + a.content).toLowerCase().includes('hockey');
+                return hasTag || hasText;
+            }).length,
+            'cross-country': this.articles.filter(a => {
+                const hasTag = a.tags.some(tag => tag.toLowerCase().includes('cross-country'));
+                const hasText = (a.title + ' ' + a.content).toLowerCase().includes('cross-country') ||
+                               (a.title + ' ' + a.content).toLowerCase().includes('harriers');
+                return hasTag || hasText;
+            }).length,
+            'record': this.articles.filter(a => {
+                const hasTag = a.tags.some(tag => tag.toLowerCase().includes('record'));
+                const hasText = (a.title + ' ' + a.content).toLowerCase().includes('record');
+                return hasTag || hasText;
+            }).length
         };
         
         Object.entries(pillCounts).forEach(([key, count]) => {
@@ -1420,6 +1484,52 @@ The following generous contributions have been received from various sources whi
         
         return `${authors}"${article.title}." ${article.source}, ${year}. Digital Archive. Accessed ${new Date().toLocaleDateString('en-GB')}.`;
     }
+
+    handleDirectLinks() {
+        // Check for URL parameters to show specific articles
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleId = urlParams.get('article');
+        
+        if (articleId) {
+            setTimeout(() => {
+                const article = this.articles.find(a => a.id === articleId);
+                if (article && typeof viewArticleDetail === 'function') {
+                    viewArticleDetail(articleId);
+                } else {
+                    // Fallback: scroll to article card if it exists
+                    const articleCard = document.querySelector(`[onclick*="${articleId}"]`);
+                    if (articleCard) {
+                        articleCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        articleCard.style.animation = 'highlight 2s ease-in-out';
+                    }
+                }
+            }, 500);
+        }
+        
+        // Check for filter parameters
+        const filterParam = urlParams.get('filter');
+        if (filterParam) {
+            const filterButton = document.querySelector(`[data-filter="${filterParam}"]`);
+            if (filterButton) {
+                setTimeout(() => {
+                    filterButton.click();
+                }, 300);
+            }
+        }
+        
+        // Check for people parameter
+        const peopleParam = urlParams.get('people');
+        if (peopleParam) {
+            setTimeout(() => {
+                const peopleFilter = document.getElementById('peopleFilter');
+                if (peopleFilter) {
+                    peopleFilter.value = peopleParam;
+                    this.currentFilters.people = peopleParam;
+                    this.applyFilters();
+                }
+            }, 300);
+        }
+    }
 }
 
 // Modern app initialization with feature detection
@@ -1451,6 +1561,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .focused {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        @keyframes highlight {
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 0 20px 5px rgba(102, 126, 234, 0.6); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4); transform: scale(1); }
         }
     `;
     document.head.appendChild(style);

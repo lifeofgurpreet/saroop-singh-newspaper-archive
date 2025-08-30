@@ -114,6 +114,172 @@ permalink: /restorations/
         font-size: 1.8rem;
     }
 }
+
+/* Modal Styles */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 95%;
+    max-height: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#modalImage {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-caption {
+    text-align: center;
+    color: #ccc;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.modal-prev,
+.modal-next {
+    cursor: pointer;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    transition: background 0.3s;
+    pointer-events: all;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-prev:hover,
+.modal-next:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #f1f1f1;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .modal-prev,
+    .modal-next {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .modal-caption {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+    
+    #modalImage {
+        max-height: 75vh;
+    }
+}
+
+/* Touch and swipe support */
+.modal-content {
+    touch-action: pan-y pinch-zoom;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
 </style>
 
 <div class="restorations-hero">
@@ -121,24 +287,124 @@ permalink: /restorations/
     <p>Preserving precious memories through AI-powered restoration. Click any image to view in full detail.</p>
 </div>
 
-<!-- Saroop Singh Running Photos -->
+<!-- Saroop Singh Running Photo 1 -->
 <div class="photo-collection">
     <div class="collection-header" style="background: linear-gradient(to right, var(--accent-color), #047857);">
-        <h2><i class="fas fa-running"></i> Saroop Singh - Athletic Legacy</h2>
-        <p>Original photographs capturing the champion in action</p>
+        <h2><i class="fas fa-running"></i> Saroop Singh Running - Photo 1</h2>
+        <p>Championship athletics captured and restored - 7 variations</p>
     </div>
     <div class="restoration-grid">
         <div class="restoration-item">
-            <img src="{{ '/old-family-photos/saroop-singh-running1.jpg' | relative_url }}" 
-                 alt="Saroop Singh Running - Photo 1"
+            <img src="{{ '/generated/restorations/saroop-singh-running1/original.jpg' | relative_url }}" 
+                 alt="Original"
                  loading="lazy">
-            <div class="restoration-label">In Full Stride</div>
+            <div class="restoration-label">Original</div>
         </div>
         <div class="restoration-item">
-            <img src="{{ '/old-family-photos/saroop-singh-running2.png' | relative_url }}" 
-                 alt="Saroop Singh Running - Photo 2"
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt1_1.png' | relative_url }}" 
+                 alt="VFX Render"
                  loading="lazy">
-            <div class="restoration-label">Championship Form</div>
+            <div class="restoration-label">VFX Render</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt2_1.png' | relative_url }}" 
+                 alt="Digital Realism"
+                 loading="lazy">
+            <div class="restoration-label">Digital Realism</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt3_1.png' | relative_url }}" 
+                 alt="Modern Reshoot"
+                 loading="lazy">
+            <div class="restoration-label">Modern Reshoot</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt4_1.png' | relative_url }}" 
+                 alt="Premium Lens"
+                 loading="lazy">
+            <div class="restoration-label">Premium Lens</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt5_1.png' | relative_url }}" 
+                 alt="Editorial"
+                 loading="lazy">
+            <div class="restoration-label">Editorial</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running1/saroop-singh-running1__prompt6_1.png' | relative_url }}" 
+                 alt="Golden Hour"
+                 loading="lazy">
+            <div class="restoration-label">Golden Hour</div>
+        </div>
+    </div>
+</div>
+
+<!-- Saroop Singh Running Photo 2 -->
+<div class="photo-collection">
+    <div class="collection-header" style="background: linear-gradient(to right, var(--accent-color), #047857);">
+        <h2><i class="fas fa-running"></i> Saroop Singh Running - Photo 2</h2>
+        <p>Multiple AI restoration variations showcasing different artistic approaches</p>
+    </div>
+    <div class="restoration-grid">
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/original.png' | relative_url }}" 
+                 alt="Original"
+                 loading="lazy">
+            <div class="restoration-label">Original</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt1_1.png' | relative_url }}" 
+                 alt="Restoration 1"
+                 loading="lazy">
+            <div class="restoration-label">Standard Restoration</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt2_1.png' | relative_url }}" 
+                 alt="Restoration 2"
+                 loading="lazy">
+            <div class="restoration-label">Enhanced Details</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt3_1.png' | relative_url }}" 
+                 alt="Restoration 3"
+                 loading="lazy">
+            <div class="restoration-label">Color Balance</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt4_1.png' | relative_url }}" 
+                 alt="Restoration 4"
+                 loading="lazy">
+            <div class="restoration-label">Sharp Focus</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt5_1.png' | relative_url }}" 
+                 alt="Restoration 5"
+                 loading="lazy">
+            <div class="restoration-label">Natural Tones</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__prompt6_1.png' | relative_url }}" 
+                 alt="Restoration 6"
+                 loading="lazy">
+            <div class="restoration-label">Artistic Enhancement</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__cinematic-golden-hour-vintage-photo-restoration_1.png' | relative_url }}" 
+                 alt="Cinematic Golden Hour"
+                 loading="lazy">
+            <div class="restoration-label">Cinematic Golden Hour</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__hyper-realistic-modern-reshoot-of-vintage-scene_1.png' | relative_url }}" 
+                 alt="Hyper Realistic"
+                 loading="lazy">
+            <div class="restoration-label">Hyper Realistic</div>
+        </div>
+        <div class="restoration-item">
+            <img src="{{ '/generated/restorations/saroop-singh-running2/saroop-singh-running2__photorealistic-3d-scene-reconstruction-from-vintage-photo-blueprint_1.png' | relative_url }}" 
+                 alt="3D Reconstruction"
+                 loading="lazy">
+            <div class="restoration-label">3D Reconstruction</div>
         </div>
     </div>
 </div>
@@ -199,7 +465,7 @@ permalink: /restorations/
 <div class="photo-collection">
     <div class="collection-header">
         <h2>Young Man in Turban</h2>
-        <p>A striking vintage portrait - 6 restoration styles</p>
+        <p>A striking vintage portrait - multiple restoration styles</p>
     </div>
     <div class="restoration-grid">
         <div class="restoration-item">
@@ -403,12 +669,149 @@ permalink: /restorations/
     </div>
 </div>
 
+<!-- Modal HTML -->
+<div id="imageModal" class="image-modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="" alt="">
+        <div class="modal-caption" id="modalCaption"></div>
+        <div class="modal-nav">
+            <button class="modal-prev" id="modalPrev">❮</button>
+            <button class="modal-next" id="modalNext">❯</button>
+        </div>
+        <div class="modal-counter">
+            <span id="imageCounter">1 / 1</span>
+        </div>
+    </div>
+</div>
+
 <script>
-// Simple click to view full size
-document.querySelectorAll('.restoration-item img').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', function() {
-        window.open(this.src, '_blank');
+// Enhanced gallery with modal
+const modal = document.getElementById('imageModal');
+const modalImg = document.getElementById('modalImage');
+const modalCaption = document.getElementById('modalCaption');
+const modalClose = document.querySelector('.modal-close');
+const modalPrev = document.getElementById('modalPrev');
+const modalNext = document.getElementById('modalNext');
+const imageCounter = document.getElementById('imageCounter');
+
+let currentImages = [];
+let currentIndex = 0;
+
+// Collect all images from the current collection
+function initializeGallery() {
+    const collections = document.querySelectorAll('.photo-collection');
+    
+    collections.forEach(collection => {
+        const images = collection.querySelectorAll('.restoration-item img');
+        
+        images.forEach((img, index) => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Get all images from this collection
+                const collectionImages = Array.from(collection.querySelectorAll('.restoration-item img'));
+                currentImages = collectionImages.map(img => ({
+                    src: img.src,
+                    alt: img.alt,
+                    caption: img.parentElement.querySelector('.restoration-label')?.textContent || img.alt
+                }));
+                
+                currentIndex = collectionImages.indexOf(this);
+                openModal();
+            });
+        });
     });
+}
+
+function openModal() {
+    if (currentImages.length === 0) return;
+    
+    document.body.classList.add('modal-open');
+    modal.classList.add('show');
+    updateModalImage();
+}
+
+function closeModal() {
+    modal.classList.remove('show');
+    document.body.classList.remove('modal-open');
+    setTimeout(() => {
+        modalImg.src = '';
+    }, 300);
+}
+
+function updateModalImage() {
+    const image = currentImages[currentIndex];
+    modalImg.src = image.src;
+    modalImg.alt = image.alt;
+    modalCaption.textContent = image.caption;
+    imageCounter.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+    
+    // Show/hide nav buttons
+    modalPrev.style.display = currentImages.length > 1 ? 'flex' : 'none';
+    modalNext.style.display = currentImages.length > 1 ? 'flex' : 'none';
+}
+
+function nextImage() {
+    currentIndex = (currentIndex + 1) % currentImages.length;
+    updateModalImage();
+}
+
+function prevImage() {
+    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+    updateModalImage();
+}
+
+// Event listeners
+modalClose.addEventListener('click', closeModal);
+modalNext.addEventListener('click', nextImage);
+modalPrev.addEventListener('click', prevImage);
+
+// Close on background click
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        closeModal();
+    }
 });
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (!modal.classList.contains('show')) return;
+    
+    if (e.key === 'Escape') closeModal();
+    else if (e.key === 'ArrowRight') nextImage();
+    else if (e.key === 'ArrowLeft') prevImage();
+});
+
+// Touch/swipe support for mobile
+let touchStartX = 0;
+let touchEndX = 0;
+
+modalImg.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+modalImg.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+            // Swipe left - next image
+            nextImage();
+        } else {
+            // Swipe right - previous image
+            prevImage();
+        }
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', initializeGallery);
 </script>

@@ -40,7 +40,7 @@ permalink: /timeline/
 <div class="timeline-container" id="timelineContainer">
     <div class="timeline">
         <!-- 1937 Events -->
-        <div class="timeline-item athletics record" data-year="1937">
+        <div class="timeline-item athletics record" data-year="1937" data-article-id="half-mile-record-1937" onclick="viewTimelineArticle('half-mile-record-1937')" style="cursor: pointer;">
             <div class="timeline-date">24 July 1937</div>
             <div class="timeline-badge athletics">
                 <i class="fas fa-trophy"></i>
@@ -215,7 +215,7 @@ permalink: /timeline/
         </div>
 
         <!-- 1949 Events -->
-        <div class="timeline-item athletics" data-year="1949">
+        <div class="timeline-item athletics" data-year="1949" data-article-id="sikh-ladies-meet-1949" onclick="viewTimelineArticle('sikh-ladies-meet-1949')" style="cursor: pointer;">
             <div class="timeline-date">17 April 1949</div>
             <div class="timeline-badge athletics">
                 <i class="fas fa-female"></i>
@@ -798,6 +798,12 @@ document.addEventListener('DOMContentLoaded', function() {
     timelineItems.forEach(item => {
         observer.observe(item);
     });
+    
+    // Function to handle timeline article clicks
+    window.viewTimelineArticle = function(articleId) {
+        // Redirect to articles page with specific article
+        window.location.href = '{{ "/articles/" | relative_url }}?article=' + articleId;
+    };
 });
 </script>
 </div><!-- End timeline-container -->
