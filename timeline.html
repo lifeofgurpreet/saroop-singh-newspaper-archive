@@ -801,9 +801,123 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to handle timeline article clicks
     window.viewTimelineArticle = function(articleId) {
-        // Redirect to articles page with specific article
-        window.location.href = '{{ "/articles/" | relative_url }}?article=' + articleId;
+        // Load the archive if not already loaded
+        if (typeof archive === 'undefined' || !archive.articles) {
+            // If archive not loaded, redirect to articles page
+            window.location.href = '{{ "/articles/" | relative_url }}?article=' + articleId;
+            return;
+        }
+        
+        // Find the article
+        const article = archive.articles.find(a => a.id === articleId);
+        if (!article) return;
+        
+        // Populate modal
+        document.getElementById('modalTitle').textContent = article.title;
+        document.getElementById('modalImage').src = article.image;
+        document.getElementById('modalImage').alt = article.title;
+        document.getElementById('modalDate').textContent = article.dateText;
+        document.getElementById('modalSource').textContent = article.source;
+        document.getElementById('modalLocation').textContent = article.location;
+        document.getElementById('modalPeople').textContent = article.people.join(', ');
+        document.getElementById('modalTags').textContent = article.tags.join(', ');
+        document.getElementById('modalContent').textContent = article.content;
+        
+        // Show modal
+        const modal = document.getElementById('articleModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    };
+});
+</script>
+
+<!-- Load archive.js to get article data -->
+<script src="{{ '/assets/js/archive.js' | relative_url }}"></script>
+<script>
+// Initialize archive for modal functionality
+if (typeof ArchiveApp !== 'undefined') {
+    window.archive = new ArchiveApp();
+}
+
+// Modal close handler
+document.addEventListener('DOMContentLoaded', function() {
+    // Make all timeline items clickable if they don't have onclick
+    document.querySelectorAll('.timeline-item').forEach(item => {
+        if (!item.onclick) {
+            item.style.cursor = 'pointer';
+            item.onclick = function() {
+                // Try to extract article ID from the content
+                const titleElement = item.querySelector('.timeline-title');
+                if (titleElement) {
+                    const title = titleElement.textContent;
+                    // Create a simple ID from title
+                    const articleId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                    viewTimelineArticle(articleId);
+                }
+            };
+        }
+    });
+    
+    const modal = document.getElementById('articleModal');
+    const closeBtn = document.querySelector('.modal-close');
+    
+    if (closeBtn) {
+        closeBtn.onclick = function() {
+            if (modal) modal.style.display = 'none';
+        };
+    }
+    
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            if (modal) modal.style.display = 'none';
+        }
     };
 });
 </script>
 </div><!-- End timeline-container -->
+
+<!-- Article Modal -->
+<div id="articleModal" class="modal">
+    <div class="modal-content article-modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Article Details</h2>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="article-detail">
+                <div class="article-image-section">
+                    <img id="modalImage" src="" alt="" class="modal-article-image">
+                </div>
+                <div class="article-info-section">
+                    <div class="article-meta-detailed">
+                        <div class="meta-row">
+                            <span class="meta-label"><i class="fas fa-calendar"></i> Date:</span>
+                            <span class="meta-value" id="modalDate"></span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label"><i class="fas fa-newspaper"></i> Source:</span>
+                            <span class="meta-value" id="modalSource"></span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label"><i class="fas fa-map-marker-alt"></i> Location:</span>
+                            <span class="meta-value" id="modalLocation"></span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label"><i class="fas fa-users"></i> People:</span>
+                            <span class="meta-value" id="modalPeople"></span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label"><i class="fas fa-tags"></i> Tags:</span>
+                            <span class="meta-value" id="modalTags"></span>
+                        </div>
+                    </div>
+                    <div class="article-content-section">
+                        <h4>Article Content:</h4>
+                        <div class="article-text" id="modalContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

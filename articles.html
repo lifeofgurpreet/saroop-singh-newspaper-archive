@@ -50,42 +50,45 @@ permalink: /articles/
         </div>
         <div class="modal-body">
             <div class="article-detail">
-                <div class="article-image-section">
-                    <img id="modalImage" src="" alt="" class="modal-article-image">
-                    <div class="image-actions">
-                        <button class="btn btn-sm" onclick="archive.openLightbox(document.getElementById('modalImage'))">
-                            <i class="fas fa-expand"></i> View Full Size
-                        </button>
+                <div class="article-top-section">
+                    <div class="article-image-section">
+                        <img id="modalImage" src="" alt="" class="modal-article-image">
+                        <div class="image-actions">
+                            <button class="btn btn-sm" onclick="archive.openLightbox(document.getElementById('modalImage'))">
+                                <i class="fas fa-expand"></i> View Full Size
+                            </button>
+                        </div>
+                    </div>
+                    <div class="article-info-section">
+                        <div class="article-meta-detailed">
+                            <div class="meta-row">
+                                <span class="meta-label"><i class="fas fa-calendar"></i> Date:</span>
+                                <span class="meta-value" id="modalDate"></span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label"><i class="fas fa-newspaper"></i> Source:</span>
+                                <span class="meta-value" id="modalSource"></span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label"><i class="fas fa-map-marker-alt"></i> Location:</span>
+                                <span class="meta-value" id="modalLocation"></span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label"><i class="fas fa-users"></i> People:</span>
+                                <span class="meta-value" id="modalPeople"></span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-label"><i class="fas fa-tags"></i> Tags:</span>
+                                <span class="meta-value" id="modalTags"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="article-info-section">
-                    <div class="article-meta-detailed">
-                        <div class="meta-row">
-                            <span class="meta-label"><i class="fas fa-calendar"></i> Date:</span>
-                            <span class="meta-value" id="modalDate"></span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label"><i class="fas fa-newspaper"></i> Source:</span>
-                            <span class="meta-value" id="modalSource"></span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label"><i class="fas fa-map-marker-alt"></i> Location:</span>
-                            <span class="meta-value" id="modalLocation"></span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label"><i class="fas fa-users"></i> People:</span>
-                            <span class="meta-value" id="modalPeople"></span>
-                        </div>
-                        <div class="meta-row">
-                            <span class="meta-label"><i class="fas fa-tags"></i> Tags:</span>
-                            <span class="meta-value" id="modalTags"></span>
-                        </div>
-                    </div>
-                    <div class="article-content-section">
-                        <h4>Article Content:</h4>
-                        <div class="article-text" id="modalContent"></div>
-                    </div>
-                    <div class="article-actions">
+                <div class="article-content-section">
+                    <h4>Article Content:</h4>
+                    <div class="article-text" id="modalContent"></div>
+                </div>
+                <div class="article-actions">
                         <button class="btn btn-primary" onclick="generateCitation()">
                             <i class="fas fa-quote-right"></i> Generate Citation
                         </button>
@@ -95,7 +98,6 @@ permalink: /articles/
                         <button class="btn btn-outline" onclick="shareArticle()">
                             <i class="fas fa-share"></i> Share
                         </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -355,6 +357,12 @@ permalink: /articles/
 }
 
 .article-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.article-top-section {
     display: grid;
     grid-template-columns: 400px 1fr;
     gap: 2rem;
@@ -423,7 +431,8 @@ permalink: /articles/
 }
 
 .article-content-section {
-    margin-bottom: 2rem;
+    width: 100%;
+    margin-top: 1rem;
 }
 
 .article-content-section h4 {
@@ -435,13 +444,15 @@ permalink: /articles/
 
 .article-text {
     background: var(--background-color);
-    padding: 1.5rem;
+    padding: 2rem;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    line-height: 1.7;
+    color: var(--text-primary);
+    line-height: 1.85;
     white-space: pre-wrap;
     font-family: Georgia, serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.4px;
 }
 
 .article-actions {
@@ -617,12 +628,21 @@ permalink: /articles/
     }
     
     .article-detail {
+        gap: 1.5rem;
+    }
+    
+    .article-top-section {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
     
     .article-image-section {
         position: static;
+    }
+    
+    .article-text {
+        font-size: 1.1rem;
+        padding: 1.5rem;
     }
     
     .modal-article-image {
