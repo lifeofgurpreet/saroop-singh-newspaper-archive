@@ -24,27 +24,35 @@ def find_photos(photos_dir: Path, exts=(".jpg", ".jpeg", ".png", ".tif", ".tiff"
         print(f"No images found in: {photos_dir}")
     return files
 
-def process_image(photo_path: Path, out_dir: Path):
+def process_image(photo_path: Path, out_dir: Path, autocontrast: bool = False):
     """
-    Opens an image, applies EXIF orientation, and saves it to the output directory.
+    Opens an image, applies EXIF orientation, optionally applies auto-contrast,
+    and saves it to the output directory.
     """
     try:
         img = Image.open(photo_path)
-        
+
         # Apply EXIF orientation
-        img_oriented = ImageOps.exif_transpose(img)
-        
+        processed_img = ImageOps.exif_transpose(img)
+
+        # Optionally apply auto-contrast
+        if autocontrast:
+            # Convert to RGB if it's not, as autocontrast works best on RGB
+            if processed_img.mode != 'RGB':
+                processed_img = processed_img.convert('RGB')
+            processed_img = ImageOps.autocontrast(processed_img)
+
         # Prepare output path
         out_path = out_dir / photo_path.name
-        
+
         # Save the processed image
         # For formats that support it, we try to maintain quality.
         save_kwargs = {}
         if out_path.suffix.lower() in (".jpg", ".jpeg"):
             save_kwargs['quality'] = 95
-            save_kwargs['subsampling'] = 0 # Keep chroma detail
+            save_kwargs['subsampling'] = 0  # Keep chroma detail
 
-        img_oriented.save(out_path, **save_kwargs)
+        processed_img.save(out_path, **save_kwargs)
         print(f"Processed and saved: {out_path}")
 
     except Exception as e:
@@ -55,6 +63,7 @@ def main():
     parser = argparse.ArgumentParser(description="Pre-process images for the AI pipeline (e.g., auto-orient).")
     parser.add_argument("--input-dir", type=Path, required=True, help="Directory with input photos.")
     parser.add_argument("--output-dir", type=Path, required=True, help="Directory to save processed photos.")
+    parser.add_argument("--autocontrast", action="store_true", help="Apply auto-contrast to images.")
     args = parser.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -67,7 +76,7 @@ def main():
     print(f"Found {len(photos)} photos to process.")
     
     for photo in photos:
-        process_image(photo, args.output_dir)
+        process_image(photo, args.output_dir, autocontrast=args.autocontrast)
 
 if __name__ == "__main__":
     main()

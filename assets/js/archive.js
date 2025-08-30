@@ -239,8 +239,26 @@ class ArchiveApp {
     }
 
     async loadArticles() {
-        // In a real implementation, this would fetch from an API
-        // For now, we'll simulate article data based on the files we analyzed
+        try {
+            // Try to fetch actual articles from Jekyll-generated JSON
+            const response = await fetch('/saroop-singh-newspaper-archive/assets/data/articles.json');
+            if (response.ok) {
+                const articlesData = await response.json();
+                // Process the real data
+                this.articles = articlesData.map(article => ({
+                    ...article,
+                    // Clean up content - remove Obsidian embeds and improve formatting
+                    content: article.content.replace(/!\[\[.*?\]\]/g, '').trim()
+                }));
+                console.log(`Loaded ${this.articles.length} articles from source files`);
+                this.filteredArticles = [...this.articles];
+                return; // Exit early if successful
+            }
+        } catch (error) {
+            console.warn('Could not load dynamic articles, falling back to static data:', error);
+        }
+        
+        // Fallback to simulated article data
         this.articles = [
             {
                 id: 'half-mile-record-1937',
@@ -358,7 +376,7 @@ Weather conditions were ideal for the meeting, with a large crowd of railway emp
                 source: 'Singapore Free Press',
                 location: 'Seremban',
                 people: ['Local athletes', 'Regional competitors'],
-                image: '/saroop-singh-newspaper-archive/raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1938-06-17_singapore-free-press_athletic-sports-seremban.jpg',
                 excerpt: 'Regional athletic meeting held at Seremban featuring various track and field events with local participation.',
                 tags: ['athletics', 'seremban', 'meet'],
                 content: `A well-attended athletic sports meeting was held at Seremban yesterday, drawing competitors from across the state for what proved to be an entertaining afternoon of track and field events.

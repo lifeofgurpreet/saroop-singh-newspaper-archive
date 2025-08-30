@@ -988,7 +988,11 @@ window.viewArticleDetail = function(articleId) {
     document.getElementById('modalLocation').textContent = article.location;
     document.getElementById('modalPeople').textContent = article.people.join(', ');
     document.getElementById('modalTags').textContent = article.tags.join(', ');
-    document.getElementById('modalContent').textContent = article.content;
+    // Set content with proper formatting (preserve line breaks)
+    const modalContent = document.getElementById('modalContent');
+    if (modalContent) {
+        modalContent.innerHTML = article.content ? article.content.replace(/\n/g, '<br>') : 'No content available.';
+    }
     
     // Store current article for citation generation
     window.currentArticle = article;

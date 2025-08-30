@@ -18,6 +18,7 @@ import argparse
 import json
 import shutil
 import sys
+import datetime
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -131,6 +132,7 @@ def generate_for_photo(
     seed: int | None = None,
     temperature: float | None = None,
     repeat: int = 1,
+    run_id: str | None = None,
 ) -> None:
     photo_stem = photo.stem
     out_dir = out_root / photo_stem
@@ -149,7 +151,7 @@ def generate_for_photo(
 
     meta_path = out_dir / "meta.json"
     if dry_run:
-        meta = {"photo": str(photo), "model": model, "results": {}}
+        meta = {"run_id": run_id, "photo": str(photo), "model": model, "results": {}}
     else:
         if meta_path.exists():
             try:
@@ -158,6 +160,7 @@ def generate_for_photo(
                 meta = {}
         else:
             meta = {}
+        meta.setdefault("run_id", run_id)
         meta.setdefault("photo", str(photo))
         meta.setdefault("model", model)
         meta.setdefault("results", {})
@@ -226,6 +229,8 @@ def main():
     load_settings()
     client = get_genai_client()
 
+    run_id = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
     prompts = read_prompts(args.prompts_dir)
     if args.only_prompt:
         target = slugify(args.only_prompt)
@@ -253,6 +258,7 @@ def main():
                 seed=args.seed,
                 temperature=args.temperature,
                 repeat=args.repeat,
+                run_id=run_id,
             )
         except KeyboardInterrupt:
             print("Interrupted.")
