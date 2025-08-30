@@ -14,7 +14,7 @@ permalink: /
 <section class="family-heritage-hero">
     <div class="heritage-content">
         <div class="heritage-image-container">
-            <img src="generated/restorations/sardar-and-sardarni-india-1950s-portrait/original.jpg" 
+            <img src="{{ '/generated/restorations/sardar-and-sardarni-india-1950s-portrait/original.jpg' | relative_url }}" 
                  alt="Sardar and Sardarni - Historical Family Portrait" 
                  class="heritage-image">
             <div class="heritage-overlay">
@@ -29,7 +29,7 @@ permalink: /
                 the newspaper clippings that document their sporting triumphs.
             </p>
             <div class="heritage-cta">
-                <a href="restorations.html" class="btn-heritage">
+                <a href="{{ '/restorations/' | relative_url }}" class="btn-heritage">
                     <i class="fas fa-images"></i>
                     View Restored Photos
                 </a>
@@ -50,7 +50,7 @@ permalink: /
     </h2>
     <div class="featured-grid" id="featuredArticles">
         <article class="featured-article">
-            <img src="raw-files/1937-07-24_morning-tribune_half-mile-record.jpg" 
+            <img src="{{ '/raw-files/1937-07-24_morning-tribune_half-mile-record.jpg' | relative_url }}" 
                  alt="Half-mile Record Broken" 
                  class="featured-image"
                  data-title="Half-mile Record Broken at Selangor AAA Meet"
@@ -70,7 +70,7 @@ permalink: /
         </article>
 
         <article class="featured-article">
-            <img src="raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg" 
+            <img src="{{ '/raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg' | relative_url }}" 
                  alt="First Malayan Sikh Ladies Athletic Meet" 
                  class="featured-image"
                  data-title="First Malayan Sikh Ladies Athletic Meet"
@@ -90,7 +90,7 @@ permalink: /
         </article>
 
         <article class="featured-article">
-            <img src="raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg" 
+            <img src="{{ '/raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg' | relative_url }}" 
                  alt="Sikh Runner's State Record" 
                  class="featured-image"
                  data-title="Sikh Runner's State Record For Half-Mile"
@@ -208,7 +208,7 @@ permalink: /
         Explore the Archive
     </h2>
     <div class="search-categories">
-        <div class="search-category" onclick="window.location.href='articles.html?filter=athletics'">
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=athletics'">'
             <div class="category-icon">
                 <i class="fas fa-running"></i>
             </div>
@@ -217,7 +217,7 @@ permalink: /
             <span class="category-count">25+ articles</span>
         </div>
 
-        <div class="search-category" onclick="window.location.href='articles.html?filter=hockey'">
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=hockey'">'
             <div class="category-icon">
                 <i class="fas fa-hockey-puck"></i>
             </div>
@@ -226,7 +226,7 @@ permalink: /
             <span class="category-count">8+ articles</span>
         </div>
 
-        <div class="search-category" onclick="window.location.href='articles.html?filter=cross-country'">
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?filter=cross-country'">'
             <div class="category-icon">
                 <i class="fas fa-mountain"></i>
             </div>
@@ -235,7 +235,7 @@ permalink: /
             <span class="category-count">12+ articles</span>
         </div>
 
-        <div class="search-category" onclick="window.location.href='articles.html?people=Saroop+Singh'">
+        <div class="search-category" onclick="window.location.href='{{ "/articles/" | relative_url }}?people=Saroop+Singh'">
             <div class="category-icon">
                 <i class="fas fa-star"></i>
             </div>
@@ -274,15 +274,15 @@ permalink: /
             </div>
         </div>
         <div class="cta-buttons">
-            <a href="articles.html" class="btn btn-primary">
+            <a href="{{ '/articles/' | relative_url }}" class="btn btn-primary">
                 <i class="fas fa-archive"></i>
                 Browse All Articles
             </a>
-            <a href="timeline.html" class="btn btn-secondary">
+            <a href="{{ '/timeline/' | relative_url }}" class="btn btn-secondary">
                 <i class="fas fa-clock"></i>
                 View Timeline
             </a>
-            <a href="restorations.html" class="btn btn-secondary">
+            <a href="{{ '/restorations/' | relative_url }}" class="btn btn-secondary">
                 <i class="fas fa-images"></i>
                 Photo Restorations
             </a>

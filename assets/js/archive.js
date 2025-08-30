@@ -58,7 +58,12 @@ class ArchiveApp {
         }, 250));
         
         // Initialize modern scroll features
-        this.setupScrollToTop();
+        
+        // Update mobile visibility on initialization
+        this.updateMobileFilterVisibility();
+        
+        // Initialize scroll to top
+        this.initScrollToTop();
     }
 
     setupModernInteractions() {
@@ -67,6 +72,132 @@ class ArchiveApp {
         this.setupAdvancedSearch();
         this.setupSmoothAnimations();
         this.setupTouchGestures();
+    }
+
+    setupFloatingFilterButton() {
+        const floatingBtn = document.getElementById('floatingFilterBtn');
+        const mobileSheet = document.getElementById('mobileFilterSheet');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        
+        if (floatingBtn && mobileSheet && overlay) {
+            floatingBtn.addEventListener('click', () => {
+                mobileSheet.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                this.populateMobileFilters();
+            });
+            
+            const closeBtn = document.getElementById('sheetCloseBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    this.closeMobileFilterSheet();
+                });
+            }
+            
+            overlay.addEventListener('click', () => {
+                this.closeMobileFilterSheet();
+            });
+        }
+    }
+
+    setupMobileFilterSheet() {
+        // Mobile filter sheet is handled in setupFloatingFilterButton
+        // Update visibility based on screen size
+        this.updateMobileFilterVisibility();
+    }
+
+    setupAdvancedSearch() {
+        // Enhanced search functionality is already handled in setupEventListeners
+        // This method can be used for future advanced search features
+        console.log('Advanced search features initialized');
+    }
+
+    setupSmoothAnimations() {
+        // Add CSS classes for smooth animations if not already present
+        if (!document.querySelector('#smooth-animations-style')) {
+            const style = document.createElement('style');
+            style.id = 'smooth-animations-style';
+            style.textContent = `
+                .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+                .fade-in { opacity: 0; animation: fadeInAnimation 0.5s ease forwards; }
+                @keyframes fadeInAnimation { to { opacity: 1; } }
+                .slide-up { transform: translateY(20px); opacity: 0; animation: slideUpAnimation 0.5s ease forwards; }
+                @keyframes slideUpAnimation { to { transform: translateY(0); opacity: 1; } }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    setupTouchGestures() {
+        // Add touch gesture support for mobile devices
+        if (this.hasTouch) {
+            document.addEventListener('touchstart', (e) => {
+                // Handle touch start for better mobile UX
+                const target = e.target.closest('.modern-filter-pill, .btn, .article-image');
+                if (target) {
+                    target.style.transform = 'scale(0.98)';
+                }
+            });
+
+            document.addEventListener('touchend', (e) => {
+                // Handle touch end
+                const target = e.target.closest('.modern-filter-pill, .btn, .article-image');
+                if (target) {
+                    setTimeout(() => {
+                        target.style.transform = '';
+                    }, 150);
+                }
+            });
+        }
+    }
+
+    closeMobileFilterSheet() {
+        const mobileSheet = document.getElementById('mobileFilterSheet');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        
+        if (mobileSheet) mobileSheet.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    populateMobileFilters() {
+        const mobileContent = document.getElementById('mobileFiltersContent');
+        if (!mobileContent) return;
+
+        // Clone desktop filters into mobile sheet
+        const sidebarContent = document.querySelector('.sidebar-content');
+        if (sidebarContent) {
+            mobileContent.innerHTML = sidebarContent.innerHTML;
+        }
+    }
+
+    updateMobileFilterVisibility() {
+        const floatingBtn = document.getElementById('floatingFilterBtn');
+        if (floatingBtn) {
+            floatingBtn.style.display = this.isMobile ? 'flex' : 'none';
+        }
+    }
+
+    initScrollToTop() {
+        const scrollButton = document.getElementById('scrollToTop');
+        if (!scrollButton) return;
+        
+        const toggleScrollButton = () => {
+            if (window.pageYOffset > this.scrollThreshold) {
+                scrollButton.classList.add('visible');
+            } else {
+                scrollButton.classList.remove('visible');
+            }
+        };
+        
+        window.addEventListener('scroll', this.debounce(toggleScrollButton, 100));
+        
+        scrollButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     }
 
     async loadArticles() {
@@ -81,7 +212,7 @@ class ArchiveApp {
                 source: 'Morning Tribune, Page 6',
                 location: 'Kuala Lumpur',
                 people: ['Saroop Singh'],
-                image: 'raw-files/1937-07-24_morning-tribune_half-mile-record.jpg',
+                image: '/raw-files/1937-07-24_morning-tribune_half-mile-record.jpg',
                 excerpt: 'The only other sports item of interest, the boxing having been cancelled owing to the refusal of the Boxing Board to sanction the card, was the annual meeting of the Selangor Amateur Athletic Association. Only one record was broken, the half mile in which Saroop Singh knocked off a second from the existing record of 2 mins. 6 4/5 secs.',
                 tags: ['athletics', 'record', 'half-mile'],
                 content: `The only other sports item of interest, the boxing having been cancelled owing to the refusal of the Boxing Board to sanction the card, was the annual meeting of the Selangor Amateur Athletic Association. Only one record was broken, the half mile in which Saroop Singh knocked off a second from the existing record of 2 mins. 6 4/5 secs.
@@ -96,7 +227,7 @@ The average standard of the performances were good without being brilliant and t
                 source: 'Indian Daily Mail, Page 4',
                 location: 'Kuala Lumpur',
                 people: ['Mrs. J. A. Thivy', 'Inderjit Kaur', 'Madam Sham Kaur', 'Madam Laj Kaur', 'Mr. Teja Singh', 'Mr. Jagat Singh', 'Mr. Naran Singh', 'Pritam Kaur', 'Mr. Saroop Singh'],
-                image: 'raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg',
+                image: '/raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg',
                 excerpt: 'Mrs. J. A. Thivy has kindly consented to perform the prize-distribution ceremony at the Malayan Sikh Ladies First Athletic Meet to be held at Railway Institute Grounds, Sentul, Kuala Lumpur, on Apr. 23 and 24.',
                 tags: ['athletics', 'ladies', 'sikh', 'meet'],
                 content: `Mrs. J. A. Thivy has kindly consented to perform the prize-distribution ceremony at the Malayan Sikh Ladies First Athletic Meet to be held at Railway Institute Grounds, Sentul, Kuala Lumpur, on Apr. 23 and 24.
@@ -119,7 +250,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times, Page 19',
                 location: 'Kuala Lumpur',
                 people: ['Gian Singh', 'Balwant Singh', 'Saroop Singh', 'Shaw', 'Frois'],
-                image: 'raw-files/1954-11-07_straits-times_johore-police-routed-at-kl.jpg',
+                image: '/raw-files/1954-11-07_straits-times_johore-police-routed-at-kl.jpg',
                 excerpt: 'Selangor Combined Police routed Johore Police 6-1 in the annual hockey competition on the Taylor Road ground today. Selangor led 2-0 at half time.',
                 tags: ['hockey', 'police', 'competition'],
                 content: 'Kuala Lumpur, Sat.\n\nSelangor Combined Police routed Johore Police 6‑1 in the annual hockey competition on the Taylor Road ground today. Selangor led 2‑0 at half time.'
@@ -132,7 +263,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['A. Theivendiran', 'Henderson', 'Woodrow', 'R. S. Duabia', 'Edgar de Silva', 'Saroop Singh', 'A. Thomas', 'Bahrun', 'M. Thomas', 'Thayaraja', 'Katar Singh', 'Rajoo'],
-                image: 'raw-files/1940-02-02_straits-times_selangor-harriers-to-compete-at-ipoh.jpg',
+                image: '/raw-files/1940-02-02_straits-times_selangor-harriers-to-compete-at-ipoh.jpg',
                 excerpt: 'The Selangor Harriers will be represented by a strong team in the cross-country race at Ipoh on Saturday.',
                 tags: ['cross-country', 'harriers', 'ipoh'],
                 content: 'The Selangor Harriers will be represented by a strong team in the cross-country race at Ipoh on Saturday.'
@@ -158,7 +289,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Singapore Free Press',
                 location: 'Singapore',
                 people: ['Wong Swee Chew'],
-                image: 'raw-files/1937-08-03_singapore-free-press_fmsr-annual-sports.jpg',
+                image: '/raw-files/1937-08-03_singapore-free-press_fmsr-annual-sports.jpg',
                 excerpt: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.',
                 tags: ['athletics', 'fmsr', 'sports'],
                 content: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.'
@@ -171,7 +302,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Singapore Free Press',
                 location: 'Seremban',
                 people: ['Various athletes'],
-                image: 'raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
+                image: '/raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
                 excerpt: 'Athletic sports meeting held at Seremban with competitive events.',
                 tags: ['athletics', 'seremban', 'meet'],
                 content: 'Athletic sports meeting held at Seremban with competitive events.'
@@ -184,7 +315,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['Saroop Singh', 'Various runners'],
-                image: 'raw-files/1939-02-03_straits-times_inter-club-cross-country-race.jpg',
+                image: '/raw-files/1939-02-03_straits-times_inter-club-cross-country-race.jpg',
                 excerpt: 'Annual inter-club cross-country race featuring local and regional runners.',
                 tags: ['cross-country', 'inter-club', 'race'],
                 content: 'Annual inter-club cross-country race featuring local and regional runners.'
@@ -197,7 +328,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['Sikh runners'],
-                image: 'raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg',
+                image: '/raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg',
                 excerpt: 'Sikh runners achieve new state record in half mile competition.',
                 tags: ['athletics', 'sikh', 'record', 'half-mile'],
                 content: 'Sikh runners achieve new state record in half mile competition.'
@@ -440,10 +571,10 @@ The following generous contributions have been received from various sources whi
             });
 
             this.currentPage = 1;
-            this.updateResultsInfoAnimated();
+            this.updateResultsInfo();
             this.updateFilterCounts();
             this.updateActiveFiltersDisplay();
-            this.renderCurrentPageAnimated();
+            this.renderCurrentPage();
             this.showLoadingWithPulse(false);
         }, 300); // Slightly longer delay for better UX
     }
@@ -553,8 +684,22 @@ The following generous contributions have been received from various sources whi
             return;
         }
 
-        const articlesHTML = pageArticles.map(article => this.renderArticleCard(article)).join('');
-        container.innerHTML = `<div class="articles-grid">${articlesHTML}</div>`;
+        const articlesHTML = pageArticles.map((article, index) => {
+            const cardHTML = this.renderArticleCard(article);
+            return `<div class="article-wrapper" style="animation-delay: ${index * 0.1}s">${cardHTML}</div>`;
+        }).join('');
+        
+        container.innerHTML = `<div class="articles-grid fade-in">${articlesHTML}</div>`;
+
+        // Add smooth animations to cards
+        setTimeout(() => {
+            const cards = container.querySelectorAll('.article-wrapper');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('slide-up');
+                }, index * 100);
+            });
+        }, 100);
 
         this.renderPagination();
         this.setupImageHandlers();
@@ -1106,6 +1251,155 @@ The following generous contributions have been received from various sources whi
             this.updateClearSearchVisibility('');
             this.applyFiltersWithAnimation();
             searchInput.focus();
+        }
+    }
+
+    updateFilterCounts() {
+        // Update quick filter counts
+        const pillCounts = {
+            'athletics': this.articles.filter(a => a.tags.some(tag => tag.includes('athletic'))).length,
+            'hockey': this.articles.filter(a => a.tags.some(tag => tag.includes('hockey'))).length,
+            'cross-country': this.articles.filter(a => a.tags.some(tag => tag.includes('cross-country'))).length,
+            'record': this.articles.filter(a => a.tags.some(tag => tag.includes('record'))).length
+        };
+        
+        Object.entries(pillCounts).forEach(([key, count]) => {
+            const countElement = document.querySelector(`[data-count="${key}"]`);
+            if (countElement) {
+                countElement.textContent = count;
+            }
+        });
+        
+        // Update main filter count
+        const activeFilterCount = this.getActiveFilterCount();
+        const filterCountElement = document.getElementById('filterCount');
+        const floatingCountElement = document.getElementById('floatingFilterCount');
+        
+        if (filterCountElement) {
+            filterCountElement.textContent = activeFilterCount;
+        }
+        if (floatingCountElement) {
+            floatingCountElement.textContent = activeFilterCount;
+        }
+    }
+    
+    getActiveFilterCount() {
+        let count = 0;
+        if (this.currentFilters.search) count++;
+        if (this.currentFilters.startYear) count++;
+        if (this.currentFilters.endYear) count++;
+        if (this.currentFilters.source) count++;
+        if (this.currentFilters.people) count++;
+        if (this.currentFilters.quickFilter) count++;
+        return count;
+    }
+    
+    updateActiveFiltersDisplay() {
+        const activeFiltersContainer = document.getElementById('activeFilters');
+        if (!activeFiltersContainer) return;
+        
+        const activeFilters = [];
+        
+        if (this.currentFilters.search) {
+            activeFilters.push({ type: 'search', value: this.currentFilters.search });
+        }
+        if (this.currentFilters.startYear) {
+            activeFilters.push({ type: 'startYear', value: `From ${this.currentFilters.startYear}` });
+        }
+        if (this.currentFilters.endYear) {
+            activeFilters.push({ type: 'endYear', value: `To ${this.currentFilters.endYear}` });
+        }
+        if (this.currentFilters.source) {
+            activeFilters.push({ type: 'source', value: this.currentFilters.source });
+        }
+        if (this.currentFilters.people) {
+            activeFilters.push({ type: 'people', value: this.currentFilters.people });
+        }
+        if (this.currentFilters.quickFilter) {
+            activeFilters.push({ type: 'quickFilter', value: this.currentFilters.quickFilter });
+        }
+        
+        activeFiltersContainer.innerHTML = activeFilters.map(filter => `
+            <span class="active-filter-tag">
+                ${filter.value}
+                <i class="fas fa-times remove-filter" onclick="archive.removeFilter('${filter.type}')"></i>
+            </span>
+        `).join('');
+    }
+    
+    removeFilter(filterType) {
+        switch (filterType) {
+            case 'search':
+                this.currentFilters.search = '';
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) searchInput.value = '';
+                this.updateClearSearchVisibility('');
+                break;
+            case 'startYear':
+                this.currentFilters.startYear = null;
+                const startYear = document.getElementById('startYear');
+                if (startYear) startYear.value = '';
+                break;
+            case 'endYear':
+                this.currentFilters.endYear = null;
+                const endYear = document.getElementById('endYear');
+                if (endYear) endYear.value = '';
+                break;
+            case 'source':
+                this.currentFilters.source = '';
+                const sourceFilter = document.getElementById('sourceFilter');
+                if (sourceFilter) sourceFilter.value = '';
+                break;
+            case 'people':
+                this.currentFilters.people = '';
+                const peopleFilter = document.getElementById('peopleFilter');
+                if (peopleFilter) peopleFilter.value = '';
+                break;
+            case 'quickFilter':
+                this.currentFilters.quickFilter = '';
+                document.querySelectorAll('.modern-filter-pill').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                break;
+        }
+        
+        this.applyFiltersWithAnimation();
+    }
+
+    handleResize() {
+        this.isMobile = window.innerWidth <= 768;
+        this.updateMobileFilterVisibility();
+        
+        // Update sidebar visibility
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && this.isMobile) {
+            sidebar.classList.remove('active');
+        }
+    }
+
+    closeAnyOpenModals() {
+        // Close all modals
+        const modals = document.querySelectorAll('.modal[style*="block"]');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+        });
+        
+        // Close lightbox
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox && lightbox.style.display === 'block') {
+            lightbox.style.display = 'none';
+        }
+    }
+
+    toggleSidebar(sidebar) {
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    }
+
+    closeSidebar(sidebar) {
+        if (sidebar) {
+            sidebar.classList.remove('active');
         }
     }
 

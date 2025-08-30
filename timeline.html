@@ -4,10 +4,11 @@ title: Timeline
 permalink: /timeline/
 ---
 
-<div class="timeline-header">
-    <h1><i class="fas fa-clock"></i> Athletic Timeline</h1>
-    <p class="timeline-subtitle">Journey through two decades of Malayan athletic history (1937-1957)</p>
-</div>
+<div class="timeline-container">
+    <div class="timeline-header">
+        <h1><i class="fas fa-clock"></i> Athletic Timeline</h1>
+        <p class="timeline-subtitle">Journey through two decades of Malayan athletic history (1937-1957)</p>
+    </div>
 
 <div class="timeline-controls">
     <div class="timeline-filters">
@@ -332,6 +333,13 @@ permalink: /timeline/
 </div>
 
 <style>
+/* Center the entire timeline page */
+.timeline-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
 /* Timeline-specific styles */
 .timeline-header {
     text-align: center;
@@ -435,6 +443,12 @@ permalink: /timeline/
     width: 45%;
     opacity: 0;
     animation: timelineSlideIn 0.6s ease forwards;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.timeline-item:hover {
+    transform: scale(1.02);
 }
 
 .timeline-item:nth-child(odd) {
@@ -786,3 +800,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+</div><!-- End timeline-container -->
