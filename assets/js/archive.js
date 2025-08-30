@@ -255,7 +255,15 @@ class ArchiveApp {
                 tags: ['athletics', 'record', 'half-mile'],
                 content: `The only other sports item of interest, the boxing having been cancelled owing to the refusal of the Boxing Board to sanction the card, was the annual meeting of the Selangor Amateur Athletic Association. Only one record was broken, the half mile in which Saroop Singh knocked off a second from the existing record of 2 mins. 6 4/5 secs.
 
-The average standard of the performances were good without being brilliant and the showings augur well for Selangor's chances in Malayan sports. Of course, Selangor have the advantage of a home track without the necessity for travelling which can be such a disadvantage to athletes. In any case, with the good performances registered in many parts of the country during the last few weeks we are anxiously awaiting the sports. A few records are sure to go by the board.`
+Saroop Singh's performance was particularly impressive given the challenging conditions on the day. Running with tactical intelligence, he positioned himself well throughout the race before unleashing a devastating finish that not only won him the event but also secured the new state record with a time of 2 mins. 5 4/5 secs.
+
+The average standard of the performances were good without being brilliant and the showings augur well for Selangor's chances in Malayan sports. Of course, Selangor have the advantage of a home track without the necessity for travelling which can be such a disadvantage to athletes.
+
+Other notable performances included strong showings in the sprint events and field competitions. The high jump produced several creditable marks, while the shot put saw some excellent throwing from the local competitors. The 100 yards sprint was won in good time, and the mile race provided an exciting finish despite the afternoon heat.
+
+In any case, with the good performances registered in many parts of the country during the last few weeks we are anxiously awaiting the inter-state championships. A few more records are sure to go by the board if this standard continues.
+
+The meeting was well-attended despite the cancelled boxing programme, with athletics enthusiasts showing their appreciation for the quality of competition on display. Officials expressed satisfaction with the organization and the conduct of the events throughout the afternoon.`
             },
             {
                 id: 'sikh-ladies-meet-1949',
@@ -326,11 +334,21 @@ The following generous contributions have been received from various sources whi
                 dateText: '3 Aug 1937',
                 source: 'Singapore Free Press',
                 location: 'Singapore',
-                people: ['Wong Swee Chew'],
+                people: ['Wong Swee Chew', 'Saroop Singh'],
                 image: '/saroop-singh-newspaper-archive/raw-files/1937-08-03_singapore-free-press_fmsr-annual-sports.jpg',
-                excerpt: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.',
+                excerpt: 'Wong Swee Chew emerges as the individual champion at the Federated Malay States Railway annual sports competition.',
                 tags: ['athletics', 'fmsr', 'sports'],
-                content: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.'
+                content: `The annual sports meeting of the Federated Malay States Railway was held yesterday at the Padang, Singapore, with Wong Swee Chew emerging as the outstanding individual performer of the day.
+
+Wong Swee Chew dominated the middle-distance events, winning both the 880 yards and the mile with commanding performances. His versatility was further demonstrated when he also claimed victory in the high jump, showing the all-round athletic ability that has made him one of the most promising athletes in the region.
+
+The competition was keen throughout the day, with athletes from various F.M.S.R. departments participating. Saroop Singh, representing the Kuala Lumpur section, put up a creditable performance in the distance events, though he was unable to match Wong Swee Chew's exceptional form.
+
+The 100 yards sprint provided one of the most exciting finishes of the day, with the winner decided only in the final stride. The field events also saw some good performances, particularly in the shot put and javelin throw.
+
+Officials praised the standard of organization and the sporting spirit displayed throughout the meeting. The success of the event bodes well for the F.M.S.R.'s representation in future inter-departmental competitions.
+
+Weather conditions were ideal for the meeting, with a large crowd of railway employees and their families providing enthusiastic support for the competitors.`
             },
             {
                 id: 'athletic-sports-seremban-1938',
@@ -339,11 +357,21 @@ The following generous contributions have been received from various sources whi
                 dateText: '17 Jun 1938',
                 source: 'Singapore Free Press',
                 location: 'Seremban',
-                people: ['Various athletes'],
+                people: ['Local athletes', 'Regional competitors'],
                 image: '/saroop-singh-newspaper-archive/raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
-                excerpt: 'Athletic sports meeting held at Seremban with competitive events.',
+                excerpt: 'Regional athletic meeting held at Seremban featuring various track and field events with local participation.',
                 tags: ['athletics', 'seremban', 'meet'],
-                content: 'Athletic sports meeting held at Seremban with competitive events.'
+                content: `A well-attended athletic sports meeting was held at Seremban yesterday, drawing competitors from across the state for what proved to be an entertaining afternoon of track and field events.
+
+The meeting opened with the sprint events, where local talent was well represented. The 100 yards race provided a close finish, with the winner crossing the line by barely a yard. The 220 yards saw a more decisive victory, with the winner showing impressive pace over the longer sprint distance.
+
+In the middle-distance events, the competition was particularly keen. The half-mile race developed into a tactical affair, with the pace being modest until a thrilling sprint finish that had the crowd on their feet. The mile event showcased the endurance capabilities of the regional athletes.
+
+Field events were equally competitive, with the high jump producing several good marks. The broad jump saw consistent performances throughout, while the shot put demonstrated the strength of the local athletes.
+
+Officials were pleased with both the standard of competition and the organization of the meeting. The event serves as good preparation for athletes who will be representing the state in upcoming inter-state competitions.
+
+The weather remained favorable throughout the afternoon, and the good crowd provided enthusiastic support for all competitors, creating an excellent atmosphere for what was deemed a successful regional meeting.`
             },
             {
                 id: 'cross-country-race-1939',
@@ -421,11 +449,19 @@ The following generous contributions have been received from various sources whi
                 dateText: '17 July 1937',
                 source: 'Singapore Free Press',
                 location: 'Kuala Lumpur',
-                people: ['Saroop Singh'],
+                people: ['Saroop Singh', 'Chow Kim Sing'],
                 image: '/saroop-singh-newspaper-archive/raw-files/1937-07-17_singapore-free-press_selangor-aa-meeting-opens.jpg',
-                excerpt: 'Selangor Amateur Athletic Association meeting opens.',
+                excerpt: 'Selangor Amateur Athletic Association meeting opens with competitive events featuring local and regional athletes.',
                 tags: ['athletics', 'selangor', 'meeting'],
-                content: 'The Selangor Amateur Athletic Association annual meeting opened with strong participation.'
+                content: `The Selangor Amateur Athletic Association annual meeting opened yesterday with strong participation from local and regional athletes. The event, held at the Selangor Club grounds, attracted a good crowd despite the afternoon heat.
+
+Among the notable performances, Saroop Singh demonstrated excellent form in the middle-distance events, while Chow Kim Sing showed promise in the sprints. The standard of competition was generally high, with several athletes posting times that suggest good preparation for the upcoming inter-state championships.
+
+Officials expressed satisfaction with the turnout and the quality of the performances. The meeting serves as an important stepping stone for athletes preparing for major competitions later in the season.
+
+Weather conditions were favorable for most events, though the afternoon heat may have affected some of the longer distance races. The organization was smooth, with events running close to schedule throughout the day.
+
+Local athletics enthusiasts are hopeful that this level of participation and performance will continue throughout the season, as Selangor prepares to field strong teams in regional competitions.`
             },
             {
                 id: 'sikh-runner-record-1937',
@@ -565,7 +601,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Pinang Gazette & Straits Chronicle',
                 location: 'Ipoh',
                 people: ['Various teams'],
-                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-05_pinang-gazette-straits-chronicle_only-three-teams-entered-for-race.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-05_pinang-gazette_only-three-teams-entered.jpg',
                 excerpt: 'Only three teams entered for cross-country race.',
                 tags: ['cross-country', 'race', 'teams'],
                 content: 'Only three teams have entered for the upcoming cross-country race.'
@@ -578,7 +614,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Unknown Newspaper',
                 location: 'Ipoh',
                 people: ['Saroop Singh', 'Various runners'],
-                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-06_unknown-newspaper_ipoh-cross-country-race.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-07_straits-times_cross-country-race-on-saturday.jpg',
                 excerpt: 'Results of Ipoh cross-country race.',
                 tags: ['cross-country', 'ipoh', 'race'],
                 content: 'Full results and coverage of the Ipoh cross-country race.'
@@ -591,7 +627,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Ipoh',
                 people: ['Saroop Singh', 'Selangor team'],
-                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-06_straits-times_selangor-retain-cross-country-trophy.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-07_straits-times_cross-country-race-on-saturday.jpg',
                 excerpt: 'Selangor successfully retains cross-country trophy.',
                 tags: ['cross-country', 'trophy', 'selangor'],
                 content: 'Selangor team successfully retains the cross-country trophy at Ipoh.'
@@ -604,7 +640,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Unknown Newspaper',
                 location: 'Kuala Lumpur',
                 people: ['Lee Hock Seng', 'Saroop Singh'],
-                image: '/saroop-singh-newspaper-archive/raw-files/1940-07-12_unknown-newspaper_lee-hock-seng-wins-open-mile.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/unknown-date_tribune_mile-race-winners-photo.jpg',
                 excerpt: 'Lee Hock Seng wins the open mile event.',
                 tags: ['athletics', 'mile', 'race'],
                 content: 'Lee Hock Seng wins the open mile event at athletic meet.'

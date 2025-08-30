@@ -58,7 +58,7 @@ permalink: /timeline/
             </div>
         </div>
 
-        <div class="timeline-item athletics" data-year="1937">
+        <div class="timeline-item athletics" data-year="1937" data-article-id="selangor-aa-meeting-1937" onclick="viewTimelineArticle('selangor-aa-meeting-1937')" style="cursor: pointer;">
             <div class="timeline-date">17 July 1937</div>
             <div class="timeline-badge athletics">
                 <i class="fas fa-running"></i>
@@ -76,7 +76,7 @@ permalink: /timeline/
             </div>
         </div>
 
-        <div class="timeline-item athletics" data-year="1937">
+        <div class="timeline-item athletics" data-year="1937" data-article-id="fmsr-annual-sports-1937" onclick="viewTimelineArticle('fmsr-annual-sports-1937')" style="cursor: pointer;">
             <div class="timeline-date">3 August 1937</div>
             <div class="timeline-badge athletics">
                 <i class="fas fa-medal"></i>
@@ -95,7 +95,7 @@ permalink: /timeline/
         </div>
 
         <!-- 1938 Events -->
-        <div class="timeline-item athletics" data-year="1938">
+        <div class="timeline-item athletics" data-year="1938" data-article-id="athletic-sports-seremban-1938" onclick="viewTimelineArticle('athletic-sports-seremban-1938')" style="cursor: pointer;">
             <div class="timeline-date">17 June 1938</div>
             <div class="timeline-badge athletics">
                 <i class="fas fa-running"></i>
@@ -938,6 +938,7 @@ document.addEventListener('DOMContentLoaded', function() {
 .article-modal-content {
     max-width: 1000px;
     max-height: 90vh;
+    width: 95vw;
 }
 
 .article-detail {
@@ -950,58 +951,129 @@ document.addEventListener('DOMContentLoaded', function() {
     display: grid;
     grid-template-columns: 400px 1fr;
     gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.article-content-section {
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.article-text {
-    background: var(--background-color, #f8f9fa);
-    padding: 2rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color, #e2e8f0);
-    color: var(--text-primary, #1a202c);
-    line-height: 1.85;
-    white-space: pre-wrap;
-    font-family: Georgia, serif;
-    font-size: 1.25rem;
-    letter-spacing: 0.4px;
-}
-
-.article-content-section h4 {
-    color: var(--text-primary, #1a202c);
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--primary-color, #667eea);
-    padding-bottom: 0.5rem;
+.article-image-section {
+    position: sticky;
+    top: 0;
+    height: fit-content;
 }
 
 .modal-article-image {
     width: 100%;
     height: 300px;
-    object-fit: contain;
-    background: #f8f9fa;
-    border-radius: 8px;
+    object-fit: cover;
+    border-radius: var(--border-radius, 8px);
+    border: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.modal-article-image:hover {
+    transform: scale(1.02);
+}
+
+.image-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.article-info-section {
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.article-meta-detailed {
+    background: var(--background-color, #f8f9fa);
+    padding: 1.5rem;
+    border-radius: var(--border-radius, 8px);
+    border: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.meta-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    align-items: start;
+}
+
+.meta-row:last-child {
+    margin-bottom: 0;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.meta-value {
+    color: var(--text-primary, #1a202c);
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.article-content-section {
+    width: 100%;
+}
+
+.article-content-section h4 {
+    margin-bottom: 1rem;
+    color: var(--text-primary, #1a202c);
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color, #667eea);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.article-text {
+    background: var(--surface-color, #ffffff);
+    padding: 2rem;
+    border-radius: var(--border-radius, 8px);
+    font-size: 1.25rem;
+    line-height: 1.85;
+    color: var(--text-primary, #1a202c);
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    white-space: pre-wrap;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .article-actions {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+    justify-content: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color, #e2e8f0);
+    margin-top: 1rem;
 }
 
-.btn {
+.article-actions .btn {
     padding: 0.75rem 1.5rem;
+    font-weight: 600;
     border-radius: 8px;
-    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
     cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.article-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .btn-primary {
@@ -1016,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .btn-outline {
     background: transparent;
-    border-color: var(--primary-color, #667eea);
+    border: 1px solid var(--primary-color, #667eea);
     color: var(--primary-color, #667eea);
 }
 
@@ -1050,16 +1122,66 @@ document.addEventListener('DOMContentLoaded', function() {
 @media (max-width: 768px) {
     .article-top-section {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .article-modal-content {
+        max-width: none;
+        width: 95vw;
+        margin: 1rem;
+    }
+    
+    .modal-article-image {
+        height: 200px;
+    }
+    
+    .meta-row {
+        grid-template-columns: 100px 1fr;
+        gap: 0.75rem;
+    }
+    
+    .article-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
     }
     
     .article-text {
         font-size: 1.2rem;
         padding: 1.5rem;
-        line-height: 1.75;
+        line-height: 1.7;
+    }
+}
+
+@media (max-width: 480px) {
+    .article-text {
+        font-size: 1.1rem;
+        padding: 1rem;
+        line-height: 1.6;
     }
     
-    .modal-article-image {
-        height: 250px;
+    .article-meta-detailed {
+        padding: 1rem;
+    }
+    
+    .meta-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        text-align: left;
+    }
+    
+    .meta-label {
+        justify-content: flex-start;
+        font-weight: 600;
+        color: var(--primary-color, #667eea);
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
     }
 }
 </style>
