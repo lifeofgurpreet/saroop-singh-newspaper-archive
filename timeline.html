@@ -842,18 +842,28 @@ if (typeof ArchiveApp !== 'undefined') {
 
 // Modal close handler
 document.addEventListener('DOMContentLoaded', function() {
-    // Make all timeline items clickable if they don't have onclick
+    // Make all timeline items clickable
     document.querySelectorAll('.timeline-item').forEach(item => {
-        if (!item.onclick) {
-            item.style.cursor = 'pointer';
+        // Skip if already has onclick
+        if (item.onclick) return;
+        
+        item.style.cursor = 'pointer';
+        
+        // Check if item has data-article-id attribute
+        const articleId = item.getAttribute('data-article-id');
+        
+        if (articleId) {
             item.onclick = function() {
-                // Try to extract article ID from the content
-                const titleElement = item.querySelector('.timeline-title');
+                viewTimelineArticle(articleId);
+            };
+        } else {
+            // Try to extract from title for backward compatibility
+            item.onclick = function() {
+                const titleElement = item.querySelector('h4');
                 if (titleElement) {
                     const title = titleElement.textContent;
-                    // Create a simple ID from title
-                    const articleId = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-                    viewTimelineArticle(articleId);
+                    // Navigate to articles page with search
+                    window.location.href = '{{ "/articles/" | relative_url }}?search=' + encodeURIComponent(title);
                 }
             };
         }

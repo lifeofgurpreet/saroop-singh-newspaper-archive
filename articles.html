@@ -641,8 +641,9 @@ permalink: /articles/
     }
     
     .article-text {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         padding: 1.5rem;
+        line-height: 1.75;
     }
     
     .modal-article-image {
@@ -767,6 +768,48 @@ permalink: /articles/
         position: static;
         width: 100%;
         margin-top: 1rem;
+    }
+}
+
+/* Toast Notification Styles */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.toast-notification i {
+    font-size: 1.2rem;
+    color: #90EE90;
+}
+
+@media (max-width: 768px) {
+    .toast-notification {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        bottom: 20px;
+        width: calc(100% - 40px);
+        max-width: 400px;
     }
 }
 </style>
@@ -1063,23 +1106,73 @@ function shareArticle() {
     const article = window.currentArticle;
     if (!article) return;
     
-    const shareData = {
-        title: article.title,
-        text: `${article.title} - From the Malayan Athletic Archive`,
-        url: window.location.origin + '?article=' + article.id
-    };
+    const url = window.location.origin + window.location.pathname + '?article=' + article.id;
     
-    if (navigator.share) {
-        navigator.share(shareData);
-    } else {
-        // Fallback: copy link to clipboard
-        const url = window.location.origin + '?article=' + article.id;
-        navigator.clipboard.writeText(url).then(() => {
-            alert('Article link copied to clipboard!');
-        }).catch(err => {
-            console.error('Failed to copy link:', err);
-        });
+    // Always copy to clipboard first
+    navigator.clipboard.writeText(url).then(() => {
+        // Show success message
+        showToast('Link copied to clipboard! You can now paste it anywhere to share.');
+        
+        // Also try native share if available (mobile)
+        if (navigator.share && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            const shareData = {
+                title: article.title,
+                text: `${article.title} - From the Malayan Athletic Archive`,
+                url: url
+            };
+            setTimeout(() => {
+                navigator.share(shareData).catch(() => {
+                    // User cancelled share, link is already copied
+                });
+            }, 500);
+        }
+    }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast('Link copied to clipboard!');
+        } catch (err) {
+            alert('Please copy this link: ' + url);
+        }
+        document.body.removeChild(textArea);
+    });
+}
+
+// Toast notification function
+function showToast(message) {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) {
+        existingToast.remove();
     }
+    
+    // Create new toast
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 3000);
 }
 
 // Handle direct article links
