@@ -801,43 +801,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to handle timeline article clicks
     window.viewTimelineArticle = function(articleId) {
-        // Load the archive if not already loaded
-        if (typeof archive === 'undefined' || !archive.articles) {
-            // Initialize archive if needed
-            if (typeof ArchiveApp !== 'undefined') {
-                window.archive = new ArchiveApp();
-                // Wait for articles to load
-                setTimeout(() => viewTimelineArticle(articleId), 500);
-                return;
-            }
-        }
+        console.log('viewTimelineArticle called with:', articleId);
         
-        // Find the article
-        const article = archive.articles.find(a => a.id === articleId);
-        if (!article) {
-            console.log('Article not found:', articleId);
+        // Check if archive exists and has articles
+        if (!window.archive || !window.archive.articles || window.archive.articles.length === 0) {
+            console.log('Archive not ready, initializing...');
+            // Initialize archive if needed
+            if (typeof ArchiveApp !== 'undefined' && !window.archive) {
+                window.archive = new ArchiveApp();
+            }
+            // Wait for articles to load
+            setTimeout(() => viewTimelineArticle(articleId), 1000);
             return;
         }
         
+        console.log('Archive ready, searching for article...');
+        // Find the article
+        const article = archive.articles.find(a => a.id === articleId);
+        if (!article) {
+            console.error('Article not found:', articleId);
+            console.log('Available articles:', archive.articles.map(a => a.id));
+            return;
+        }
+        
+        console.log('Article found:', article);
         // Store current article for functions
         window.currentArticle = article;
         
         // Populate modal
-        document.getElementById('modalTitle').textContent = article.title;
-        document.getElementById('modalImage').src = article.image;
-        document.getElementById('modalImage').alt = article.title;
-        document.getElementById('modalDate').textContent = article.dateText || article.date;
-        document.getElementById('modalSource').textContent = article.source;
-        document.getElementById('modalLocation').textContent = article.location;
-        document.getElementById('modalPeople').textContent = article.people.join(', ');
-        document.getElementById('modalTags').textContent = article.tags.join(', ');
-        document.getElementById('modalContent').textContent = article.content;
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalDate = document.getElementById('modalDate');
+        const modalSource = document.getElementById('modalSource');
+        const modalLocation = document.getElementById('modalLocation');
+        const modalPeople = document.getElementById('modalPeople');
+        const modalTags = document.getElementById('modalTags');
+        const modalContent = document.getElementById('modalContent');
+        
+        if (modalTitle) modalTitle.textContent = article.title;
+        if (modalImage) {
+            modalImage.src = article.image;
+            modalImage.alt = article.title;
+        }
+        if (modalDate) modalDate.textContent = article.dateText || article.date;
+        if (modalSource) modalSource.textContent = article.source;
+        if (modalLocation) modalLocation.textContent = article.location;
+        if (modalPeople) modalPeople.textContent = article.people ? article.people.join(', ') : '';
+        if (modalTags) modalTags.textContent = article.tags ? article.tags.join(', ') : '';
+        if (modalContent) modalContent.textContent = article.content || '';
         
         // Show modal
         const modal = document.getElementById('articleModal');
         if (modal) {
+            console.log('Showing modal');
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+        } else {
+            console.error('Modal element not found');
         }
     };
 });
@@ -846,39 +866,54 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Load archive.js to get article data -->
 <script src="{{ '/assets/js/archive.js' | relative_url }}"></script>
 <script>
-// Initialize archive for modal functionality
-if (typeof ArchiveApp !== 'undefined') {
-    window.archive = new ArchiveApp();
-}
-
-// Modal close handler
+// Wait for DOM and initialize archive
 document.addEventListener('DOMContentLoaded', function() {
-    // Make all timeline items clickable
-    document.querySelectorAll('.timeline-item').forEach(item => {
-        // Skip if already has onclick
-        if (item.onclick) return;
+    // Initialize archive
+    if (typeof ArchiveApp !== 'undefined') {
+        window.archive = new ArchiveApp();
         
-        item.style.cursor = 'pointer';
-        
-        // Check if item has data-article-id attribute
-        const articleId = item.getAttribute('data-article-id');
-        
-        if (articleId) {
-            item.onclick = function() {
-                viewTimelineArticle(articleId);
-            };
-        } else {
-            // Try to extract from title for backward compatibility
-            item.onclick = function() {
-                const titleElement = item.querySelector('h4');
-                if (titleElement) {
-                    const title = titleElement.textContent;
-                    // Navigate to articles page with search
-                    window.location.href = '{{ "/articles/" | relative_url }}?search=' + encodeURIComponent(title);
-                }
-            };
-        }
-    });
+        // Wait for archive to load articles
+        setTimeout(function() {
+            setupTimelineClicks();
+        }, 1000);
+    } else {
+        console.error('ArchiveApp not found');
+        setupTimelineClicks();
+    }
+    
+    function setupTimelineClicks() {
+        // Make all timeline items clickable
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            // Remove any existing onclick to avoid conflicts
+            item.onclick = null;
+            
+            item.style.cursor = 'pointer';
+            
+            // Check if item has data-article-id attribute
+            const articleId = item.getAttribute('data-article-id');
+            
+            if (articleId) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Timeline item clicked:', articleId);
+                    viewTimelineArticle(articleId);
+                });
+            } else {
+                // Try to extract from title for backward compatibility
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const titleElement = item.querySelector('h4');
+                    if (titleElement) {
+                        const title = titleElement.textContent;
+                        // Navigate to articles page with search
+                        window.location.href = '{{ "/articles/" | relative_url }}?search=' + encodeURIComponent(title);
+                    }
+                });
+            }
+        });
+    }
     
     const modal = document.getElementById('articleModal');
     const closeBtn = document.querySelector('.modal-close');
@@ -1091,3 +1126,163 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
 </div>
+
+<script>
+// Share, Print, and Citation functions
+function shareArticle() {
+    const article = window.currentArticle;
+    if (!article) return;
+    
+    const url = window.location.origin + window.location.pathname + '?article=' + article.id;
+    
+    // Always copy to clipboard first
+    navigator.clipboard.writeText(url).then(() => {
+        // Show success message
+        showToast('Link copied to clipboard! You can now paste it anywhere to share.');
+        
+        // Also try native share if available (mobile)
+        if (navigator.share && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            const shareData = {
+                title: article.title,
+                text: `${article.title} - From the Malayan Athletic Archive`,
+                url: url
+            };
+            setTimeout(() => {
+                navigator.share(shareData).catch(() => {
+                    // User cancelled share, link is already copied
+                });
+            }, 500);
+        }
+    }).catch(err => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast('Link copied to clipboard!');
+        } catch (err) {
+            alert('Please copy this link: ' + url);
+        }
+        document.body.removeChild(textArea);
+    });
+}
+
+function showToast(message) {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // Create new toast
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 3000);
+}
+
+function printArticle() {
+    const article = window.currentArticle;
+    if (!article) return;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>${article.title}</title>
+            <style>
+                body { font-family: Georgia, serif; max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+                h1 { color: #1a202c; border-bottom: 2px solid #667eea; padding-bottom: 1rem; }
+                .meta { margin: 2rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px; }
+                .meta p { margin: 0.5rem 0; }
+                .content { line-height: 1.8; font-size: 1.1rem; margin-top: 2rem; }
+                @media print { body { margin: 0; padding: 0; } }
+            </style>
+        </head>
+        <body>
+            <h1>${article.title}</h1>
+            <div class="meta">
+                <p><strong>Date:</strong> ${article.dateText || article.date}</p>
+                <p><strong>Source:</strong> ${article.source}</p>
+                <p><strong>Location:</strong> ${article.location}</p>
+                <p><strong>People:</strong> ${article.people.join(', ')}</p>
+            </div>
+            <div class="content">
+                ${article.content}
+            </div>
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd; font-size: 0.9rem; color: #666;">
+                <p>Printed from Malayan Athletic Archive - ${window.location.origin}</p>
+                <p>Date accessed: ${new Date().toLocaleDateString('en-GB')}</p>
+            </div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+function generateCitation() {
+    const article = window.currentArticle;
+    if (!article) return;
+    
+    const accessDate = new Date().toLocaleDateString('en-GB', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
+    
+    const apa = `${article.source}. (${article.dateText || article.date}). ${article.title}. Malayan Athletic Archive. Retrieved ${accessDate}, from ${window.location.origin}`;
+    
+    // Simple citation display
+    const citation = prompt('APA Citation (Copy the text below):', apa);
+}
+
+// Enhanced modal close functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('articleModal');
+    const closeBtn = modal?.querySelector('.modal-close');
+    
+    if (closeBtn) {
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+    }
+    
+    // Close on outside click
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close on ESC key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal?.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+});
+</script>

@@ -12,6 +12,9 @@ class ArchiveApp {
         this.articlesPerPage = 10;
         this.isLoading = false;
         this.zoomLevel = 1;
+        this.loadedArticles = 10;
+        this.allArticlesLoaded = false;
+        this.scrollHandler = null;
         this.isMobile = window.innerWidth <= 768;
         this.scrollThreshold = 100;
         this.currentFilters = {
@@ -923,6 +926,8 @@ The following generous contributions have been received from various sources whi
             });
 
             this.currentPage = 1;
+            this.loadedArticles = this.articlesPerPage;
+            this.allArticlesLoaded = false;
             this.updateResultsInfo();
             this.updateFilterCounts();
             this.updateActiveFiltersDisplay();
@@ -1024,11 +1029,13 @@ The following generous contributions have been received from various sources whi
         const container = document.getElementById('articlesContainer');
         if (!container) return;
 
-        const startIndex = (this.currentPage - 1) * this.articlesPerPage;
-        const endIndex = startIndex + this.articlesPerPage;
-        const pageArticles = this.filteredArticles.slice(startIndex, endIndex);
+        // Reset for initial load
+        this.loadedArticles = Math.min(this.articlesPerPage, this.filteredArticles.length);
+        this.allArticlesLoaded = this.loadedArticles >= this.filteredArticles.length;
 
-        if (pageArticles.length === 0) {
+        const initialArticles = this.filteredArticles.slice(0, this.loadedArticles);
+
+        if (initialArticles.length === 0) {
             container.innerHTML = `
                 <div class="no-results">
                     <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
@@ -1041,12 +1048,12 @@ The following generous contributions have been received from various sources whi
             return;
         }
 
-        const articlesHTML = pageArticles.map((article, index) => {
+        const articlesHTML = initialArticles.map((article, index) => {
             const cardHTML = this.renderArticleCard(article);
             return `<div class="article-wrapper" style="animation-delay: ${index * 0.1}s">${cardHTML}</div>`;
         }).join('');
         
-        container.innerHTML = `<div class="articles-grid fade-in">${articlesHTML}</div>`;
+        container.innerHTML = `<div class="articles-grid fade-in" id="articlesGrid">${articlesHTML}</div>`;
 
         // Add smooth animations to cards
         setTimeout(() => {
@@ -1058,8 +1065,106 @@ The following generous contributions have been received from various sources whi
             });
         }, 100);
 
-        this.renderPagination();
+        // Remove pagination
+        const paginationContainer = document.getElementById('paginationContainer');
+        if (paginationContainer) {
+            paginationContainer.innerHTML = '';
+        }
+
         this.setupImageHandlers();
+        this.setupInfiniteScroll();
+        this.updateResultsInfo();
+    }
+
+    setupInfiniteScroll() {
+        // Remove any existing scroll listener
+        if (this.scrollHandler) {
+            window.removeEventListener('scroll', this.scrollHandler);
+        }
+
+        this.scrollHandler = () => {
+            if (this.isLoading || this.allArticlesLoaded) return;
+
+            const scrollPosition = window.innerHeight + window.scrollY;
+            const threshold = document.body.offsetHeight - 500;
+
+            if (scrollPosition >= threshold) {
+                this.loadMoreArticles();
+            }
+        };
+
+        window.addEventListener('scroll', this.scrollHandler);
+    }
+
+    loadMoreArticles() {
+        if (this.isLoading || this.allArticlesLoaded) return;
+        
+        this.isLoading = true;
+        
+        // Show loading indicator
+        const grid = document.getElementById('articlesGrid');
+        if (!grid) return;
+
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.id = 'loadMoreIndicator';
+        loadingIndicator.className = 'loading-more';
+        loadingIndicator.style.cssText = `
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        `;
+        loadingIndicator.innerHTML = `
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+            <p style="margin-top: 0.5rem;">Loading more articles...</p>
+        `;
+        grid.appendChild(loadingIndicator);
+
+        // Simulate loading delay for smooth UX
+        setTimeout(() => {
+            const startIndex = this.loadedArticles;
+            const endIndex = Math.min(startIndex + this.articlesPerPage, this.filteredArticles.length);
+            const newArticles = this.filteredArticles.slice(startIndex, endIndex);
+
+            if (newArticles.length === 0 || endIndex >= this.filteredArticles.length) {
+                this.allArticlesLoaded = true;
+            }
+
+            // Remove loading indicator
+            const indicator = document.getElementById('loadMoreIndicator');
+            if (indicator) indicator.remove();
+
+            // Add new articles
+            newArticles.forEach((article, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'article-wrapper slide-up';
+                wrapper.style.animationDelay = `${index * 0.05}s`;
+                wrapper.innerHTML = this.renderArticleCard(article);
+                grid.appendChild(wrapper);
+            });
+
+            this.loadedArticles = endIndex;
+            this.isLoading = false;
+            this.setupImageHandlers();
+            this.updateResultsInfo();
+
+            // Show end message if all articles loaded
+            if (this.allArticlesLoaded && this.filteredArticles.length > 0) {
+                const endMessage = document.createElement('div');
+                endMessage.className = 'all-loaded-message';
+                endMessage.style.cssText = `
+                    grid-column: 1 / -1;
+                    text-align: center;
+                    padding: 3rem;
+                    color: var(--text-muted);
+                `;
+                endMessage.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--accent);"></i>
+                    <p style="margin-top: 0.5rem;">All ${this.filteredArticles.length} articles loaded</p>
+                `;
+                grid.appendChild(endMessage);
+            }
+        }, 500);
     }
 
     renderArticleCard(article) {
@@ -1107,66 +1212,7 @@ The following generous contributions have been received from various sources whi
         `;
     }
 
-    renderPagination() {
-        const totalPages = Math.ceil(this.filteredArticles.length / this.articlesPerPage);
-        if (totalPages <= 1) return;
-
-        const paginationContainer = document.getElementById('paginationContainer');
-        if (!paginationContainer) return;
-
-        let paginationHTML = '<div class="pagination">';
-        
-        // Previous button
-        paginationHTML += `
-            <button ${this.currentPage === 1 ? 'disabled' : ''} 
-                    onclick="archive.goToPage(${this.currentPage - 1})">
-                <i class="fas fa-chevron-left"></i> Previous
-            </button>
-        `;
-
-        // Page numbers
-        const maxVisiblePages = 5;
-        let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-        if (endPage - startPage < maxVisiblePages - 1) {
-            startPage = Math.max(1, endPage - maxVisiblePages + 1);
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            paginationHTML += `
-                <button ${i === this.currentPage ? 'class="active"' : ''} 
-                        onclick="archive.goToPage(${i})">
-                    ${i}
-                </button>
-            `;
-        }
-
-        // Next button
-        paginationHTML += `
-            <button ${this.currentPage === totalPages ? 'disabled' : ''} 
-                    onclick="archive.goToPage(${this.currentPage + 1})">
-                Next <i class="fas fa-chevron-right"></i>
-            </button>
-        `;
-
-        paginationHTML += '</div>';
-        paginationContainer.innerHTML = paginationHTML;
-    }
-
-    goToPage(page) {
-        const totalPages = Math.ceil(this.filteredArticles.length / this.articlesPerPage);
-        if (page < 1 || page > totalPages) return;
-
-        this.currentPage = page;
-        this.renderCurrentPage();
-        
-        // Scroll to top of results
-        const mainContent = document.querySelector('.main-content');
-        if (mainContent) {
-            mainContent.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
+    // Pagination methods removed - using infinite scroll instead
 
     setupLightbox() {
         const lightbox = document.getElementById('lightbox');
@@ -1452,12 +1498,11 @@ The following generous contributions have been received from various sources whi
         if (!resultsInfo) return;
 
         const total = this.filteredArticles.length;
-        const start = total === 0 ? 0 : (this.currentPage - 1) * this.articlesPerPage + 1;
-        const end = Math.min(this.currentPage * this.articlesPerPage, total);
+        const loaded = Math.min(this.loadedArticles || 0, total);
 
         resultsInfo.textContent = total === 0 
             ? 'No articles found' 
-            : `Showing ${start}-${end} of ${total} articles`;
+            : loaded < total ? `Showing ${loaded} of ${total} articles` : `All ${total} articles displayed`;
     }
 
     showLoading(show) {
