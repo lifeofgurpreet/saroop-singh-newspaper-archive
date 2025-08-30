@@ -915,6 +915,7 @@ window.viewArticleDetail = function(articleId) {
     
     // Populate modal
     document.getElementById('modalTitle').textContent = article.title;
+    // Image path already includes base URL from archive.js
     document.getElementById('modalImage').src = article.image;
     document.getElementById('modalImage').alt = article.title;
     document.getElementById('modalImage').dataset.title = article.title;

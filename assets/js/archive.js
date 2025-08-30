@@ -224,7 +224,7 @@ class ArchiveApp {
                 source: 'Morning Tribune, Page 6',
                 location: 'Kuala Lumpur',
                 people: ['Saroop Singh'],
-                image: '/raw-files/1937-07-24_morning-tribune_half-mile-record.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1937-07-24_morning-tribune_half-mile-record.jpg',
                 excerpt: 'The only other sports item of interest, the boxing having been cancelled owing to the refusal of the Boxing Board to sanction the card, was the annual meeting of the Selangor Amateur Athletic Association. Only one record was broken, the half mile in which Saroop Singh knocked off a second from the existing record of 2 mins. 6 4/5 secs.',
                 tags: ['athletics', 'record', 'half-mile'],
                 content: `The only other sports item of interest, the boxing having been cancelled owing to the refusal of the Boxing Board to sanction the card, was the annual meeting of the Selangor Amateur Athletic Association. Only one record was broken, the half mile in which Saroop Singh knocked off a second from the existing record of 2 mins. 6 4/5 secs.
@@ -239,7 +239,7 @@ The average standard of the performances were good without being brilliant and t
                 source: 'Indian Daily Mail, Page 4',
                 location: 'Kuala Lumpur',
                 people: ['Mrs. J. A. Thivy', 'Inderjit Kaur', 'Madam Sham Kaur', 'Madam Laj Kaur', 'Mr. Teja Singh', 'Mr. Jagat Singh', 'Mr. Naran Singh', 'Pritam Kaur', 'Mr. Saroop Singh'],
-                image: '/raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet.jpg',
                 excerpt: 'Mrs. J. A. Thivy has kindly consented to perform the prize-distribution ceremony at the Malayan Sikh Ladies First Athletic Meet to be held at Railway Institute Grounds, Sentul, Kuala Lumpur, on Apr. 23 and 24.',
                 tags: ['athletics', 'ladies', 'sikh', 'meet'],
                 content: `Mrs. J. A. Thivy has kindly consented to perform the prize-distribution ceremony at the Malayan Sikh Ladies First Athletic Meet to be held at Railway Institute Grounds, Sentul, Kuala Lumpur, on Apr. 23 and 24.
@@ -262,7 +262,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times, Page 19',
                 location: 'Kuala Lumpur',
                 people: ['Gian Singh', 'Balwant Singh', 'Saroop Singh', 'Shaw', 'Frois'],
-                image: '/raw-files/1954-11-07_straits-times_johore-police-routed-at-kl.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1954-11-07_straits-times_johore-police-routed-at-kl.jpg',
                 excerpt: 'Selangor Combined Police routed Johore Police 6-1 in the annual hockey competition on the Taylor Road ground today. Selangor led 2-0 at half time.',
                 tags: ['hockey', 'police', 'competition'],
                 content: 'Kuala Lumpur, Sat.\n\nSelangor Combined Police routed Johore Police 6‑1 in the annual hockey competition on the Taylor Road ground today. Selangor led 2‑0 at half time.'
@@ -275,7 +275,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['A. Theivendiran', 'Henderson', 'Woodrow', 'R. S. Duabia', 'Edgar de Silva', 'Saroop Singh', 'A. Thomas', 'Bahrun', 'M. Thomas', 'Thayaraja', 'Katar Singh', 'Rajoo'],
-                image: '/raw-files/1940-02-02_straits-times_selangor-harriers-to-compete-at-ipoh.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1940-02-02_straits-times_selangor-harriers-to-compete-at-ipoh.jpg',
                 excerpt: 'The Selangor Harriers will be represented by a strong team in the cross-country race at Ipoh on Saturday.',
                 tags: ['cross-country', 'harriers', 'ipoh'],
                 content: 'The Selangor Harriers will be represented by a strong team in the cross-country race at Ipoh on Saturday.'
@@ -301,7 +301,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Singapore Free Press',
                 location: 'Singapore',
                 people: ['Wong Swee Chew'],
-                image: '/raw-files/1937-08-03_singapore-free-press_fmsr-annual-sports.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1937-08-03_singapore-free-press_fmsr-annual-sports.jpg',
                 excerpt: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.',
                 tags: ['athletics', 'fmsr', 'sports'],
                 content: 'Wong Swee Chew was the individual champion at the F.M.S.R. annual sports.'
@@ -314,7 +314,7 @@ The following generous contributions have been received from various sources whi
                 source: 'Singapore Free Press',
                 location: 'Seremban',
                 people: ['Various athletes'],
-                image: '/raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1938-06-17_singapore-free-press_athletic-sports-at-seremban.jpg',
                 excerpt: 'Athletic sports meeting held at Seremban with competitive events.',
                 tags: ['athletics', 'seremban', 'meet'],
                 content: 'Athletic sports meeting held at Seremban with competitive events.'
@@ -327,7 +327,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['Saroop Singh', 'Various runners'],
-                image: '/raw-files/1939-02-03_straits-times_inter-club-cross-country-race.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1939-02-03_straits-times_inter-club-cross-country-race.jpg',
                 excerpt: 'Annual inter-club cross-country race featuring local and regional runners.',
                 tags: ['cross-country', 'inter-club', 'race'],
                 content: 'Annual inter-club cross-country race featuring local and regional runners.'
@@ -340,7 +340,7 @@ The following generous contributions have been received from various sources whi
                 source: 'The Straits Times',
                 location: 'Kuala Lumpur',
                 people: ['Sikh runners'],
-                image: '/raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg',
+                image: '/saroop-singh-newspaper-archive/raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg',
                 excerpt: 'Sikh runners achieve new state record in half mile competition.',
                 tags: ['athletics', 'sikh', 'record', 'half-mile'],
                 content: 'Sikh runners achieve new state record in half mile competition.'
