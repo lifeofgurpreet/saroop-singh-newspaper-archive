@@ -36,11 +36,11 @@ people:
   - Mohamed Idris
   - Rou Quai Lee
   - Lee Yin Thong
-image: ../../raw-files/PHOTO-2025-08-30-21-56-55.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_inter-state-athletic-match-seremban.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-55.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_inter-state-athletic-match-seremban.jpg]]
 
 (From Our Own Correspondent)
 Seremban, June 16.

@@ -11,10 +11,10 @@ people:
   - How Kim Sing
   - Chow Kim Sin
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-31.jpg
+image: ../../raw-files/1937-07-16_unknown-newspaper_some-good-times-recorded.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-31.jpg]]
+![[../../raw-files/1937-07-16_unknown-newspaper_some-good-times-recorded.jpg]]
 
 Some Good Times Recorded
 

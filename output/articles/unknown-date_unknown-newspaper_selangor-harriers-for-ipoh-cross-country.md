@@ -16,10 +16,10 @@ people:
   - Thavaraja
   - Katar Singh
   - Rajoo
-image: ../../raw-files/PHOTO-2025-08-30-21-56-42.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_selangor-harriers-for-ipoh-cross-country.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-42.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_selangor-harriers-for-ipoh-cross-country.jpg]]
 
 CROSS-COUNTRY RACE
 

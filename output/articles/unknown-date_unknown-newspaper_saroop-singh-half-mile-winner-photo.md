@@ -5,9 +5,9 @@ source: (newspaper not visible), Page (not visible)
 location: (location not visible)
 people:
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-40.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_saroop-singh-half-mile-winner-photo.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-40.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_saroop-singh-half-mile-winner-photo.jpg]]
 
 Saroop Singh, winner of the half-mile in the Selangor championships, in State record time.

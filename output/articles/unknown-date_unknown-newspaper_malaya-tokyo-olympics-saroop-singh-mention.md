@@ -5,11 +5,11 @@ source: Source not visible
 location: Kuala Lumpur
 people:
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-38 2.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_malaya-tokyo-olympics-saroop-singh-mention.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-38 2.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_malaya-tokyo-olympics-saroop-singh-mention.jpg]]
 
 **Will Malaya Send Team To Tokyo Olympics?**
 

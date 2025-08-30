@@ -6,11 +6,11 @@ location: Selangor
 people:
   - Saroop Singh
   - Chow Kim Sing
-image: ../../raw-files/PHOTO-2025-08-30-21-56-50 3.jpg
+image: ../../raw-files/1937-07-19_straits-times_selangor-athletic-championships-full-page.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-50 3.jpg]]
+![[../../raw-files/1937-07-19_straits-times_selangor-athletic-championships-full-page.jpg]]
 
 **SELANGOR ATHLETIC CHAMPIONSHIPS**
 

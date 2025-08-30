@@ -5,11 +5,11 @@ source: Source not visible
 location: Selangor
 people:
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-55 2.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_saroop-singh-half-mile-record-improvement.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-55 2.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_saroop-singh-half-mile-record-improvement.jpg]]
 
 As the goal average method has been done away with, a replay seems to be looming ahead, for Perak are fancied against the weak Penang side. Of course, if the Northern Settlement bring off a coup, Selangor will be in the final for the 11th time.
 

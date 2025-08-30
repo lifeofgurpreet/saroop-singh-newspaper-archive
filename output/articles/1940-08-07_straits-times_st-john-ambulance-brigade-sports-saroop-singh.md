@@ -8,11 +8,11 @@ people:
   - L. M. Spragg
   - Mrs. L. M. Smart
   - Major Kidd
-image: ../../raw-files/PHOTO-2025-08-30-21-56-48 2.jpg
+image: ../../raw-files/1940-08-07_straits-times_st-john-ambulance-brigade-sports-saroop-singh.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-48 2.jpg]]
+![[../../raw-files/1940-08-07_straits-times_st-john-ambulance-brigade-sports-saroop-singh.jpg]]
 
 **ST. JOHN AMBULANCE BRIGADE SPORTS**
 

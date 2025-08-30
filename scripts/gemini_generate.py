@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 import argparse
+import sys
 from pathlib import Path
 
-from tools.gemini import get_genai_client, save_inline_image_parts
+# Ensure project root is importable
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from tools.gemini import get_genai_client, save_inline_image_parts, load_settings
 
 
 def main():
@@ -26,6 +33,8 @@ def main():
     )
     args = parser.parse_args()
 
+    # Ensure .env loaded / key validated
+    load_settings()
     client = get_genai_client()
     response = client.models.generate_content(
         model=args.model,

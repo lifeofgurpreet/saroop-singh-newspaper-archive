@@ -16,11 +16,11 @@ people:
   - Thayaraja
   - Katar Singh
   - Rajoo
-image: ../../raw-files/PHOTO-2025-08-30-21-56-43.jpg
+image: ../../raw-files/1937-02-01_unknown-newspaper_selangor-harriers-compete-ipoh-saroop-singh.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-43.jpg]]
+![[../../raw-files/1937-02-01_unknown-newspaper_selangor-harriers-compete-ipoh-saroop-singh.jpg]]
 
 **SELANGOR HARRIERS TO COMPETE AT IPOH**
 

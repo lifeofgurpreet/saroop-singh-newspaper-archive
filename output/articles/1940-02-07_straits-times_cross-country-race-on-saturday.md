@@ -35,10 +35,10 @@ people:
   - Lall Khan
   - Abdul Hassan
   - L. A. C. Pierpoint
-image: ../../raw-files/PHOTO-2025-08-30-21-56-34 3.jpg
+image: ../../raw-files/1940-02-07_straits-times_cross-country-race-on-saturday.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-34 3.jpg]]
+![[../../raw-files/1940-02-07_straits-times_cross-country-race-on-saturday.jpg]]
 
 CROSS-COUNTRY RACE ON SATURDAY
 

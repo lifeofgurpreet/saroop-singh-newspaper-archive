@@ -15,10 +15,10 @@ people:
   - Thavaraja
   - Katar Singh
   - Rajoo
-image: ../../raw-files/PHOTO-2025-08-30-21-56-30.jpg
+image: ../../raw-files/1940-02-01_unknown-newspaper_selangor-harriers-expected-strongest-team.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-30.jpg]]
+![[../../raw-files/1940-02-01_unknown-newspaper_selangor-harriers-expected-strongest-team.jpg]]
 
 (From Our Own Correspondent)
 Kuala Lumpur, Feb. 1.

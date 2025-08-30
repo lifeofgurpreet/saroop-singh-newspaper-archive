@@ -52,6 +52,43 @@ python scripts/gemini_edit.py path/to/input.png "Change the style to watercolor 
   --stem edit
 ```
 
+### 3) Batch Restore: Multiple Prompts x Photos
+
+Reads all photos from `old-family-photos/` and all prompt files from `ai-system-prompts/Image Restoration System Prompts/`. Creates an output folder per photo containing the original and generated variants. Filenames encode the prompt slug.
+
+Dry run (no API calls, no file writes):
+
+```bash
+python scripts/gemini_batch_restore.py \
+  --photos-dir "/Users/agent-g/Saroop Singh Project/old-family-photos" \
+  --prompts-dir "/Users/agent-g/Saroop Singh Project/ai-system-prompts/Image Restoration System Prompts" \
+  --out-root generated/restorations \
+  --dry-run
+```
+
+Execute the batch:
+
+```bash
+python scripts/gemini_batch_restore.py \
+  --photos-dir "/Users/agent-g/Saroop Singh Project/old-family-photos" \
+  --prompts-dir "/Users/agent-g/Saroop Singh Project/ai-system-prompts/Image Restoration System Prompts" \
+  --out-root generated/restorations \
+  --model gemini-2.5-flash-image-preview
+```
+
+Output layout example:
+
+```
+generated/restorations/
+  IMG_0850/
+    original.jpg
+    prompt1__1.png
+    prompt2__1.png
+    prompt3__1.png
+    prompt4__1.png
+    meta.json
+```
+
 ## Code Layout
 
 - `tools/gemini/`

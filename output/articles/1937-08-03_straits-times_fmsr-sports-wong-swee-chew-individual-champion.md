@@ -7,10 +7,10 @@ people:
   - Wong Swee Chew
   - H. Fraser
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-36.jpg
+image: ../../raw-files/1937-08-03_straits-times_fmsr-sports-wong-swee-chew-individual-champion.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-36.jpg]]
+![[../../raw-files/1937-08-03_straits-times_fmsr-sports-wong-swee-chew-individual-champion.jpg]]
 
 F.M.S.R. SPORTS.
 

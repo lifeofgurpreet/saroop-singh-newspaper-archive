@@ -8,10 +8,10 @@ people:
   - Joshi
   - Kelly
   - Eng Chye
-image: ../../raw-files/PHOTO-2025-08-30-21-56-45.jpg
+image: ../../raw-files/1953-06-04_singapore-standard_selangor-hockey.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-45.jpg]]
+![[../../raw-files/1953-06-04_singapore-standard_selangor-hockey.jpg]]
 
 Selangor Hockey
 

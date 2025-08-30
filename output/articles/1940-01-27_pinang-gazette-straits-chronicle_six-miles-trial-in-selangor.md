@@ -9,10 +9,10 @@ people:
   - Theivendiram
   - Anderson
   - Jaswant Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-34 4.jpg
+image: ../../raw-files/1940-01-27_pinang-gazette-straits-chronicle_six-miles-trial-in-selangor.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-34 4.jpg]]
+![[../../raw-files/1940-01-27_pinang-gazette-straits-chronicle_six-miles-trial-in-selangor.jpg]]
 
 CROSS-COUNTRY RACE
 

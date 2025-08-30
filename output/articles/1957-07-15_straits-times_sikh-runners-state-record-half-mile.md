@@ -5,11 +5,11 @@ source: The Straits Times, Page 15
 location: Kuala Lumpur
 people:
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-52.jpg
+image: ../../raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-52.jpg]]
+![[../../raw-files/1957-07-15_straits-times_sikh-runners-state-record-half-mile.jpg]]
 
 SELANGOR ATHLETIC CHAMPIONSHIPS
 

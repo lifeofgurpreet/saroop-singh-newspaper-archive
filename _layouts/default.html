@@ -3,512 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
-    <meta name="description" content="{{ page.description | default: site.description }}">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}Malayan Athletic Archive</title>
+    <meta name="description" content="Digital archive of Malayan athletic newspaper clippings from 1937-1954, featuring the sporting achievements of Saroop Singh and contemporaries.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d97706'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #e94560;
-            --text: #333;
-            --text-light: #666;
-            --bg: #f8f9fa;
-            --white: #fff;
-            --border: #e0e0e0;
-            --sidebar-width: 320px;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            background: var(--bg);
-            min-height: 100vh;
-        }
-        
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--white);
-            border-right: 1px solid var(--border);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 100;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .sidebar.open {
-            transform: translateX(0);
-        }
-        
-        @media (min-width: 768px) {
-            .sidebar {
-                position: sticky;
-                top: 0;
-                transform: translateX(0);
-            }
-        }
-        
-        .sidebar-header {
-            padding: 1.5rem;
-            background: var(--primary);
-            color: var(--white);
-        }
-        
-        .sidebar-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .sidebar-header p {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-        
-        /* Search Box */
-        .search-container {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
-        }
-        
-        /* Article List */
-        .article-list {
-            padding: 1rem;
-            max-height: calc(100vh - 250px);
-            overflow-y: auto;
-        }
-        
-        .article-item {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-        
-        .article-item:hover {
-            background: var(--bg);
-            border-color: var(--border);
-        }
-        
-        .article-item.active {
-            background: rgba(233, 69, 96, 0.1);
-            border-color: var(--accent);
-        }
-        
-        .article-item h4 {
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.25rem;
-            color: var(--primary);
-        }
-        
-        .article-item .meta {
-            font-size: 0.75rem;
-            color: var(--text-light);
-        }
-        
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 0;
-            min-height: 100vh;
-        }
-        
-        @media (min-width: 768px) {
-            .main-content {
-                margin-left: var(--sidebar-width);
-            }
-        }
-        
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 200;
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        @media (min-width: 768px) {
-            .menu-toggle {
-                display: none;
-            }
-        }
-        
-        .menu-toggle svg {
-            width: 24px;
-            height: 24px;
-        }
-        
-        /* Top Navigation */
-        .top-nav {
-            background: var(--white);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-        
-        /* Content Area */
-        .content {
-            padding: 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        @media (max-width: 768px) {
-            .content {
-                padding: 1rem;
-            }
-        }
-        
-        /* Article Styles */
-        article h1 {
-            font-family: 'Merriweather', serif;
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            line-height: 1.3;
-        }
-        
-        @media (max-width: 768px) {
-            article h1 {
-                font-size: 1.5rem;
-            }
-        }
-        
-        .article-meta-box {
-            background: var(--bg);
-            border-left: 4px solid var(--accent);
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 4px;
-        }
-        
-        .article-meta-box p {
-            margin: 0.5rem 0;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-        
-        .article-meta-box strong {
-            color: var(--text);
-        }
-        
-        /* Image Container */
-        .image-container {
-            margin: 2rem 0;
-            background: var(--white);
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .article-image {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-        
-        /* Transcript */
-        .transcript {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 2rem 0;
-            font-family: 'Merriweather', serif;
-            font-size: 0.95rem;
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-        
-        /* Overlay for mobile */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 90;
-        }
-        
-        .overlay.show {
-            display: block;
-        }
-        
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-light);
-        }
-        
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        
-        .stat-card {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .stat-card h3 {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat-card p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        
-        /* Timeline */
-        .timeline {
-            margin: 2rem 0;
-        }
-        
-        .timeline-year {
-            background: var(--primary);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        
-        .timeline-items {
-            padding-left: 2rem;
-            border-left: 2px solid var(--border);
-            margin-left: 0.5rem;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background: var(--white);
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.45rem;
-            top: 1.5rem;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid var(--white);
-        }
-        
-        /* Scrollbar Styles */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-light);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-    </button>
-    
-    <div class="overlay" onclick="closeSidebar()"></div>
-    
-    <div class="container">
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="{{ '/' | relative_url }}" class="brand-link">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="brand-text">Malayan Athletic Archive</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{{ '/timeline.html' | relative_url }}" class="nav-link {% if page.url contains 'timeline' %}active{% endif %}">
+                    <i class="fas fa-clock"></i>
+                    <span>Timeline</span>
+                </a>
+                <a href="{{ '/articles.html' | relative_url }}" class="nav-link {% if page.url contains 'articles' %}active{% endif %}">
+                    <i class="fas fa-archive"></i>
+                    <span>Articles</span>
+                </a>
+                <a href="#about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>{{ site.title }}</h2>
-                <p>Historical newspaper archive (1937-1954)</p>
-            </div>
-            
-            <div class="search-container">
-                <input type="text" class="search-box" id="searchBox" placeholder="Search articles...">
-            </div>
-            
-            <div class="article-list" id="articleList">
-                <!-- Articles will be loaded here -->
-            </div>
-        </aside>
-        
-        <main class="main-content">
-            <nav class="top-nav">
-                <div class="nav-links">
-                    <a href="{{ site.baseurl }}/">Home</a>
-                    <a href="{{ site.baseurl }}/timeline">Timeline</a>
-                    <a href="{{ site.baseurl }}/about">About</a>
-                    <a href="https://github.com/lifeofgurpreet/saroop-singh-newspaper-archive" target="_blank">GitHub</a>
-                </div>
-            </nav>
-            
-            <div class="content">
-                {{ content }}
-            </div>
-        </main>
-    </div>
-    
-    <script>
-        // Sidebar Toggle
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.querySelector('.overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-        }
-        
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.querySelector('.overlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-        }
-        
-        // Article Data
-        const articles = [
-            {% assign sorted_articles = site.pages | where_exp: "page", "page.path contains 'output/articles'" | sort: "date" %}
-            {% for article in sorted_articles %}
-            {
-                title: "{{ article.title | escape }}",
-                date: "{{ article.date_text | default: article.date }}",
-                source: "{{ article.source | escape }}",
-                url: "{{ site.baseurl }}{{ article.url | replace: '.md', '' }}",
-                people: {{ article.people | jsonify }}
-            }{% unless forloop.last %},{% endunless %}
-            {% endfor %}
-        ];
-        
-        // Load Articles in Sidebar
-        function loadArticles(filter = '') {
-            const listEl = document.getElementById('articleList');
-            const filtered = articles.filter(article => {
-                const searchStr = (article.title + ' ' + article.source + ' ' + (article.people || []).join(' ')).toLowerCase();
-                return searchStr.includes(filter.toLowerCase());
-            });
-            
-            if (filtered.length === 0) {
-                listEl.innerHTML = '<div class="loading">No articles found</div>';
-                return;
-            }
-            
-            listEl.innerHTML = filtered.map(article => `
-                <div class="article-item" onclick="window.location.href='${article.url}'">
-                    <h4>${article.title}</h4>
-                    <div class="meta">
-                        ${article.date || 'Date unknown'} • ${article.source || 'Unknown source'}
+            <div class="sidebar-content">
+                <!-- Search Section -->
+                <div class="search-section">
+                    <h3><i class="fas fa-search"></i> Search Archive</h3>
+                    <div class="search-form">
+                        <div class="search-input-group">
+                            <input type="text" id="searchInput" placeholder="Search articles, people, events..." class="search-input">
+                            <button type="button" id="searchBtn" class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            `).join('');
-            
-            // Mark current article as active
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.article-item').forEach(item => {
-                if (item.getAttribute('onclick').includes(currentPath)) {
-                    item.classList.add('active');
-                }
-            });
-        }
-        
-        // Search functionality
-        document.getElementById('searchBox').addEventListener('input', (e) => {
-            loadArticles(e.target.value);
-        });
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadArticles();
-        });
-    </script>
+
+                <!-- Filters Section -->
+                <div class="filters-section">
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    
+                    <!-- Date Range -->
+                    <div class="filter-group">
+                        <label for="dateRange">Date Range</label>
+                        <div class="date-range-inputs">
+                            <input type="number" id="startYear" min="1937" max="1957" placeholder="1937" class="year-input">
+                            <span class="date-separator">to</span>
+                            <input type="number" id="endYear" min="1937" max="1957" placeholder="1957" class="year-input">
+                        </div>
+                    </div>
+
+                    <!-- Source Filter -->
+                    <div class="filter-group">
+                        <label for="sourceFilter">Newspaper Source</label>
+                        <select id="sourceFilter" class="filter-select">
+                            <option value="">All Sources</option>
+                            <option value="Straits Times">The Straits Times</option>
+                            <option value="Morning Tribune">Morning Tribune</option>
+                            <option value="Singapore Free Press">Singapore Free Press</option>
+                            <option value="Indian Daily Mail">Indian Daily Mail</option>
+                            <option value="Pinang Gazette">Pinang Gazette & Straits Chronicle</option>
+                            <option value="Singapore Standard">Singapore Standard</option>
+                            <option value="Unknown">Unknown Source</option>
+                        </select>
+                    </div>
+
+                    <!-- People Filter -->
+                    <div class="filter-group">
+                        <label for="peopleFilter">People Mentioned</label>
+                        <select id="peopleFilter" class="filter-select">
+                            <option value="">All People</option>
+                            <option value="Saroop Singh">Saroop Singh</option>
+                            <option value="M. Thomas">M. Thomas</option>
+                            <option value="A. Theivendiran">A. Theivendiran</option>
+                            <option value="Edgar de Silva">Edgar de Silva</option>
+                            <option value="Henderson">Henderson</option>
+                        </select>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="filter-group">
+                        <label>Quick Filters</label>
+                        <div class="quick-filters">
+                            <button class="quick-filter-btn" data-filter="athletics">
+                                <i class="fas fa-running"></i> Athletics
+                            </button>
+                            <button class="quick-filter-btn" data-filter="hockey">
+                                <i class="fas fa-hockey-puck"></i> Hockey
+                            </button>
+                            <button class="quick-filter-btn" data-filter="records">
+                                <i class="fas fa-trophy"></i> Records
+                            </button>
+                            <button class="quick-filter-btn" data-filter="cross-country">
+                                <i class="fas fa-mountain"></i> Cross Country
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Clear Filters -->
+                    <button id="clearFilters" class="clear-filters-btn">
+                        <i class="fas fa-times"></i> Clear All Filters
+                    </button>
+                </div>
+
+                <!-- Archive Stats -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-chart-bar"></i> Archive Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalArticles">33</span>
+                            <span class="stat-label">Articles</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1937-1957</span>
+                            <span class="stat-label">Years</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalSources">6</span>
+                            <span class="stat-label">Sources</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalPeople">50+</span>
+                            <span class="stat-label">People</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {{ content }}
+        </main>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>About This Archive</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="about-content">
+                    <div class="about-section">
+                        <h3>Project Overview</h3>
+                        <p>This digital archive preserves newspaper clippings documenting athletic achievements in Malaya from 1937-1957. The collection focuses on track and field events, cross-country running, and other sports, with particular emphasis on the career of Saroop Singh and his contemporaries.</p>
+                    </div>
+                    
+                    <div class="about-section">
+                        <h3>Historical Context</h3>
+                        <p>These clippings capture a significant period in Malayan sports history, documenting the achievements of local athletes during the colonial period and the early post-war years. They provide insight into the athletic culture and sporting competitions of the era.</p>
+                    </div>
+
+                    <div class="about-section">
+                        <h3>Archive Features</h3>
+                        <ul>
+                            <li>Searchable collection of digitized newspaper clippings</li>
+                            <li>Advanced filtering by date, source, and people mentioned</li>
+                            <li>Interactive timeline visualization</li>
+                            <li>High-resolution image viewing with zoom capability</li>
+                            <li>Citation tools for researchers</li>
+                        </ul>
+                    </div>
+
+                    <div class="about-section">
+                        <h3>Technical Details</h3>
+                        <p>This archive is built using modern web technologies to ensure accessibility and preservation. Each article includes detailed metadata and has been manually transcribed to maintain historical accuracy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img id="lightboxImage" src="" alt="">
+            <div class="lightbox-controls">
+                <button class="lightbox-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                <button class="lightbox-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                <button class="lightbox-btn" id="resetZoom"><i class="fas fa-expand"></i></button>
+            </div>
+            <div class="lightbox-info">
+                <h4 id="lightboxTitle"></h4>
+                <p id="lightboxSource"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading archive...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ '/assets/js/archive.js' | relative_url }}"></script>
 </body>
 </html>

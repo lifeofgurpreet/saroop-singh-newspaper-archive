@@ -31,11 +31,11 @@ people:
   - Dhian Singh
   - Inspector Gurcharan Singh
   - Ajit Singh Wasan
-image: ../../raw-files/PHOTO-2025-08-30-21-56-45 2.jpg
+image: ../../raw-files/1949-12-18_indian-daily-mail_selangor-sikh-sportsmen-singapore-visit.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-45 2.jpg]]
+![[../../raw-files/1949-12-18_indian-daily-mail_selangor-sikh-sportsmen-singapore-visit.jpg]]
 
 **Selangor Sikh Sportsmen To Visit S'pore During X'mas Holidays**
 

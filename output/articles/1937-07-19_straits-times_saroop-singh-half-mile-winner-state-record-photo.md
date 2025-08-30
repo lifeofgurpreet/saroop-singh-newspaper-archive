@@ -5,10 +5,10 @@ source: The Straits Times, Page 15
 location: Selangor
 people:
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-50 2.jpg
+image: ../../raw-files/1937-07-19_straits-times_saroop-singh-half-mile-winner-state-record-photo.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-50 2.jpg]]
+![[../../raw-files/1937-07-19_straits-times_saroop-singh-half-mile-winner-state-record-photo.jpg]]
 
 **Saroop Singh, winner of the half-mile in the Selangor championships, in State record time.**

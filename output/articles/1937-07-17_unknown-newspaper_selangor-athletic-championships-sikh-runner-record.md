@@ -22,10 +22,10 @@ people:
   - Thei-vendiram
   - Miss Punampalam
   - S. Miss Soh Neo
-image: ../../raw-files/PHOTO-2025-08-30-21-56-41.jpg
+image: ../../raw-files/1937-07-17_unknown-newspaper_selangor-athletic-championships-sikh-runner-record.jpg
 tags: [clipping]
 ---
-![[../../raw-files/PHOTO-2025-08-30-21-56-41.jpg]]
+![[../../raw-files/1937-07-17_unknown-newspaper_selangor-athletic-championships-sikh-runner-record.jpg]]
 
 SELANGOR ATHLETIC CHAMPIONSHIPS.
 Sikh Runner's State Record For Half-Mile

@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
 import argparse
+import os
+import sys
 from pathlib import Path
 
 from PIL import Image
+from google.genai import types
+import mimetypes
 
-from tools.gemini import get_genai_client, save_inline_image_parts
+# Ensure project root is in sys.path so `tools` package can be imported
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from tools.gemini import get_genai_client, save_inline_image_parts, load_settings
 
 
 def main():
@@ -29,17 +39,32 @@ def main():
     )
     args = parser.parse_args()
 
+    # Ensure .env is loaded and key validated (no-op if not present)
+    load_settings()
+
     if not args.image.exists():
         raise SystemExit(f"Image not found: {args.image}")
 
     client = get_genai_client()
 
-    # Use Pillow to open; google-genai Python accepts PIL Image in contents
-    img = Image.open(args.image)
+    # Read image bytes and mime
+    img_path = args.image
+    mime, _ = mimetypes.guess_type(str(img_path))
+    if not mime:
+        mime = "image/jpeg"
+    with open(img_path, "rb") as f:
+        img_bytes = f.read()
+
+    image_part = types.Part(
+        inline_data=types.Blob(mime_type=mime, data=img_bytes)
+    )
 
     response = client.models.generate_content(
         model=args.model,
-        contents=[args.prompt, img],
+        contents=[args.prompt, image_part],
+        config=types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+        ),
     )
 
     parts = response.candidates[0].content.parts

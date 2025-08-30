@@ -14,11 +14,11 @@ people:
   - M. K. Sundram
   - Pte. Clubb
   - Saroop Singh
-image: ../../raw-files/PHOTO-2025-08-30-21-56-48.jpg
+image: ../../raw-files/1938-07-24_unknown-newspaper_malayan-aaa-council-olympic-games.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-48.jpg]]
+![[../../raw-files/1938-07-24_unknown-newspaper_malayan-aaa-council-olympic-games.jpg]]
 
 There will be a meeting of the Malayan A.A.A. Council on Saturday July 24, when the venue of the Malayan 1938 championship meeting will be discussed.
 

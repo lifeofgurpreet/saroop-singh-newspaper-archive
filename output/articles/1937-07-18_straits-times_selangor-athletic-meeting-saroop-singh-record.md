@@ -13,11 +13,11 @@ people:
   - C. H. Auwardl
   - Wong Fook Hoi
   - Miss Marn Yoke Lin
-image: ../../raw-files/PHOTO-2025-08-30-21-56-41 2.jpg
+image: ../../raw-files/1937-07-18_straits-times_selangor-athletic-meeting-saroop-singh-record.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-41 2.jpg]]
+![[../../raw-files/1937-07-18_straits-times_selangor-athletic-meeting-saroop-singh-record.jpg]]
 
 **SELANGOR ATHLETIC MEETING**
 

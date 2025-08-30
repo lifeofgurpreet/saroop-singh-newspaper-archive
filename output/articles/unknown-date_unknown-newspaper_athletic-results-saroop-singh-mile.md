@@ -27,11 +27,11 @@ people:
   - Lee Yin Thoong
   - Kong Lim Teja Singh
   - Lum Weng
-image: ../../raw-files/PHOTO-2025-08-30-21-56-56.jpg
+image: ../../raw-files/unknown-date_unknown-newspaper_athletic-results-saroop-singh-mile.jpg
 tags: [clipping]
 ---
 
-![[../../raw-files/PHOTO-2025-08-30-21-56-56.jpg]]
+![[../../raw-files/unknown-date_unknown-newspaper_athletic-results-saroop-singh-mile.jpg]]
 
 Depot fourteen is seven points ahead of Victoria Inst. O.B.A. for the unit championship.
 
