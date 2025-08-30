@@ -17,13 +17,18 @@ kramdown:
 collections:
   articles:
     output: true
-    permalink: /articles/:name
+    permalink: /:collection/:name/
 
 # Defaults
 defaults:
   - scope:
       path: "output/articles"
       type: "pages"
+    values:
+      layout: "article"
+  - scope:
+      path: "_articles"
+      type: "articles"
     values:
       layout: "article"
   - scope:

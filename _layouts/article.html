@@ -27,7 +27,17 @@ layout: default
     
     {% if page.image %}
         <div class="image-container">
-            <img src="{{ site.baseurl }}/raw-files/{{ page.image | split: '/' | last }}" alt="{{ page.title }}" class="article-image" onerror="this.onerror=null; this.src='{{ site.baseurl }}/{{ page.image }}';">
+            <img src="{{ site.baseurl }}/raw-files/{{ page.image | split: '/' | last }}" 
+                 alt="{{ page.title }}" 
+                 class="article-image lightbox-trigger" 
+                 data-title="{{ page.title }}"
+                 data-source="{{ page.source }}"
+                 style="cursor: pointer;"
+                 onerror="this.onerror=null; this.src='{{ site.baseurl }}/{{ page.image }}';">
+            <div class="image-overlay">
+                <i class="fas fa-search-plus"></i>
+                <span>Click to view full size</span>
+            </div>
         </div>
     {% endif %}
     

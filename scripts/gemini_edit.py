@@ -6,7 +6,6 @@ from pathlib import Path
 
 from PIL import Image
 from google.genai import types
-import mimetypes
 
 # Ensure project root is in sys.path so `tools` package can be imported
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -47,24 +46,12 @@ def main():
 
     client = get_genai_client()
 
-    # Read image bytes and mime
-    img_path = args.image
-    mime, _ = mimetypes.guess_type(str(img_path))
-    if not mime:
-        mime = "image/jpeg"
-    with open(img_path, "rb") as f:
-        img_bytes = f.read()
-
-    image_part = types.Part(
-        inline_data=types.Blob(mime_type=mime, data=img_bytes)
-    )
+    # Open image with PIL and pass directly (per docs)
+    image = Image.open(args.image)
 
     response = client.models.generate_content(
         model=args.model,
-        contents=[args.prompt, image_part],
-        config=types.GenerateContentConfig(
-            thinking_config=types.ThinkingConfig(thinking_budget=0),
-        ),
+        contents=[image, args.prompt],
     )
 
     parts = response.candidates[0].content.parts

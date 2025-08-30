@@ -24,7 +24,16 @@ from typing import Iterable
 
 from PIL import Image
 
-from tools.gemini import get_genai_client, save_inline_image_parts
+# Ensure project root is importable for `tools` package
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from tools.gemini import get_genai_client, save_inline_image_parts, load_settings
+
+# Force image-only responses from the model
+IMAGE_ONLY_PREFIX = "Return only an image; no text."
 
 
 @dataclass
@@ -139,18 +148,18 @@ def generate_for_photo(client, photo: Path, prompts: list[Prompt], out_root: Pat
             print(f"[DRY-RUN] Would call model '{model}' with prompt '{pr.name}' and image '{photo.name}'")
             continue
 
+        # Prepend directive to enforce image-only output
+        prompt_text = f"{IMAGE_ONLY_PREFIX}\n\n{pr.text}"
+
         response = client.models.generate_content(
             model=model,
-            contents=[pr.text, img],
+            contents=[img, prompt_text],
         )
         parts = response.candidates[0].content.parts
 
-        # Dump any text content to stdout
-        for part in parts:
-            if getattr(part, "text", None):
-                print("    text:", part.text)
-
-        saved = save_inline_image_parts(parts, out_dir, stem=pr.slug)
+        # Save only inline images; suppress text printing per requirement
+        out_stem = f"{photo_stem}__{pr.slug}"
+        saved = save_inline_image_parts(parts, out_dir, stem=out_stem)
         meta["results"][pr.slug]["files"].extend([str(p) for p in saved])
         save_meta(meta_path, meta)
 
@@ -162,12 +171,19 @@ def main():
     parser.add_argument("--out-root", type=Path, default=Path("generated/restorations"), help="Output root directory")
     parser.add_argument("--model", default="gemini-2.5-flash-image-preview", help="Model name to use")
     parser.add_argument("--dry-run", action="store_true", help="Parse and plan only; no API calls")
+    parser.add_argument("--only-photo", help="Only process photos whose stem matches this value", default=None)
     args = parser.parse_args()
 
+    # Load .env if present and validate key
+    load_settings()
     client = get_genai_client()
 
     prompts = read_prompts(args.prompts_dir)
     photos = find_photos(args.photos_dir)
+    if args.only_photo:
+        photos = [p for p in photos if p.stem == args.only_photo]
+        if not photos:
+            raise SystemExit(f"No matching photo with stem: {args.only_photo}")
 
     print(f"Found {len(photos)} photos and {len(prompts)} prompts. Output: {args.out_root}")
 
