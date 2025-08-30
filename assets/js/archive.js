@@ -1147,6 +1147,21 @@ The following generous contributions have been received from various sources whi
             : `Showing ${start}-${end} of ${total} articles`;
     }
 
+    showLoading(show) {
+        const loadingContainer = document.querySelector('.loading-container');
+        const resultsContainer = document.getElementById('results');
+        
+        if (loadingContainer) {
+            loadingContainer.style.display = show ? 'flex' : 'none';
+        }
+        
+        if (resultsContainer && show) {
+            resultsContainer.style.display = 'none';
+        } else if (resultsContainer && !show) {
+            resultsContainer.style.display = 'block';
+        }
+    }
+
     showLoadingWithPulse(show) {
         const loadingOverlay = document.getElementById('loadingOverlay');
         if (loadingOverlay) {
