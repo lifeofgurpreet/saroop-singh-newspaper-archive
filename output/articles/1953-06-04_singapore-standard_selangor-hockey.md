@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1953-06-04_singapore-standard_selangor-hockey/
 title: Selangor Hockey
 date_text: 4 June 1953
 source: Singapore Standard, Page 12

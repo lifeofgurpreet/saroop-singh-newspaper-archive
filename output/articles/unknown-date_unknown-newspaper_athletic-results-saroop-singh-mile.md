@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_athletic-results-saroop-singh-mile/
 title: Athletic Results Including One Mile Race
 date_text: Date not visible
 source: Source not visible

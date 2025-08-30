@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-02-01_unknown-newspaper_selangor-harriers-compete-ipoh-saroop-singh/
 title: Selangor Harriers To Compete At Ipoh
 date_text: Feb. 1
 source: Source not visible

@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_malaya-tokyo-olympics-saroop-singh-mention/
 title: Will Malaya Send Team To Tokyo Olympics? - Saroop Singh Mentioned
 date_text: Date not visible
 source: Source not visible  

@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1949-12-18_indian-daily-mail_selangor-sikh-sportsmen-singapore-visit/
 title: Selangor Sikh Sportsmen To Visit Singapore During Christmas Holidays
 date_text: 18 December 1949
 source: Indian Daily Mail, Page 4

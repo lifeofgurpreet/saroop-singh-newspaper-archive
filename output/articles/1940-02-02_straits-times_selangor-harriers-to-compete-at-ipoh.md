@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-02-02_straits-times_selangor-harriers-to-compete-at-ipoh/
 title: Selangor Harriers To Compete At Ipoh
 date_text: 2 Feb 1940
 source: The Straits Times, Page 15

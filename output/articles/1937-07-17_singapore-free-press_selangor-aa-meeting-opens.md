@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-17_singapore-free-press_selangor-aa-meeting-opens/
 title: Selangor A.A. Meeting Opens
 date_text: 17 July 1937
 source: The Singapore Free Press and Mercantile Advertiser, Page 15

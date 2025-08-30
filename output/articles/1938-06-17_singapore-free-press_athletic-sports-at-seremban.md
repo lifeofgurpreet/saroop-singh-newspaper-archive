@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1938-06-17_singapore-free-press_athletic-sports-at-seremban/
 title: Athletic Sports At Seremban
 date_text: 17 June 1938
 source: The Singapore Free Press and Mercantile Advertiser, Page 15

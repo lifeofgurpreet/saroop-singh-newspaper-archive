@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-01-27_pinang-gazette-straits-chronicle_six-miles-trial-in-selangor/
 title: Six Miles' Trial In Selangor
 date_text: 27 January 1940
 source: Pinang Gazette and Straits Chronicle, Page 4

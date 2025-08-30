@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-19_straits-times_selangor-athletic-championships-full-page/
 title: Selangor Athletic Championships - Sikh Runner's State Record For The Half-Mile
 date_text: Monday, July 19, 1937
 source: The Straits Times, Page 15

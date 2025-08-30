@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1957-07-15_straits-times_sikh-runners-state-record-half-mile/
 title: Sikh Runner's State Record For Half-Mile
 date_text: Monday July 15, 1957
 source: The Straits Times, Page 15

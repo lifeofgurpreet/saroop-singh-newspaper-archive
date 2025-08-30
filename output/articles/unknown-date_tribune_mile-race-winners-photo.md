@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_tribune_mile-race-winners-photo/
 title: Mile Race Winners Photo
 date_text: (date not visible)
 source: (Tribune), Page (not visible)

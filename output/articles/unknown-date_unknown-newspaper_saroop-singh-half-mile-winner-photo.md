@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_saroop-singh-half-mile-winner-photo/
 title: Saroop Singh Half-Mile Winner Photo
 date_text: (date not visible)
 source: (newspaper not visible), Page (not visible)

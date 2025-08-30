@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_inter-state-athletic-match-seremban/
 title: Inter-State Athletic Match at Seremban
 date_text: June 16
 source: Source not visible

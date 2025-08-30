@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-02-03_pinang-gazette-straits-chronicle_selangor-harriers-for-ipoh/
 title: Selangor Harriers For Ipoh
 date_text: 3 Feb 1940
 source: Pinang Gazette and Straits Chronicle, Page 4

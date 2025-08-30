@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-16_unknown-newspaper_some-good-times-recorded/
 title: Some Good Times Recorded
 date_text: 16 July 1937
 source: (newspaper not visible), Page (not visible)

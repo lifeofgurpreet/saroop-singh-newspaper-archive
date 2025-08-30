@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-24_morning-tribune_half-mile-record-broken-at-selangor-aaa-meet/
 title: Half‑mile Record Broken at Selangor AAA Meet
 date_text: 24 July 1937
 source: Morning Tribune, Page 6

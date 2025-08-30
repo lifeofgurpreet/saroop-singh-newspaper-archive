@@ -35,6 +35,13 @@ from tools.gemini import get_genai_client, save_inline_image_parts, load_setting
 # Force image-only responses from the model
 IMAGE_ONLY_PREFIX = "Return only an image; no text."
 
+# Default when a prompt file is empty
+DEFAULT_RESTORATION_PROMPT = (
+    "Restore this image. Preserve original subject, pose, expressions, geometry, and composition. "
+    "Remove noise, scratches, dust, and minor artifacts. Apply subtle color correction and clarity improvements only. "
+    "Do not add or remove elements."
+)
+
 
 @dataclass
 class Prompt:
@@ -74,10 +81,9 @@ def read_prompts(prompts_dir: Path, extensions=("", ".txt", ".md")) -> list[Prom
             if p.suffix:
                 continue
         try:
-            text = p.read_text(encoding="utf-8").strip()
+            text = p.read_text(encoding="utf-8")
         except Exception:
-            continue
-        if not text:
+            # Skip unreadable files
             continue
         name = p.stem
         prompts.append(Prompt(name=name, slug=slugify(name), text=text, path=p))
@@ -149,7 +155,8 @@ def generate_for_photo(client, photo: Path, prompts: list[Prompt], out_root: Pat
             continue
 
         # Prepend directive to enforce image-only output
-        prompt_text = f"{IMAGE_ONLY_PREFIX}\n\n{pr.text}"
+        base_text = (pr.text or "").strip() or DEFAULT_RESTORATION_PROMPT
+        prompt_text = f"{IMAGE_ONLY_PREFIX}\n\n{base_text}"
 
         response = client.models.generate_content(
             model=model,

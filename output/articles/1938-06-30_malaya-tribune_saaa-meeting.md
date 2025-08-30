@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1938-06-30_malaya-tribune_saaa-meeting/
 title: S.A.A.A. Meeting
 date_text: 30 June 1938
 source: Malaya Tribune, Page 14

@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-02-07_straits-times_cross-country-race-on-saturday/
 title: Cross-Country Race On Saturday
 date_text: 7 February 1940
 source: The Straits Times, Page 15

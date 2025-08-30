@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1954-11-07_straits-times_johore-police-routed-at-kl/
 title: Johore Police Routed At K.L.
 date_text: 7 Nov 1954
 source: The Straits Times, Page 19

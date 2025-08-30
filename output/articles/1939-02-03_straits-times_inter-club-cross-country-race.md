@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1939-02-03_straits-times_inter-club-cross-country-race/
 title: Inter‑Club Cross Country Race
 date_text: 3 Feb 1939
 source: The Straits Times, Page 18

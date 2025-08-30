@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1949-04-17_indian-daily-mail_first-malayan-sikh-ladies-athletic-meet/
 title: First Malayan Sikh Ladies Athletic Meet
 date_text: 17 Apr 1949
 source: Indian Daily Mail, Page 4

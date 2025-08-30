@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_saroop-singh-half-mile-record-improvement/
 title: Saroop Singh Knocks Second Off Half Mile Record at Selangor Amateur Athletic Association
 date_text: Date not visible
 source: Source not visible

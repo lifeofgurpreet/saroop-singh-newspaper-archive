@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-02-01_unknown-newspaper_selangor-harriers-expected-strongest-team/
 title: Selangor Harriers Expected Strongest Team
 date_text: 1 Feb 1940
 source: (newspaper not visible), Page (not visible)

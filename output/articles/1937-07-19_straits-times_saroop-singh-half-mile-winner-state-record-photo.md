@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-19_straits-times_saroop-singh-half-mile-winner-state-record-photo/
 title: Saroop Singh - Half-Mile Winner in State Record Time (Photo)
 date_text: 19 July 1937
 source: The Straits Times, Page 15

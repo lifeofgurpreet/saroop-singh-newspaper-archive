@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-02-05_pinang-gazette-straits-chronicle_only-three-teams-entered-for-race/
 title: Only Three Teams Entered For Race
 date_text: 5 Feb 1940
 source: Pinang Gazette and Straits Chronicle, Page 11

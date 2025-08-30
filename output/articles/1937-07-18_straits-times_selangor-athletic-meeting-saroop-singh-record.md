@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-07-18_straits-times_selangor-athletic-meeting-saroop-singh-record/
 title: Selangor Athletic Meeting - Saroop Singh Sets New Record
 date_text: 18 July 1937
 source: The Straits Times, Page 10

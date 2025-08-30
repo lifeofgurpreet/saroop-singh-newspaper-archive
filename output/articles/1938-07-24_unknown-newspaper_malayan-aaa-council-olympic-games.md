@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1938-07-24_unknown-newspaper_malayan-aaa-council-olympic-games/
 title: Malayan A.A.A. Council Meeting and Olympic Games Discussion
 date_text: Saturday July 24
 source: Source not visible

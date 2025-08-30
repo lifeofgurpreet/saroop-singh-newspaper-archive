@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-08-03_singapore-free-press_fmsr-annual-sports/
 title: F.M.S.R. Annual Sports
 date_text: 3 Aug 1937
 source: The Singapore Free Press and Mercantile Advertiser, Page 13

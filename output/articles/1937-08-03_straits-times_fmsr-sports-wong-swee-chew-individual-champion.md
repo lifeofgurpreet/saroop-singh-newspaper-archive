@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1937-08-03_straits-times_fmsr-sports-wong-swee-chew-individual-champion/
 title: F.M.S.R. Sports - Wong Swee Chew The Individual Champion
 date_text: 3 August 1937
 source: The Straits Times, Page 14

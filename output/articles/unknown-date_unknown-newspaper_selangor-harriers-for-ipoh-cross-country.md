@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/unknown-date_unknown-newspaper_selangor-harriers-for-ipoh-cross-country/
 title: Selangor Harriers For Ipoh Cross-Country Race
 date_text: (date not visible)
 source: (newspaper not visible), Page (not visible)

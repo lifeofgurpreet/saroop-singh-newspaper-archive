@@ -1,4 +1,6 @@
 ---
+layout: article
+permalink: /articles/1940-08-07_straits-times_st-john-ambulance-brigade-sports-saroop-singh/
 title: St. John Ambulance Brigade Sports - Saroop Singh Wins Individual Championship
 date_text: 7 August 1940
 source: The Straits Times, Page 15
