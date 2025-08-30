@@ -121,7 +121,17 @@ def save_meta(meta_path: Path, data: dict) -> None:
     meta_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
-def generate_for_photo(client, photo: Path, prompts: list[Prompt], out_root: Path, model: str, dry_run: bool = False) -> None:
+def generate_for_photo(
+    client,
+    photo: Path,
+    prompts: list[Prompt],
+    out_root: Path,
+    model: str,
+    dry_run: bool = False,
+    seed: int | None = None,
+    temperature: float | None = None,
+    repeat: int = 1,
+) -> None:
     photo_stem = photo.stem
     out_dir = out_root / photo_stem
 
@@ -152,6 +162,13 @@ def generate_for_photo(client, photo: Path, prompts: list[Prompt], out_root: Pat
         meta.setdefault("model", model)
         meta.setdefault("results", {})
 
+    # Prepare generation config, omitting None values
+    generation_config = {}
+    if seed is not None:
+        generation_config["seed"] = seed
+    if temperature is not None:
+        generation_config["temperature"] = temperature
+
     for pr in prompts:
         print(f"[+] {photo.name} :: prompt '{pr.name}'")
         meta["results"].setdefault(pr.slug, {"prompt": pr.text, "files": []})
@@ -162,17 +179,31 @@ def generate_for_photo(client, photo: Path, prompts: list[Prompt], out_root: Pat
         # Prepend directive to enforce image-only output; use provided prompt text only
         prompt_text = f"{IMAGE_ONLY_PREFIX}\n\n{pr.text.strip()}"
 
-        response = client.models.generate_content(
-            model=model,
-            contents=[img, prompt_text],
-        )
-        parts = response.candidates[0].content.parts
+        # Store generation params in meta
+        run_params = {"prompt": pr.text, "files": [], "params": generation_config | {"repeat": repeat}}
+        meta["results"][pr.slug] = run_params
 
-        # Save only inline images; suppress text printing per requirement
-        out_stem = f"{photo_stem}__{pr.slug}"
-        saved = save_inline_image_parts(parts, out_dir, stem=out_stem)
-        meta["results"][pr.slug]["files"].extend([str(p) for p in saved])
-        save_meta(meta_path, meta)
+        for i in range(repeat):
+            print(f"  - Run {i + 1}/{repeat}")
+            if dry_run:
+                print(f"[DRY-RUN] Would call model '{model}' with prompt '{pr.name}' and image '{photo.name}'")
+                continue
+
+            response = client.models.generate_content(
+                model=model,
+                contents=[img, prompt_text],
+                generation_config=generation_config,
+            )
+            parts = response.candidates[0].content.parts
+
+            # Save only inline images; suppress text printing per requirement
+            out_stem = f"{photo_stem}__{pr.slug}"
+            if repeat > 1:
+                out_stem += f"_v{i + 1}"
+
+            saved = save_inline_image_parts(parts, out_dir, stem=out_stem)
+            meta["results"][pr.slug]["files"].extend([str(p) for p in saved])
+            save_meta(meta_path, meta)
 
 
 def main():
@@ -184,6 +215,11 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Parse and plan only; no API calls")
     parser.add_argument("--only-photo", help="Only process photos whose stem matches this value", default=None)
     parser.add_argument("--only-prompt", help="Only process the prompt with this name or slug", default=None)
+    # Generation parameters
+    parser.add_argument("--seed", type=int, help="Fixed seed for reproducible generation", default=None)
+    parser.add_argument("--temperature", type=float, help="Generation temperature (randomness)", default=None)
+    parser.add_argument("--repeat", type=int, default=1, help="Number of times to run each prompt")
+
     args = parser.parse_args()
 
     # Load .env if present and validate key
@@ -207,7 +243,17 @@ def main():
 
     for photo in photos:
         try:
-            generate_for_photo(client, photo, prompts, args.out_root, args.model, dry_run=args.dry_run)
+            generate_for_photo(
+                client,
+                photo,
+                prompts,
+                args.out_root,
+                args.model,
+                dry_run=args.dry_run,
+                seed=args.seed,
+                temperature=args.temperature,
+                repeat=args.repeat,
+            )
         except KeyboardInterrupt:
             print("Interrupted.")
             sys.exit(130)

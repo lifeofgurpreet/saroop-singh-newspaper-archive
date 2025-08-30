@@ -1,107 +1,72 @@
-# Image Restoration & Reshoot Pipeline
+# Image Restoration & Reshoot Pipeline (v2)
 
-This document outlines a two‑stage pipeline to produce faithful high‑quality restorations first, then controlled, consistent style variations. It also captures current tooling and proposed enhancements.
+This document outlines an enhanced, multi-stage pipeline designed to produce high-fidelity, consistent, and reproducible image restorations and stylistic variations. It incorporates best practices for generative AI workflows and specific controls available in the Gemini API.
 
-## Goals
+## Guiding Principles
 
-- Preserve identity, pose, wardrobe, composition.
-- Improve fidelity (micro‑texture, tone, DR) without geometry changes.
-- Generate stylistic “reshoot” variants from a stabilized baseline.
-- Keep outputs traceable, reproducible, and easy to curate.
+1.  **Reproducibility First**: Achieve deterministic outputs where possible using a fixed `seed`.
+2.  **Progressive Enhancement**: Build from a clean, neutral baseline before attempting creative styles.
+3.  **Controlled Variation**: Introduce randomness deliberately, not accidentally.
+4.  **Traceability**: Log all parameters for every run to understand what worked.
 
-## Stages
+## The Three-Stage Pipeline
 
-- **Stage A — Neutral Restoration (no style change)**
-  - Single conservative prompt that fixes damage, denoise, balanced tone/color, subtle clarity.
-  - Strict locks: no geometry/pose/wardrobe changes; no additions/removals.
-  - Low randomness for determinism.
-  - Output: “A‑outputs” used as inputs to Stage B.
+### Stage 1: Pre-processing (Classical Tools)
+*   **Goal**: Prepare a clean, standardized input for the AI. This is not an AI step.
+*   **Actions**: Use libraries like `Pillow` or `OpenCV` for:
+    *   **Auto-orientation & Deskewing**: Correct rotation from camera sensors or scans.
+    *   **Color Balancing**: Neutralize color casts to establish a neutral white point.
+    -   **Light Denoising**: Remove simple noise patterns that don't require generative infilling.
+*   **Output**: A clean "plate" image, saved to a temporary or intermediate directory.
 
-- **Stage B — Targeted Reshoot Variations**
-  - Input is the Stage A image (stabilized baseline).
-  - Apply creative prompts (e.g., golden‑hour reshoot, 3D scene reconstruction) while preserving the same locks.
-  - Low randomness; vary only intended style axes.
+### Stage 2: Neutral AI Restoration (High Fidelity)
+*   **Goal**: Create a faithful, high-quality restoration of the original photo, fixing complex damage while preserving all core attributes.
+*   **Input**: The pre-processed image from Stage 1.
+*   **Method**:
+    *   Use a single, conservative restoration prompt focused on repair, not style.
+    *   **Crucially, set a fixed `seed` (e.g., `--seed 42`) in the Gemini API call for deterministic, reproducible output.**
+    *   Set `temperature` to a very low value (e.g., `0.1`) to minimize randomness.
+*   **Output**: A high-fidelity, restored master image. This becomes the new baseline for all creative work.
 
-## File structure
+### Stage 3: Stylistic AI Reshoot (Creative Variation)
+*   **Goal**: Generate creative variations (e.g., golden hour, 3D render) based on the restored master.
+*   **Input**: The high-fidelity output from Stage 2.
+*   **Method**:
+    *   Apply creative prompts, each containing strict "lock" instructions to preserve identity, pose, and composition.
+    *   Use a **different `seed`** for each stylistic prompt (or no seed) to allow for creative variance.
+    *   Adjust `temperature` (e.g., `0.2` to `0.4`) to introduce controlled creativity.
+    *   Use `--repeat N` to generate multiple candidates for each style.
 
-- Prompts reside under `ai-system-prompts/` with clear, titled Markdown (already applied):
-  - `ai-system-prompts/Image Restoration System Prompts/*.md`
-  - Suggested split:
-    - `prompts/restore/` — neutral restoration prompts (Stage A)
-    - `prompts/reshoot/` — stylistic prompts (Stage B)
-- Inputs: `old-family-photos/` (renamed to descriptive slugs).
-- Outputs: `generated/restorations/<photo-stem>/`
-  - Files: `original.*`, `<photo-stem>__<prompt-slug>_N.png`, `meta.json`.
+## Enhanced Consistency & Control Strategy
 
-## Current tooling
+-   **`--seed <int>`**: The most important flag for reproducibility. The same model, prompt, and seed will produce nearly identical results. Use this for the Neutral Restoration stage.
+-   **`--temperature <float>`**: Controls randomness. (e.g., `0.1` for restoration, `0.4` for creative tasks).
+-   **`--repeat <int>`**: Since `candidate_count` is 1, this is our workaround to generate multiple versions of the same prompt. Each repeat will be suffixed (`_v1`, `_v2`).
+-   **Prompt Organization**: Split prompts into `prompts/2_restore/` and `prompts/3_reshoot/` to match the pipeline stages.
 
-- Batch runner: `scripts/gemini_batch_restore.py`
-  - Inputs: image + prompt text (we prepend a small image‑only directive).
-  - Options:
-    - `--only-photo <stem>` to target a single image.
-    - `--only-prompt <name-or-slug>` to target a single prompt.
-    - `--prompts-dir <dir>` to point to a specific prompt set.
-  - Behavior:
-    - One API call per prompt. No fallback prompts. Empty prompts abort or get skipped with a warning.
-    - Filenames include both photo stem and prompt slug for traceability.
-    - `meta.json` records prompt text, files, model.
+## Advanced Concept: Multi-Model Pipeline
 
-- Housekeeping: `scripts/housekeeping.py`
-  - `suggest-photo-names` → proposes descriptive filenames (JSONL).
-  - `apply-photo-renames` → applies renames (dry‑run or apply).
-  - `format-prompts` → formats raw prompt files into titled Markdown, creating slugs.
+For photos with significant facial degradation, a specialized model could be introduced in Stage 1 or 2.
 
-## Recommended run sequence
+-   **Example**: Use a dedicated face restoration model (like GFPGAN) to fix only the faces, then pass the composite image to Gemini for overall scene restoration. This isolates specialized tasks for better results.
 
-1. Stage A (neutral)
-   - Use a conservative restoration prompt set (folder `prompts/restore/`).
-   - Command example:
-     - `.venv/bin/python scripts/gemini_batch_restore.py --prompts-dir prompts/restore --out-root generated/restorations`
-2. Stage B (reshoot)
-   - Feed Stage A outputs as inputs (or re-run on originals if Stage A is skipped).
-   - Use creative prompt set (folder `prompts/reshoot/`).
-   - Command example:
-     - `.venv/bin/python scripts/gemini_batch_restore.py --prompts-dir prompts/reshoot --out-root generated/restorations`
+## Proposed Tooling Enhancements
 
-## Consistency strategy
+-   **`scripts/gemini_batch_restore.py`**:
+    -   Add CLI flags: `--seed <int>`, `--temperature <float>`, `--repeat <int>`.
+    -   Pass these parameters to the `generation_config` of the Gemini client.
+    -   Implement the `--repeat` loop, saving numbered versions.
+-   **`scripts/preprocess.py` (New)**:
+    -   A new script to handle Stage 1 tasks (orientation, color balance).
+    -   The batch script can call this optionally via a `--preprocess` flag.
+-   **`meta.json` Expansion**:
+    -   Log `seed`, `temperature`, and `repeat` values for every generated image.
+    -   Add a `run_id` to group all images generated in a single batch execution.
 
-- Low randomness parameters (proposed flags):
-  - `--temperature 0.15`, `--top_p 0.9`, `--top_k 32` (to be added if supported by SDK call).
-- Repeat runs per prompt for controlled diversity (proposed):
-  - `--repeat N` to produce `_v1`, `_v2`, … per prompt.
-- Centralized “Locks” block at the start of every Stage B prompt to enforce identity/geometry/wardrobe preservation.
+## Revised Run Sequence
 
-## Optional preprocessing (before Stage A)
+1.  **(Optional) Pre-process**: `.venv/bin/python scripts/preprocess.py --input-dir old-family-photos --output-dir generated/preprocessed`
+2.  **Stage 2: Neutral Restore**: `.venv/bin/python scripts/gemini_batch_restore.py --photos-dir generated/preprocessed --prompts-dir prompts/2_restore --seed 42 --temperature 0.1 --out-root generated/restorations/stage2_neutral`
+3.  **Stage 3: Stylistic Reshoot**: `.venv/bin/python scripts/gemini_batch_restore.py --photos-dir generated/restorations/stage2_neutral --prompts-dir prompts/3_reshoot --repeat 3 --temperature 0.4 --out-root generated/restorations/stage3_reshoot`
 
-- Gentle classical cleanup for more stable inputs:
-  - Auto‑orient, deskew (if needed), light denoise, small unsharp mask, neutral color balance.
-- Optional upscaling if the originals are small (e.g., Real‑ESRGAN or bicubic+sharpen) to improve micro‑texture headroom.
-- Proposed: `scripts/preprocess.py` and a `--preprocess basic` switch.
-
-## Reproducibility & traceability
-
-- Keep `meta.json` per output directory with:
-  - Prompt slug + full text
-  - Model name and parameters (temperature/top_p/top_k when added)
-  - Timestamp and optional `run_id`
-- Maintain a `generated/runs/` log (CSV/JSONL) capturing per‑call metadata for auditing.
-
-## Curation workflow
-
-- Review outputs per photo folder; pick best files.
-- Optionally copy picks to `generated/selected/` for gallery use.
-- Naming pattern makes downstream mapping trivial.
-
-## Next improvements (proposed changes)
-
-- [ ] Add `--temperature`, `--top_p`, `--top_k` flags to `scripts/gemini_batch_restore.py`.
-- [ ] Add `--repeat N` to loop calls per prompt and suffix versions.
-- [ ] Split prompts into `prompts/restore/` and `prompts/reshoot/`, and update examples accordingly.
-- [ ] Add optional preprocessing step (`scripts/preprocess.py`) and `--preprocess` flag.
-- [ ] Expand `meta.json` with parameters + `run_id`; write `generated/runs/` summary.
-
-## Why this works
-
-- Stabilizing first (Stage A) reduces hallucination and drift in identity/geometry during stylistic transformations.
-- Low randomness + strict locks + consistent prompt scaffolding improves repeatability.
-- Repeat counts and parameter control give you a knob to trade variability vs. consistency.
+This structured approach ensures a solid, reproducible foundation before creative exploration, giving you much finer control over the final output.
