@@ -4,8 +4,8 @@ description: Historical newspaper archive of athletic meet clippings from Malaya
 baseurl: "/saroop-singh-newspaper-archive"
 url: "https://lifeofgurpreet.github.io"
 
-# Theme
-theme: minima
+# Theme - removed for custom layout
+# theme: minima
 
 # Build settings
 markdown: kramdown
@@ -32,11 +32,11 @@ defaults:
     values:
       layout: "default"
 
-# Plugins
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
+# Plugins (removed unsupported plugins)
+# plugins:
+#   - jekyll-feed
+#   - jekyll-seo-tag
+#   - jekyll-sitemap
 
 # Exclude files
 exclude:
