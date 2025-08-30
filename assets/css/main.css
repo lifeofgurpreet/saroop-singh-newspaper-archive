@@ -1089,6 +1089,43 @@ a:hover {
     
     .quick-filters {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    /* Ensure proper touch targets on mobile */
+    .quick-filter-btn {
+        min-height: 48px;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .search-btn {
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    .filter-select,
+    .year-input {
+        min-height: 48px;
+        padding: 0.75rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .clear-filters-btn {
+        min-height: 48px;
+        padding: 0.875rem;
+    }
+    
+    .nav-toggle {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px;
+    }
+    
+    .lightbox-btn {
+        min-width: 48px;
+        min-height: 48px;
+        font-size: 1.2rem;
     }
     
     .modal-content {
@@ -1108,6 +1145,7 @@ a:hover {
     
     .lightbox-controls {
         bottom: 80px;
+        gap: 1.5rem;
     }
     
     .lightbox-info {

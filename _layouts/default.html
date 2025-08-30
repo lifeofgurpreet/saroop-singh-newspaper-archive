@@ -9,35 +9,240 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DC2626'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E">
     
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
 <body>
-    <!-- Simple Header -->
+    <!-- Main Header -->
     <header class="main-header">
-        <div class="header-content">
-            <h1 class="site-title">
-                <a href="{{ '/' | relative_url }}">Saroop Singh Archive</a>
-            </h1>
-        </div>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="{{ '/' | relative_url }}" class="brand-link">
+                    <i class="fas fa-newspaper"></i>
+                    <span class="brand-text">Saroop Singh Archive</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{{ '/articles.html' | relative_url }}" class="nav-link {% if page.url contains 'articles' %}active{% endif %}">
+                    <i class="fas fa-archive"></i>
+                    <span>Browse</span>
+                </a>
+                <a href="{{ '/timeline.html' | relative_url }}" class="nav-link {% if page.url contains 'timeline' %}active{% endif %}">
+                    <i class="fas fa-clock"></i>
+                    <span>Timeline</span>
+                </a>
+                <a href="#about" class="nav-link">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
     </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        {{ content }}
-    </main>
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar (only shown on articles page) -->
+        {% if page.url contains 'articles' %}
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <!-- Search Section -->
+                <section class="search-section">
+                    <h3><i class="fas fa-search"></i> Search Articles</h3>
+                    <div class="search-input-group">
+                        <input type="text" 
+                               id="searchInput" 
+                               class="search-input" 
+                               placeholder="Search articles, people, locations...">
+                        <button id="searchBtn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </section>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="{{ '/' | relative_url }}" class="nav-item {% if page.url == '/' %}active{% endif %}">
-            <span class="nav-label">Home</span>
-        </a>
-        <a href="{{ '/articles.html' | relative_url }}" class="nav-item {% if page.url contains 'articles' %}active{% endif %}">
-            <span class="nav-label">Articles</span>
-        </a>
-        <a href="{{ '/about.html' | relative_url }}" class="nav-item {% if page.url contains 'about' %}active{% endif %}">
-            <span class="nav-label">About</span>
-        </a>
-    </nav>
+                <!-- Filters Section -->
+                <section class="filters-section">
+                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                    
+                    <!-- Date Range Filter -->
+                    <div class="filter-group">
+                        <label>Date Range</label>
+                        <div class="date-range-inputs">
+                            <input type="number" 
+                                   id="startYear" 
+                                   class="year-input" 
+                                   placeholder="1937" 
+                                   min="1937" 
+                                   max="1957">
+                            <span class="date-separator">to</span>
+                            <input type="number" 
+                                   id="endYear" 
+                                   class="year-input" 
+                                   placeholder="1957" 
+                                   min="1937" 
+                                   max="1957">
+                        </div>
+                    </div>
+
+                    <!-- Source Filter -->
+                    <div class="filter-group">
+                        <label for="sourceFilter">Newspaper Source</label>
+                        <select id="sourceFilter" class="filter-select">
+                            <option value="">All Sources</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- People Filter -->
+                    <div class="filter-group">
+                        <label for="peopleFilter">People Mentioned</label>
+                        <select id="peopleFilter" class="filter-select">
+                            <option value="">All People</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="filter-group">
+                        <label>Quick Filters</label>
+                        <div class="quick-filters">
+                            <button class="quick-filter-btn" data-filter="athletics">
+                                <i class="fas fa-running"></i>
+                                Athletics
+                            </button>
+                            <button class="quick-filter-btn" data-filter="hockey">
+                                <i class="fas fa-hockey-puck"></i>
+                                Hockey
+                            </button>
+                            <button class="quick-filter-btn" data-filter="cross-country">
+                                <i class="fas fa-mountain"></i>
+                                Cross-Country
+                            </button>
+                            <button class="quick-filter-btn" data-filter="record">
+                                <i class="fas fa-trophy"></i>
+                                Records
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Clear Filters Button -->
+                    <button id="clearFilters" class="clear-filters-btn">
+                        <i class="fas fa-times"></i>
+                        Clear All Filters
+                    </button>
+                </section>
+
+                <!-- Stats Section -->
+                <section class="stats-section">
+                    <h3><i class="fas fa-chart-bar"></i> Archive Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalArticles">0</span>
+                            <span class="stat-label">Articles</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalSources">0</span>
+                            <span class="stat-label">Sources</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalPeople">0</span>
+                            <span class="stat-label">People</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">20</span>
+                            <span class="stat-label">Years</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </aside>
+        {% endif %}
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {{ content }}
+        </main>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <img id="lightboxImage" src="" alt="">
+            <div class="lightbox-controls">
+                <button id="zoomOut" class="lightbox-btn">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <button id="resetZoom" class="lightbox-btn">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </button>
+                <button id="zoomIn" class="lightbox-btn">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+            <div class="lightbox-info">
+                <h4 id="lightboxTitle">Article Title</h4>
+                <p id="lightboxSource">Source Information</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>About Saroop Singh Archive</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="about-section">
+                    <h3>About Saroop Singh</h3>
+                    <p>Saroop Singh was one of colonial Malaya's most accomplished middle-distance runners during the late 1930s and 1940s. Competing primarily in half-mile and mile events, he set multiple records and represented various athletic clubs including the Selangor Harriers.</p>
+                    <p>His athletic career spanned some of the most significant sporting events in Malayan history, including inter-state championships, cross-country races, and international competitions. Through these newspaper records, we can trace his journey from local competitions to regional prominence.</p>
+                </div>
+                <div class="about-section">
+                    <h3>The Archive</h3>
+                    <p>This digital archive preserves newspaper clippings documenting athletic achievements in Malaya from 1937-1957. Each clipping has been carefully digitized and transcribed to maintain historical accuracy while making the content searchable and accessible.</p>
+                    <ul>
+                        <li>33+ digitized articles from major newspapers</li>
+                        <li>20 years of sporting history (1937-1957)</li>
+                        <li>50+ athletes documented</li>
+                        <li>Multiple newspaper sources including Straits Times, Singapore Free Press, and more</li>
+                    </ul>
+                </div>
+                <div class="about-section">
+                    <h3>Research Standards</h3>
+                    <ul>
+                        <li>Faithful reproduction of original text</li>
+                        <li>High-resolution image digitization</li>
+                        <li>Structured metadata for searchability</li>
+                        <li>Academic citation support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading articles...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ '/assets/js/archive.js' | relative_url }}"></script>
 </body>
 </html>

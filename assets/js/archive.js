@@ -186,7 +186,9 @@ The following generous contributions have been received from various sources whi
         
         if (navToggle) {
             navToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
+                if (sidebar) {
+                    sidebar.classList.toggle('active');
+                }
             });
         }
 
@@ -268,7 +270,7 @@ The following generous contributions have been received from various sources whi
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024) {
+            if (window.innerWidth <= 1024 && sidebar && navToggle) {
                 if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
                     sidebar.classList.remove('active');
                 }
@@ -277,7 +279,7 @@ The following generous contributions have been received from various sources whi
 
         // Handle window resize
         window.addEventListener('resize', () => {
-            if (window.innerWidth > 1024) {
+            if (window.innerWidth > 1024 && sidebar) {
                 sidebar.classList.remove('active');
             }
         });
@@ -587,7 +589,9 @@ The following generous contributions have been received from various sources whi
             this.zoomLevel = 1;
             if (lightboxImage) {
                 lightboxImage.style.transform = 'scale(1)';
+                lightboxImage.style.cursor = 'grab';
             }
+            document.body.style.overflow = '';
         };
 
         if (lightboxClose) {
@@ -692,6 +696,93 @@ The following generous contributions have been received from various sources whi
         lightbox.style.display = 'block';
         this.zoomLevel = 1;
         lightboxImage.style.transform = 'scale(1)';
+        lightboxImage.style.cursor = 'grab';
+        document.body.style.overflow = 'hidden';
+
+        // Add pan functionality for zoomed images
+        this.setupImagePanning(lightboxImage);
+    }
+
+    setupImagePanning(image) {
+        let isPanning = false;
+        let startX, startY, translateX = 0, translateY = 0;
+
+        const startPan = (e) => {
+            if (this.zoomLevel <= 1) return;
+            isPanning = true;
+            image.style.cursor = 'grabbing';
+            
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            startX = clientX - translateX;
+            startY = clientY - translateY;
+            
+            e.preventDefault();
+        };
+
+        const doPan = (e) => {
+            if (!isPanning || this.zoomLevel <= 1) return;
+            
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            
+            translateX = clientX - startX;
+            translateY = clientY - startY;
+            
+            image.style.transform = `scale(${this.zoomLevel}) translate(${translateX / this.zoomLevel}px, ${translateY / this.zoomLevel}px)`;
+            
+            e.preventDefault();
+        };
+
+        const stopPan = (e) => {
+            if (!isPanning) return;
+            isPanning = false;
+            image.style.cursor = this.zoomLevel > 1 ? 'grab' : 'default';
+            e.preventDefault();
+        };
+
+        // Mouse events
+        image.addEventListener('mousedown', startPan);
+        document.addEventListener('mousemove', doPan);
+        document.addEventListener('mouseup', stopPan);
+
+        // Touch events
+        image.addEventListener('touchstart', startPan);
+        document.addEventListener('touchmove', doPan);
+        document.addEventListener('touchend', stopPan);
+
+        // Reset on zoom change
+        const originalZoomIn = document.getElementById('zoomIn')?.onclick;
+        const originalZoomOut = document.getElementById('zoomOut')?.onclick;
+        const originalResetZoom = document.getElementById('resetZoom')?.onclick;
+
+        if (document.getElementById('zoomIn')) {
+            document.getElementById('zoomIn').onclick = () => {
+                this.zoomLevel = Math.min(this.zoomLevel + 0.25, 3);
+                translateX = translateY = 0;
+                image.style.transform = `scale(${this.zoomLevel})`;
+                image.style.cursor = this.zoomLevel > 1 ? 'grab' : 'default';
+            };
+        }
+
+        if (document.getElementById('zoomOut')) {
+            document.getElementById('zoomOut').onclick = () => {
+                this.zoomLevel = Math.max(this.zoomLevel - 0.25, 0.5);
+                translateX = translateY = 0;
+                image.style.transform = `scale(${this.zoomLevel})`;
+                image.style.cursor = this.zoomLevel > 1 ? 'grab' : 'default';
+            };
+        }
+
+        if (document.getElementById('resetZoom')) {
+            document.getElementById('resetZoom').onclick = () => {
+                this.zoomLevel = 1;
+                translateX = translateY = 0;
+                image.style.transform = 'scale(1)';
+                image.style.cursor = 'default';
+            };
+        }
     }
 
     setupModals() {
