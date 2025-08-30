@@ -1,0 +1,48 @@
+# Jekyll configuration for GitHub Pages
+title: Saroop Singh Newspaper Archive
+description: Historical newspaper archive of athletic meet clippings from Malayan newspapers (1937-1954)
+baseurl: "/saroop-singh-newspaper-archive"
+url: "https://lifeofgurpreet.github.io"
+
+# Theme
+theme: minima
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections
+collections:
+  articles:
+    output: true
+    permalink: /articles/:name
+
+# Defaults
+defaults:
+  - scope:
+      path: "output/articles"
+      type: "pages"
+    values:
+      layout: "article"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude files
+exclude:
+  - .obsidian
+  - ai-system-prompts
+  - CLAUDE.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

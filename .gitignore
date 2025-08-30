@@ -1,0 +1,27 @@
+# Obsidian
+.obsidian/
+.trash/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Raw files (keep these out of public repo for now)
+# Uncomment if you want to exclude raw images
+# raw-files/
+
+# Jekyll build
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/

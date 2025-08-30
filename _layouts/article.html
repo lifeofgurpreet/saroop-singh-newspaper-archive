@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+<article>
+    <h1>{{ page.title }}</h1>
+    
+    <div class="article-meta">
+        {% if page.date_text %}
+            <strong>Date:</strong> {{ page.date_text }}<br>
+        {% elsif page.date %}
+            <strong>Date:</strong> {{ page.date | date: "%B %d, %Y" }}<br>
+        {% endif %}
+        
+        {% if page.source %}
+            <strong>Source:</strong> {{ page.source }}<br>
+        {% endif %}
+        
+        {% if page.location %}
+            <strong>Location:</strong> {{ page.location }}<br>
+        {% endif %}
+        
+        {% if page.people and page.people.size > 0 %}
+            <strong>People mentioned:</strong> {{ page.people | join: ", " }}<br>
+        {% endif %}
+    </div>
+    
+    {% if page.image %}
+        <div class="article-image-container">
+            <img src="{{ site.baseurl }}/{{ page.image }}" alt="{{ page.title }}" class="article-image">
+        </div>
+    {% endif %}
+    
+    <div class="article-content">
+        {{ content }}
+    </div>
+    
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+        <a href="{{ site.baseurl }}/articles/">← Back to all articles</a>
+    </div>
+</article>

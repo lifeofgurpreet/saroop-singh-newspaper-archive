@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <style>
+        body {
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: #ecf0f1;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            background: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .article-meta {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .article-image {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background: white;
+        }
+        .article-content {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 20px;
+            border-left: 3px solid #2c3e50;
+            margin: 20px 0;
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+        <nav>
+            <a href="{{ site.baseurl }}/">Home</a>
+            <a href="{{ site.baseurl }}/articles/">All Articles</a>
+            <a href="{{ site.baseurl }}/about/">About</a>
+        </nav>
+    </header>
+    
+    <main>
+        {{ content }}
+    </main>
+    
+    <footer>
+        <p>{{ site.description }}</p>
+        <p>&copy; {{ 'now' | date: '%Y' }} - Historical Archive Project</p>
+    </footer>
+</body>
+</html>
