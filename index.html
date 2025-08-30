@@ -249,6 +249,10 @@ title: Home
                 <i class="fas fa-clock"></i>
                 View Timeline
             </a>
+            <a href="restorations.html" class="btn btn-secondary">
+                <i class="fas fa-images"></i>
+                Photo Restorations
+            </a>
             <a href="#about" class="btn btn-outline">
                 <i class="fas fa-info-circle"></i>
                 Learn More
@@ -592,3 +596,39 @@ title: Home
     }
 }
 </style>
+
+<!-- Animated Counter Script for Hero Stats -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate hero statistics counters
+    const animateCounter = (element, target, duration = 2000) => {
+        let start = 0;
+        const increment = target / (duration / 50);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= target) {
+                element.textContent = target + (target === 100 ? '+' : target === 15 ? '+' : '');
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(start) + (target === 100 ? '+' : target === 15 ? '+' : '');
+            }
+        }, 50);
+    };
+    
+    // Trigger animations when hero section comes into view
+    const heroStats = document.querySelectorAll('.hero-stat-number');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.getAttribute('data-target'));
+                animateCounter(entry.target, target);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    heroStats.forEach(stat => {
+        observer.observe(stat);
+    });
+});
+</script>

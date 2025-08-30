@@ -12,6 +12,8 @@ class ArchiveApp {
         this.articlesPerPage = 10;
         this.isLoading = false;
         this.zoomLevel = 1;
+        this.isMobile = window.innerWidth <= 768;
+        this.scrollThreshold = 100;
         this.currentFilters = {
             search: '',
             startYear: null,
@@ -21,6 +23,7 @@ class ArchiveApp {
             quickFilter: ''
         };
         
+        this.initModernFeatures();
         this.init();
     }
 
@@ -30,15 +33,40 @@ class ArchiveApp {
         try {
             await this.loadArticles();
             this.setupEventListeners();
+            this.setupModernInteractions();
             this.initializeFilters();
             this.updateStats();
             this.renderCurrentPage();
+            this.initScrollAnimations();
         } catch (error) {
             console.error('Error initializing archive:', error);
             this.showError('Failed to load archive data. Please refresh the page.');
         } finally {
             this.showLoading(false);
         }
+    }
+
+    initModernFeatures() {
+        // Modern browser feature detection
+        this.hasIntersectionObserver = 'IntersectionObserver' in window;
+        this.hasBackdropFilter = CSS.supports('backdrop-filter', 'blur(10px)');
+        this.hasTouch = 'ontouchstart' in window;
+        
+        // Set up responsive handlers
+        window.addEventListener('resize', this.debounce(() => {
+            this.handleResize();
+        }, 250));
+        
+        // Initialize modern scroll features
+        this.setupScrollToTop();
+    }
+
+    setupModernInteractions() {
+        this.setupFloatingFilterButton();
+        this.setupMobileFilterSheet();
+        this.setupAdvancedSearch();
+        this.setupSmoothAnimations();
+        this.setupTouchGestures();
     }
 
     async loadArticles() {
@@ -180,41 +208,53 @@ The following generous contributions have been received from various sources whi
     }
 
     setupEventListeners() {
-        // Navigation toggle
+        // Navigation toggle with modern animations
         const navToggle = document.getElementById('navToggle');
         const sidebar = document.getElementById('sidebar');
         
         if (navToggle) {
-            navToggle.addEventListener('click', () => {
-                if (sidebar) {
-                    sidebar.classList.toggle('active');
-                }
+            navToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.toggleSidebar(sidebar);
             });
         }
 
-        // Search functionality
+        // Enhanced search functionality
         const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
+        const clearSearchBtn = document.getElementById('clearSearch');
         
         if (searchInput) {
             searchInput.addEventListener('input', this.debounce((e) => {
-                this.currentFilters.search = e.target.value;
-                this.applyFilters();
+                const value = e.target.value;
+                this.currentFilters.search = value;
+                this.updateClearSearchVisibility(value);
+                this.applyFiltersWithAnimation();
             }, 300));
             
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    this.applyFilters();
+                    this.applyFiltersWithAnimation();
                 }
+            });
+            
+            // Focus animations
+            searchInput.addEventListener('focus', () => {
+                searchInput.closest('.search-input-container')?.classList.add('focused');
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                searchInput.closest('.search-input-container')?.classList.remove('focused');
             });
         }
         
-        if (searchBtn) {
-            searchBtn.addEventListener('click', () => this.applyFilters());
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                this.clearSearch();
+            });
         }
 
-        // Filter controls
+        // Enhanced filter controls with animations
         const startYear = document.getElementById('startYear');
         const endYear = document.getElementById('endYear');
         const sourceFilter = document.getElementById('sourceFilter');
@@ -224,42 +264,56 @@ The following generous contributions have been received from various sources whi
         if (startYear) {
             startYear.addEventListener('change', (e) => {
                 this.currentFilters.startYear = e.target.value ? parseInt(e.target.value) : null;
-                this.applyFilters();
+                this.applyFiltersWithAnimation();
+                this.addFilterAnimation(e.target);
             });
         }
 
         if (endYear) {
             endYear.addEventListener('change', (e) => {
                 this.currentFilters.endYear = e.target.value ? parseInt(e.target.value) : null;
-                this.applyFilters();
+                this.applyFiltersWithAnimation();
+                this.addFilterAnimation(e.target);
             });
         }
 
         if (sourceFilter) {
             sourceFilter.addEventListener('change', (e) => {
                 this.currentFilters.source = e.target.value;
-                this.applyFilters();
+                this.applyFiltersWithAnimation();
+                this.addFilterAnimation(e.target);
             });
         }
 
         if (peopleFilter) {
             peopleFilter.addEventListener('change', (e) => {
                 this.currentFilters.people = e.target.value;
-                this.applyFilters();
+                this.applyFiltersWithAnimation();
+                this.addFilterAnimation(e.target);
             });
         }
 
         if (clearFilters) {
-            clearFilters.addEventListener('click', () => this.clearAllFilters());
+            clearFilters.addEventListener('click', () => this.clearAllFiltersWithAnimation());
         }
 
-        // Quick filters
-        const quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
+        // Modern quick filters with enhanced interactions
+        const quickFilterBtns = document.querySelectorAll('.modern-filter-pill');
         quickFilterBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const filter = e.currentTarget.dataset.filter;
-                this.toggleQuickFilter(filter, e.currentTarget);
+                this.toggleModernQuickFilter(filter, e.currentTarget);
             });
+            
+            // Add hover sound effect (optional)
+            if (this.hasTouch) {
+                btn.addEventListener('touchstart', () => {
+                    btn.style.transform = 'scale(0.95)';
+                });
+                btn.addEventListener('touchend', () => {
+                    btn.style.transform = '';
+                });
+            }
         });
 
         // Image lightbox
@@ -268,19 +322,21 @@ The following generous contributions have been received from various sources whi
         // Modal functionality
         this.setupModals();
 
-        // Close sidebar when clicking outside on mobile
+        // Modern sidebar interactions
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024 && sidebar && navToggle) {
+            if (this.isMobile && sidebar && navToggle) {
                 if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
-                    sidebar.classList.remove('active');
+                    this.closeSidebar(sidebar);
                 }
             }
         });
 
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 1024 && sidebar) {
-                sidebar.classList.remove('active');
+        // Enhanced keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeSidebar(sidebar);
+                this.closeMobileFilterSheet();
+                this.closeAnyOpenModals();
             }
         });
     }
@@ -326,12 +382,15 @@ The following generous contributions have been received from various sources whi
         }
     }
 
-    applyFilters() {
-        this.showLoading(true);
+    applyFiltersWithAnimation() {
+        this.showLoadingWithPulse(true);
+        
+        // Add skeleton loading to results area
+        this.showSkeletonLoading();
         
         setTimeout(() => {
             this.filteredArticles = this.articles.filter(article => {
-                // Search filter
+                // Search filter with fuzzy matching
                 if (this.currentFilters.search) {
                     const searchTerm = this.currentFilters.search.toLowerCase();
                     const searchableText = [
@@ -381,31 +440,49 @@ The following generous contributions have been received from various sources whi
             });
 
             this.currentPage = 1;
-            this.updateResultsInfo();
-            this.renderCurrentPage();
-            this.showLoading(false);
-        }, 100); // Small delay to show loading state
+            this.updateResultsInfoAnimated();
+            this.updateFilterCounts();
+            this.updateActiveFiltersDisplay();
+            this.renderCurrentPageAnimated();
+            this.showLoadingWithPulse(false);
+        }, 300); // Slightly longer delay for better UX
     }
 
-    toggleQuickFilter(filter, btnElement) {
+    toggleModernQuickFilter(filter, btnElement) {
         const isActive = btnElement.classList.contains('active');
         
-        // Remove active class from all quick filter buttons
-        document.querySelectorAll('.quick-filter-btn').forEach(btn => {
+        // Remove active class from all filter pills with animation
+        document.querySelectorAll('.modern-filter-pill').forEach(btn => {
             btn.classList.remove('active');
+            btn.style.transform = '';
         });
 
         if (!isActive) {
             btnElement.classList.add('active');
             this.currentFilters.quickFilter = filter;
+            // Add bounce animation
+            btnElement.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                btnElement.style.transform = '';
+            }, 200);
         } else {
             this.currentFilters.quickFilter = '';
         }
 
-        this.applyFilters();
+        this.applyFiltersWithAnimation();
+        this.addRippleEffect(btnElement);
     }
 
-    clearAllFilters() {
+    clearAllFiltersWithAnimation() {
+        // Add clearing animation
+        const clearBtn = document.getElementById('clearFilters');
+        if (clearBtn) {
+            clearBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                clearBtn.style.transform = '';
+            }, 150);
+        }
+
         // Reset all filter values
         this.currentFilters = {
             search: '',
@@ -416,25 +493,43 @@ The following generous contributions have been received from various sources whi
             quickFilter: ''
         };
 
-        // Clear form inputs
+        // Clear form inputs with animations
         const searchInput = document.getElementById('searchInput');
         const startYear = document.getElementById('startYear');
         const endYear = document.getElementById('endYear');
         const sourceFilter = document.getElementById('sourceFilter');
         const peopleFilter = document.getElementById('peopleFilter');
 
-        if (searchInput) searchInput.value = '';
-        if (startYear) startYear.value = '';
-        if (endYear) endYear.value = '';
-        if (sourceFilter) sourceFilter.value = '';
-        if (peopleFilter) peopleFilter.value = '';
+        const clearWithAnimation = (element) => {
+            if (element) {
+                element.style.transition = 'all 0.3s ease';
+                element.style.transform = 'scale(0.98)';
+                element.value = '';
+                setTimeout(() => {
+                    element.style.transform = '';
+                }, 150);
+            }
+        };
 
-        // Clear quick filter buttons
-        document.querySelectorAll('.quick-filter-btn').forEach(btn => {
-            btn.classList.remove('active');
+        clearWithAnimation(searchInput);
+        clearWithAnimation(startYear);
+        clearWithAnimation(endYear);
+        clearWithAnimation(sourceFilter);
+        clearWithAnimation(peopleFilter);
+
+        // Clear quick filter buttons with stagger animation
+        document.querySelectorAll('.modern-filter-pill').forEach((btn, index) => {
+            setTimeout(() => {
+                btn.classList.remove('active');
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = '';
+                }, 100);
+            }, index * 50);
         });
 
-        this.applyFilters();
+        this.updateClearSearchVisibility('');
+        this.applyFiltersWithAnimation();
     }
 
     renderCurrentPage() {
@@ -863,12 +958,35 @@ The following generous contributions have been received from various sources whi
             : `Showing ${start}-${end} of ${total} articles`;
     }
 
-    showLoading(show) {
+    showLoadingWithPulse(show) {
         const loadingOverlay = document.getElementById('loadingOverlay');
         if (loadingOverlay) {
             loadingOverlay.style.display = show ? 'flex' : 'none';
+            if (show) {
+                loadingOverlay.classList.add('pulse-animation');
+            } else {
+                loadingOverlay.classList.remove('pulse-animation');
+            }
         }
         this.isLoading = show;
+    }
+
+    showSkeletonLoading() {
+        const container = document.getElementById('articlesContainer');
+        if (container) {
+            const skeletonHTML = Array.from({length: 3}, () => `
+                <div class="modern-card skeleton-card">
+                    <div class="skeleton-image skeleton"></div>
+                    <div class="card-content">
+                        <div class="skeleton-title skeleton"></div>
+                        <div class="skeleton-text skeleton"></div>
+                        <div class="skeleton-text skeleton" style="width: 60%;"></div>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = `<div class="grid-3">${skeletonHTML}</div>`;
+        }
     }
 
     showError(message) {
@@ -926,7 +1044,7 @@ The following generous contributions have been received from various sources whi
         timelineContainer.innerHTML = `<div class="timeline">${timelineHTML}</div>`;
     }
 
-    // Utility methods
+    // Enhanced utility methods
     debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -937,6 +1055,58 @@ The following generous contributions have been received from various sources whi
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    // Modern UI Helper Methods
+    addRippleEffect(element) {
+        const rect = element.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 600ms linear;
+            pointer-events: none;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+
+    addFilterAnimation(element) {
+        element.classList.add('filter-changed');
+        setTimeout(() => {
+            element.classList.remove('filter-changed');
+        }, 300);
+    }
+
+    updateClearSearchVisibility(value) {
+        const clearBtn = document.getElementById('clearSearch');
+        if (clearBtn) {
+            if (value.trim()) {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+        }
+    }
+
+    clearSearch() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.value = '';
+            this.currentFilters.search = '';
+            this.updateClearSearchVisibility('');
+            this.applyFiltersWithAnimation();
+            searchInput.focus();
+        }
     }
 
     formatDate(dateString) {
@@ -958,11 +1128,51 @@ The following generous contributions have been received from various sources whi
     }
 }
 
-// Initialize the archive when the DOM is loaded
+// Modern app initialization with feature detection
 let archive;
 document.addEventListener('DOMContentLoaded', () => {
+    // Add CSS animation support detection
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        .skeleton-card {
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        .filter-changed {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+        .pulse-animation {
+            animation: pulse 1s infinite;
+        }
+        .focused {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+    `;
+    document.head.appendChild(style);
+    
     archive = new ArchiveApp();
 });
 
 // Make archive available globally for pagination and other external calls
 window.archive = archive;
+
+// Add modern browser performance monitoring
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        const loadTime = performance.now();
+        if (loadTime > 3000) {
+            console.warn('Archive loaded slowly:', loadTime + 'ms');
+        }
+    });
+}

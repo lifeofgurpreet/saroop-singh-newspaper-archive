@@ -2,48 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{% if page.title %}{{ page.title }} - {% endif %}Saroop Singh Archive</title>
     <meta name="description" content="Digital archive of newspaper clippings documenting the athletic career of Saroop Singh and Malayan sports (1937-1954).">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="light-content">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23DC2626'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E">
+    
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-gradient-1"></div>
+        <div class="bg-gradient-2"></div>
+        <div class="bg-gradient-3"></div>
+    </div>
+    
     <!-- Main Header -->
     <header class="main-header">
         <nav class="navbar">
             <div class="nav-brand">
                 <a href="{{ '/' | relative_url }}" class="brand-link">
-                    <i class="fas fa-newspaper"></i>
-                    <span class="brand-text">Saroop Singh Archive</span>
+                    <div class="brand-icon">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-main">Saroop Singh</span>
+                        <span class="brand-sub">Archive</span>
+                    </div>
                 </a>
             </div>
             <div class="nav-menu">
-                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">
+                <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}" data-aos="fade-down" data-aos-delay="100">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
-                <a href="{{ '/articles.html' | relative_url }}" class="nav-link {% if page.url contains 'articles' %}active{% endif %}">
-                    <i class="fas fa-archive"></i>
-                    <span>Browse</span>
+                <a href="{{ '/articles.html' | relative_url }}" class="nav-link {% if page.url contains 'articles' %}active{% endif %}" data-aos="fade-down" data-aos-delay="200">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Articles</span>
                 </a>
-                <a href="{{ '/timeline.html' | relative_url }}" class="nav-link {% if page.url contains 'timeline' %}active{% endif %}">
-                    <i class="fas fa-clock"></i>
+                <a href="{{ '/timeline.html' | relative_url }}" class="nav-link {% if page.url contains 'timeline' %}active{% endif %}" data-aos="fade-down" data-aos-delay="300">
+                    <i class="fas fa-timeline"></i>
                     <span>Timeline</span>
                 </a>
-                <a href="#about" class="nav-link">
+                <a href="{{ '/restorations.html' | relative_url }}" class="nav-link {% if page.url contains 'restorations' %}active{% endif %}" data-aos="fade-down" data-aos-delay="350">
+                    <i class="fas fa-images"></i>
+                    <span>Restorations</span>
+                </a>
+                <a href="#about" class="nav-link" data-aos="fade-down" data-aos-delay="400">
                     <i class="fas fa-info-circle"></i>
                     <span>About</span>
                 </a>
             </div>
-            <button class="nav-toggle" id="navToggle">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -53,116 +80,177 @@
 
     <!-- Main Container -->
     <div class="main-container">
-        <!-- Sidebar (only shown on articles page) -->
+        <!-- Glass Sidebar (only shown on articles page) -->
         {% if page.url contains 'articles' %}
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar glass" id="sidebar">
             <div class="sidebar-content">
                 <!-- Search Section -->
-                <section class="search-section">
-                    <h3><i class="fas fa-search"></i> Search Articles</h3>
-                    <div class="search-input-group">
-                        <input type="text" 
-                               id="searchInput" 
-                               class="search-input" 
-                               placeholder="Search articles, people, locations...">
-                        <button id="searchBtn" class="search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
+                <section class="search-section" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="section-header">
+                        <i class="fas fa-magnifying-glass"></i> 
+                        <span>Search Articles</span>
+                    </h3>
+                    <div class="modern-search-group">
+                        <div class="search-input-container">
+                            <i class="fas fa-magnifying-glass search-icon"></i>
+                            <input type="text" 
+                                   id="searchInput" 
+                                   class="modern-search-input" 
+                                   placeholder="Search articles, people, locations..."
+                                   autocomplete="off">
+                            <button id="clearSearch" class="clear-search-btn" aria-label="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
                 <!-- Filters Section -->
-                <section class="filters-section">
-                    <h3><i class="fas fa-filter"></i> Filters</h3>
+                <section class="filters-section" data-aos="fade-right" data-aos-delay="200">
+                    <h3 class="section-header">
+                        <i class="fas fa-sliders"></i> 
+                        <span>Filters</span>
+                        <div class="filter-count" id="filterCount">0</div>
+                    </h3>
                     
                     <!-- Date Range Filter -->
-                    <div class="filter-group">
-                        <label>Date Range</label>
-                        <div class="date-range-inputs">
-                            <input type="number" 
-                                   id="startYear" 
-                                   class="year-input" 
-                                   placeholder="1937" 
-                                   min="1937" 
-                                   max="1957">
-                            <span class="date-separator">to</span>
-                            <input type="number" 
-                                   id="endYear" 
-                                   class="year-input" 
-                                   placeholder="1957" 
-                                   min="1937" 
-                                   max="1957">
+                    <div class="modern-filter-group">
+                        <label class="filter-label">Date Range</label>
+                        <div class="date-range-modern">
+                            <div class="date-input-wrapper">
+                                <input type="number" 
+                                       id="startYear" 
+                                       class="modern-date-input" 
+                                       placeholder="1937" 
+                                       min="1937" 
+                                       max="1957">
+                                <label class="floating-label">From Year</label>
+                            </div>
+                            <div class="date-separator-modern">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div class="date-input-wrapper">
+                                <input type="number" 
+                                       id="endYear" 
+                                       class="modern-date-input" 
+                                       placeholder="1957" 
+                                       min="1937" 
+                                       max="1957">
+                                <label class="floating-label">To Year</label>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Source Filter -->
-                    <div class="filter-group">
-                        <label for="sourceFilter">Newspaper Source</label>
-                        <select id="sourceFilter" class="filter-select">
-                            <option value="">All Sources</option>
-                            <!-- Options will be populated by JavaScript -->
-                        </select>
+                    <div class="modern-filter-group">
+                        <label for="sourceFilter" class="filter-label">Newspaper Source</label>
+                        <div class="modern-select-wrapper">
+                            <select id="sourceFilter" class="modern-select">
+                                <option value="">All Sources</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
                     </div>
 
                     <!-- People Filter -->
-                    <div class="filter-group">
-                        <label for="peopleFilter">People Mentioned</label>
-                        <select id="peopleFilter" class="filter-select">
-                            <option value="">All People</option>
-                            <!-- Options will be populated by JavaScript -->
-                        </select>
+                    <div class="modern-filter-group">
+                        <label for="peopleFilter" class="filter-label">People Mentioned</label>
+                        <div class="modern-select-wrapper">
+                            <select id="peopleFilter" class="modern-select">
+                                <option value="">All People</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
                     </div>
 
                     <!-- Quick Filters -->
-                    <div class="filter-group">
-                        <label>Quick Filters</label>
-                        <div class="quick-filters">
-                            <button class="quick-filter-btn" data-filter="athletics">
-                                <i class="fas fa-running"></i>
-                                Athletics
+                    <div class="modern-filter-group">
+                        <label class="filter-label">Quick Filters</label>
+                        <div class="modern-quick-filters">
+                            <button class="modern-filter-pill" data-filter="athletics">
+                                <i class="fas fa-person-running"></i>
+                                <span>Athletics</span>
+                                <div class="pill-count" data-count="athletics">0</div>
                             </button>
-                            <button class="quick-filter-btn" data-filter="hockey">
+                            <button class="modern-filter-pill" data-filter="hockey">
                                 <i class="fas fa-hockey-puck"></i>
-                                Hockey
+                                <span>Hockey</span>
+                                <div class="pill-count" data-count="hockey">0</div>
                             </button>
-                            <button class="quick-filter-btn" data-filter="cross-country">
+                            <button class="modern-filter-pill" data-filter="cross-country">
                                 <i class="fas fa-mountain"></i>
-                                Cross-Country
+                                <span>Cross-Country</span>
+                                <div class="pill-count" data-count="cross-country">0</div>
                             </button>
-                            <button class="quick-filter-btn" data-filter="record">
+                            <button class="modern-filter-pill" data-filter="record">
                                 <i class="fas fa-trophy"></i>
-                                Records
+                                <span>Records</span>
+                                <div class="pill-count" data-count="record">0</div>
                             </button>
                         </div>
                     </div>
 
+                    <!-- Active Filters Display -->
+                    <div class="active-filters" id="activeFilters"></div>
+
                     <!-- Clear Filters Button -->
-                    <button id="clearFilters" class="clear-filters-btn">
-                        <i class="fas fa-times"></i>
-                        Clear All Filters
+                    <button id="clearFilters" class="modern-clear-btn">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Clear All Filters</span>
                     </button>
                 </section>
 
-                <!-- Stats Section -->
-                <section class="stats-section">
-                    <h3><i class="fas fa-chart-bar"></i> Archive Stats</h3>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number" id="totalArticles">0</span>
-                            <span class="stat-label">Articles</span>
+                <!-- Modern Stats Section -->
+                <section class="modern-stats-section" data-aos="fade-right" data-aos-delay="300">
+                    <h3 class="section-header">
+                        <i class="fas fa-chart-line"></i> 
+                        <span>Archive Stats</span>
+                    </h3>
+                    <div class="modern-stats-grid">
+                        <div class="modern-stat-card">
+                            <div class="stat-icon articles-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="totalArticles" data-target="0">0</span>
+                                <span class="stat-label">Articles</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="totalSources">0</span>
-                            <span class="stat-label">Sources</span>
+                        <div class="modern-stat-card">
+                            <div class="stat-icon sources-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="totalSources" data-target="0">0</span>
+                                <span class="stat-label">Sources</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="totalPeople">0</span>
-                            <span class="stat-label">People</span>
+                        <div class="modern-stat-card">
+                            <div class="stat-icon people-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="totalPeople" data-target="0">0</span>
+                                <span class="stat-label">People</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number">20</span>
-                            <span class="stat-label">Years</span>
+                        <div class="modern-stat-card">
+                            <div class="stat-icon years-icon">
+                                <i class="fas fa-calendar-days"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" data-target="20">20</span>
+                                <span class="stat-label">Years</span>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <!-- Live Results Counter -->
+                    <div class="results-counter glass" id="resultsCounter">
+                        <i class="fas fa-filter"></i>
+                        <span id="resultsText">Showing all articles</span>
                     </div>
                 </section>
             </div>
@@ -173,6 +261,28 @@
         <main class="main-content">
             {{ content }}
         </main>
+        
+        <!-- Floating Filter Button (Mobile Only) -->
+        <button class="floating-filter-btn" id="floatingFilterBtn" aria-label="Open filters">
+            <i class="fas fa-sliders"></i>
+            <div class="filter-count-badge" id="floatingFilterCount">0</div>
+        </button>
+        
+        <!-- Mobile Filter Bottom Sheet -->
+        <div class="mobile-filter-sheet" id="mobileFilterSheet">
+            <div class="bottom-sheet-header">
+                <h3>Filter Articles</h3>
+                <button class="sheet-close-btn" id="sheetCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="bottom-sheet-content" id="mobileFiltersContent">
+                <!-- Mobile filters will be dynamically populated here -->
+            </div>
+        </div>
+        
+        <!-- Mobile Filter Overlay -->
+        <div class="mobile-filter-overlay" id="mobileFilterOverlay"></div>
     </div>
 
     <!-- Image Lightbox -->
@@ -242,7 +352,26 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ '/assets/js/archive.js' | relative_url }}"></script>
+    
+    <!-- Initialize AOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out-cubic',
+                once: true,
+                offset: 50,
+                delay: 100
+            });
+        });
+    </script>
 </body>
 </html>

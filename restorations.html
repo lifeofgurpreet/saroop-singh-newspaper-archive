@@ -1,0 +1,728 @@
+---
+layout: default
+title: Family Photo Restorations
+---
+
+<style>
+/* Restoration Gallery Styles */
+.restorations-hero {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, var(--surface-color), var(--background-color));
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.restorations-hero h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.restorations-hero p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Photo Collections Grid */
+.photo-collections {
+    display: grid;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.photo-collection {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.photo-collection:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.collection-header {
+    padding: 1.5rem;
+    background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+    color: white;
+}
+
+.collection-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-family: var(--font-display);
+}
+
+.collection-header p {
+    margin: 0.5rem 0 0;
+    opacity: 0.95;
+    font-size: 0.95rem;
+}
+
+/* Before/After Comparison Viewer */
+.comparison-viewer {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #000;
+}
+
+.comparison-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* 1:1 aspect ratio */
+    overflow: hidden;
+    cursor: col-resize;
+}
+
+.comparison-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+}
+
+.comparison-image.after {
+    clip-path: inset(0 0 0 50%);
+    transition: none;
+}
+
+.comparison-slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    cursor: col-resize;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.comparison-slider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.comparison-slider::after {
+    content: '◀ ▶';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.comparison-labels {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.comparison-label {
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Restoration Thumbnails */
+.restoration-thumbnails {
+    padding: 1.5rem;
+    background: var(--background-color);
+}
+
+.thumbnails-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.thumbnail {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+    background: var(--surface-color);
+}
+
+.thumbnail:hover {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+}
+
+.thumbnail.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-label {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Fullscreen Viewer */
+.fullscreen-viewer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 9999;
+    cursor: zoom-out;
+}
+
+.fullscreen-viewer.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-image {
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+}
+
+.fullscreen-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid white;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.fullscreen-close:hover {
+    background: rgba(255,255,255,0.2);
+    transform: rotate(90deg);
+}
+
+/* Touch Gestures Indicator */
+.gesture-hint {
+    text-align: center;
+    padding: 1rem;
+    background: var(--background-color);
+    border-radius: var(--border-radius);
+    margin: 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.gesture-hint i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+/* Loading State */
+.loading-skeleton {
+    background: linear-gradient(90deg, 
+        var(--background-color) 25%, 
+        var(--surface-color) 50%, 
+        var(--background-color) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Athletic Photos Grid */
+.athletic-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.athletic-photo-item {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--surface-color);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.athletic-photo-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.athletic-photo-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.athletic-photo-item:hover img {
+    transform: scale(1.05);
+}
+
+.photo-caption {
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.athletic-photo-item:hover .photo-caption {
+    transform: translateY(0);
+}
+
+.photo-caption h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-family: var(--font-display);
+}
+
+.photo-caption p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.95;
+}
+
+.special-collection {
+    margin-bottom: 3rem;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .restorations-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .thumbnails-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .comparison-label {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+    }
+    
+    .collection-header {
+        padding: 1rem;
+    }
+    
+    .collection-header h2 {
+        font-size: 1.25rem;
+    }
+    
+    .athletic-photos-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .photo-caption {
+        transform: translateY(0);
+        background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+    }
+    
+    .athletic-photo-item:hover .photo-caption {
+        transform: translateY(0);
+    }
+}
+
+/* Touch Device Enhancements */
+@media (hover: none) {
+    .thumbnail:active {
+        transform: scale(0.95);
+    }
+    
+    .comparison-slider {
+        width: 6px;
+    }
+    
+    .comparison-slider::before {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* High Resolution Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .comparison-image {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+</style>
+
+<div class="restorations-hero">
+    <h1>Family Photo Restorations</h1>
+    <p>Preserving precious memories through AI-powered restoration. Explore multiple interpretations of each cherished photograph.</p>
+</div>
+
+<div class="gesture-hint">
+    <i class="fas fa-hand-pointer"></i> Drag the slider to compare • Tap thumbnails to switch • Click images to view full screen
+</div>
+
+<!-- Special Athletic Photos Section -->
+<div class="photo-collection special-collection">
+    <div class="collection-header" style="background: linear-gradient(to right, var(--accent-color), #047857);">
+        <h2><i class="fas fa-running"></i> Saroop Singh - Athletic Legacy</h2>
+        <p>Original photographs capturing the champion in action</p>
+    </div>
+    
+    <div class="athletic-photos-grid">
+        <div class="athletic-photo-item">
+            <img src="old-family-photos/saroop-singh-running1.jpg" 
+                 alt="Saroop Singh Running - Photo 1" 
+                 onclick="openFullscreen('old-family-photos/saroop-singh-running1.jpg')"
+                 loading="lazy">
+            <div class="photo-caption">
+                <h3>In Full Stride</h3>
+                <p>A rare action photograph of Saroop Singh during competition</p>
+            </div>
+        </div>
+        
+        <div class="athletic-photo-item">
+            <img src="old-family-photos/saroop-singh-running2.png" 
+                 alt="Saroop Singh Running - Photo 2" 
+                 onclick="openFullscreen('old-family-photos/saroop-singh-running2.png')"
+                 loading="lazy">
+            <div class="photo-caption">
+                <h3>Championship Form</h3>
+                <p>Demonstrating the technique that broke records</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="photo-collections" id="photoCollections">
+    <!-- Collections will be dynamically loaded here -->
+</div>
+
+<!-- Fullscreen Viewer -->
+<div class="fullscreen-viewer" id="fullscreenViewer">
+    <img src="" alt="" class="fullscreen-image" id="fullscreenImage">
+    <div class="fullscreen-close" onclick="closeFullscreen()">×</div>
+</div>
+
+<script>
+// Photo collections data
+const restorationData = {
+    'sardar-and-sardarni-india-1950s-portrait': {
+        title: 'Sardar and Sardarni - India, 1950s',
+        description: 'A dignified portrait from the golden era',
+        original: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/original.jpg',
+        restorations: [
+            { id: 'prompt1', label: 'VFX Render', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt1_1.png' },
+            { id: 'prompt2', label: 'Digital Realism', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt2_1.png' },
+            { id: 'prompt3', label: 'Modern Reshoot', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt3_1.png' },
+            { id: 'prompt4', label: 'Premium Lens', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt4_1.png' },
+            { id: 'prompt5', label: 'Editorial', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt5_1.png' },
+            { id: 'prompt6', label: 'Golden Hour', path: 'generated/restorations/sardar-and-sardarni-india-1950s-portrait/sardar-and-sardarni-india-1950s-portrait__prompt6_1.png' }
+        ]
+    },
+    'portrait-of-a-young-man-in-a-turban-vintage-monochrome': {
+        title: 'Young Man in Turban',
+        description: 'A striking vintage portrait',
+        original: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/original.jpg',
+        restorations: [
+            { id: 'prompt1', label: 'VFX Render', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt1_1.png' },
+            { id: 'prompt2', label: 'Digital Realism', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt2_1.png' },
+            { id: 'prompt3', label: 'Modern Reshoot', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt3_1.png' },
+            { id: 'prompt4', label: 'Premium Lens', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt4_1.png' },
+            { id: 'prompt5', label: 'Editorial', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt5_1.png' },
+            { id: 'prompt6', label: 'Golden Hour', path: 'generated/restorations/portrait-of-a-young-man-in-a-turban-vintage-monochrome/portrait-of-a-young-man-in-a-turban-vintage-monochrome__prompt6_1.png' }
+        ]
+    },
+    'sikh-couple-portrait-1980s-family-photo': {
+        title: 'Sikh Couple - 1980s',
+        description: 'A beautiful family portrait',
+        original: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/original.jpg',
+        restorations: [
+            { id: 'prompt1', label: 'VFX Render', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt1_1.png' },
+            { id: 'prompt2', label: 'Digital Realism', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt2_1.png' },
+            { id: 'prompt3', label: 'Modern Reshoot', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt3_1.png' },
+            { id: 'prompt4', label: 'Premium Lens', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt4_1.png' },
+            { id: 'prompt5', label: 'Editorial', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt5_1.png' },
+            { id: 'prompt6', label: 'Golden Hour', path: 'generated/restorations/sikh-couple-portrait-1980s-family-photo/sikh-couple-portrait-1980s-family-photo__prompt6_1.png' }
+        ]
+    },
+    'extended-family-portrait-1970s-group': {
+        title: 'Extended Family Portrait - 1970s',
+        description: 'A treasured group photograph',
+        original: 'generated/restorations/extended-family-portrait-1970s-group/original.jpg',
+        restorations: [
+            { id: 'prompt1', label: 'VFX Render', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt1_1.png' },
+            { id: 'prompt2', label: 'Digital Realism', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt2_1.png' },
+            { id: 'prompt3', label: 'Modern Reshoot', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt3_1.png' },
+            { id: 'prompt4', label: 'Premium Lens', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt4_1.png' },
+            { id: 'prompt5', label: 'Editorial', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt5_1.png' },
+            { id: 'prompt6', label: 'Golden Hour', path: 'generated/restorations/extended-family-portrait-1970s-group/extended-family-portrait-1970s-group__prompt6_1.png' }
+        ]
+    },
+    'extended-indian-family-group-portrait-1970s-formal': {
+        title: 'Indian Family Group - 1970s',
+        description: 'A formal family gathering',
+        original: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/original.jpg',
+        restorations: [
+            { id: 'prompt1', label: 'VFX Render', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt1_1.png' },
+            { id: 'prompt2', label: 'Digital Realism', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt2_1.png' },
+            { id: 'prompt3', label: 'Modern Reshoot', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt3_1.png' },
+            { id: 'prompt4', label: 'Premium Lens', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt4_1.png' },
+            { id: 'prompt5', label: 'Editorial', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt5_1.png' },
+            { id: 'prompt6', label: 'Golden Hour', path: 'generated/restorations/extended-indian-family-group-portrait-1970s-formal/extended-indian-family-group-portrait-1970s-formal__prompt6_1.png' }
+        ]
+    }
+};
+
+// Initialize collections
+function initializeCollections() {
+    const container = document.getElementById('photoCollections');
+    
+    Object.entries(restorationData).forEach(([key, data], index) => {
+        const collectionHtml = `
+            <div class="photo-collection" data-collection="${key}">
+                <div class="collection-header">
+                    <h2>${data.title}</h2>
+                    <p>${data.description}</p>
+                </div>
+                
+                <div class="comparison-viewer">
+                    <div class="comparison-container" id="comparison-${key}">
+                        <img src="${data.original}" alt="Original" class="comparison-image before">
+                        <img src="${data.restorations[0].path}" alt="${data.restorations[0].label}" class="comparison-image after" id="after-${key}">
+                        <div class="comparison-slider" id="slider-${key}"></div>
+                        <div class="comparison-labels">
+                            <span class="comparison-label">Original</span>
+                            <span class="comparison-label" id="label-${key}">${data.restorations[0].label}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="restoration-thumbnails">
+                    <div class="thumbnails-grid">
+                        ${data.restorations.map((rest, i) => `
+                            <div class="thumbnail ${i === 0 ? 'active' : ''}" 
+                                 data-collection="${key}" 
+                                 data-index="${i}"
+                                 onclick="switchRestoration('${key}', ${i})">
+                                <img src="${rest.path}" alt="${rest.label}" loading="lazy">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem;">
+                        <span class="thumbnail-label" id="thumbnail-label-${key}">${data.restorations[0].label}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.innerHTML += collectionHtml;
+        
+        // Initialize comparison slider after DOM update
+        setTimeout(() => initializeComparisonSlider(key), 100);
+    });
+}
+
+// Initialize comparison slider
+function initializeComparisonSlider(collectionKey) {
+    const container = document.getElementById(`comparison-${collectionKey}`);
+    const slider = document.getElementById(`slider-${collectionKey}`);
+    const afterImage = document.getElementById(`after-${collectionKey}`);
+    
+    if (!container || !slider || !afterImage) return;
+    
+    let isResizing = false;
+    
+    function updateSliderPosition(x) {
+        const rect = container.getBoundingClientRect();
+        const position = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+        const percentage = position * 100;
+        
+        slider.style.left = `${percentage}%`;
+        afterImage.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+    }
+    
+    // Mouse events
+    slider.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (isResizing) {
+            updateSliderPosition(e.clientX);
+        }
+    });
+    
+    document.addEventListener('mouseup', () => {
+        isResizing = false;
+    });
+    
+    // Touch events
+    slider.addEventListener('touchstart', (e) => {
+        isResizing = true;
+        e.preventDefault();
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+        if (isResizing && e.touches[0]) {
+            updateSliderPosition(e.touches[0].clientX);
+        }
+    });
+    
+    document.addEventListener('touchend', () => {
+        isResizing = false;
+    });
+    
+    // Click on container to set position
+    container.addEventListener('click', (e) => {
+        if (e.target !== slider) {
+            updateSliderPosition(e.clientX);
+        }
+    });
+}
+
+// Switch restoration version
+function switchRestoration(collectionKey, index) {
+    const data = restorationData[collectionKey];
+    const restoration = data.restorations[index];
+    
+    // Update after image
+    const afterImage = document.getElementById(`after-${collectionKey}`);
+    afterImage.src = restoration.path;
+    afterImage.alt = restoration.label;
+    
+    // Update label
+    const label = document.getElementById(`label-${collectionKey}`);
+    label.textContent = restoration.label;
+    
+    // Update thumbnail label
+    const thumbnailLabel = document.getElementById(`thumbnail-label-${collectionKey}`);
+    thumbnailLabel.textContent = restoration.label;
+    
+    // Update active thumbnail
+    const thumbnails = document.querySelectorAll(`.thumbnail[data-collection="${collectionKey}"]`);
+    thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+    });
+}
+
+// Fullscreen viewer
+function openFullscreen(imageSrc) {
+    const viewer = document.getElementById('fullscreenViewer');
+    const image = document.getElementById('fullscreenImage');
+    
+    image.src = imageSrc;
+    viewer.classList.add('active');
+}
+
+function closeFullscreen() {
+    const viewer = document.getElementById('fullscreenViewer');
+    viewer.classList.remove('active');
+}
+
+// Add click handlers for fullscreen
+document.addEventListener('DOMContentLoaded', () => {
+    initializeCollections();
+    
+    // Add fullscreen click handlers to comparison images
+    document.querySelectorAll('.comparison-image').forEach(img => {
+        img.addEventListener('dblclick', () => {
+            openFullscreen(img.src);
+        });
+    });
+    
+    // Close fullscreen on click
+    document.getElementById('fullscreenViewer').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget || e.target.classList.contains('fullscreen-image')) {
+            closeFullscreen();
+        }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeFullscreen();
+        }
+    });
+});
+
+// Preload images for smooth transitions
+function preloadImages() {
+    Object.values(restorationData).forEach(collection => {
+        collection.restorations.forEach(rest => {
+            const img = new Image();
+            img.src = rest.path;
+        });
+    });
+}
+
+// Initialize preloading
+preloadImages();
+</script>

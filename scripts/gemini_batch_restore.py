@@ -183,6 +183,7 @@ def main():
     parser.add_argument("--model", default="gemini-2.5-flash-image-preview", help="Model name to use")
     parser.add_argument("--dry-run", action="store_true", help="Parse and plan only; no API calls")
     parser.add_argument("--only-photo", help="Only process photos whose stem matches this value", default=None)
+    parser.add_argument("--only-prompt", help="Only process the prompt with this name or slug", default=None)
     args = parser.parse_args()
 
     # Load .env if present and validate key
@@ -190,6 +191,12 @@ def main():
     client = get_genai_client()
 
     prompts = read_prompts(args.prompts_dir)
+    if args.only_prompt:
+        target = slugify(args.only_prompt)
+        filtered = [pr for pr in prompts if pr.slug == target or pr.name.lower() == args.only_prompt.lower()]
+        if not filtered:
+            raise SystemExit(f"No prompt matched --only-prompt={args.only_prompt}")
+        prompts = filtered
     photos = find_photos(args.photos_dir)
     if args.only_photo:
         photos = [p for p in photos if p.stem == args.only_photo]

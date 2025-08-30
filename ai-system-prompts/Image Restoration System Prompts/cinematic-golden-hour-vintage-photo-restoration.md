@@ -1,7 +1,6 @@
-# Vintage Photo Reshoot: Cinematic Golden Hour Restoration
+# Cinematic Golden Hour: Vintage Photo Restoration
 
-```markdown
-# Image Generation Request: Vintage Photo Modernization
+# Vintage Photo Modernization: Cinematic Golden Hour Reshoot
 
 Create one new, photorealistic COLOR image from scratch, using an attached vintage photo solely as the blueprint for content (identities, expressions, wardrobe, object placements, composition, perspective, crop). Replace the source’s photographic qualities with a modern, cinematic golden-hour reshoot.
 
@@ -16,7 +15,7 @@ Create one new, photorealistic COLOR image from scratch, using an attached vinta
 *   **Wardrobe:** Identical shapes/folds/silhouettes; authentic seam/stitch/button detail; replicate existing fabric patterns and weave topology at higher fidelity.
 *   **Scene:** Composition and camera perspective unchanged; all background elements kept with original scale and placement.
 
-<h2>Modern Photographic Rendering</h2>
+## Modern Photographic Rendering
 
 *   **Micro-texture Generation (Mandatory):** Realistic skin pores and fine vellus hairs; individual hair strands in beard/moustache/brows; 3D fabric weave and precise motifs; environment textures (leaves/roof tiles/wood/ground) rendered with contemporary clarity.
 *   **Depth:** Subjects tack-sharp with tasteful subject isolation (wide-aperture prime feel). Background softly eased but fully legible—no heavy bokeh or replacement.
@@ -31,4 +30,3 @@ Create one new, photorealistic COLOR image from scratch, using an attached vinta
 ## Output
 
 *   One hyper-realistic sRGB color image, long edge ≥ 6000 px; contemporary cinematic polish with extreme clarity and newly synthesized, plausible micro-detail.
-```
