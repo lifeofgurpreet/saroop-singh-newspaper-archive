@@ -15,6 +15,12 @@ Thumbs.db
 *.bak
 *~
 
+# Environment files
+.env
+
+# Gemini outputs
+generated/
+
 # Raw files (keep these out of public repo for now)
 # Uncomment if you want to exclude raw images
 # raw-files/

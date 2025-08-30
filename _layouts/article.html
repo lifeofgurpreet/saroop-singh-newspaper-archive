@@ -5,37 +5,34 @@ layout: default
 <article>
     <h1>{{ page.title }}</h1>
     
-    <div class="article-meta">
+    <div class="article-meta-box">
         {% if page.date_text %}
-            <strong>Date:</strong> {{ page.date_text }}<br>
+            <p><strong>Date:</strong> {{ page.date_text }}</p>
         {% elsif page.date %}
-            <strong>Date:</strong> {{ page.date | date: "%B %d, %Y" }}<br>
+            <p><strong>Date:</strong> {{ page.date | date: "%B %d, %Y" }}</p>
         {% endif %}
         
         {% if page.source %}
-            <strong>Source:</strong> {{ page.source }}<br>
+            <p><strong>Source:</strong> {{ page.source }}</p>
         {% endif %}
         
         {% if page.location %}
-            <strong>Location:</strong> {{ page.location }}<br>
+            <p><strong>Location:</strong> {{ page.location }}</p>
         {% endif %}
         
         {% if page.people and page.people.size > 0 %}
-            <strong>People mentioned:</strong> {{ page.people | join: ", " }}<br>
+            <p><strong>People mentioned:</strong> {{ page.people | join: ", " }}</p>
         {% endif %}
     </div>
     
     {% if page.image %}
-        <div class="article-image-container">
-            <img src="{{ site.baseurl }}/{{ page.image }}" alt="{{ page.title }}" class="article-image">
+        <div class="image-container">
+            <img src="{{ site.baseurl }}/raw-files/{{ page.image | split: '/' | last }}" alt="{{ page.title }}" class="article-image" onerror="this.onerror=null; this.src='{{ site.baseurl }}/{{ page.image }}';">
         </div>
     {% endif %}
     
-    <div class="article-content">
-        {{ content }}
-    </div>
-    
-    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
-        <a href="{{ site.baseurl }}/articles/">← Back to all articles</a>
+    <div class="transcript">
+        <h3 style="margin-bottom: 1rem; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text);">Transcript</h3>
+        {{ content | remove: '![[' | remove: ']]' | strip }}
     </div>
 </article>

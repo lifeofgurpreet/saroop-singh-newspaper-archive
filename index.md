@@ -3,42 +3,66 @@ layout: home
 title: Home
 ---
 
-# Saroop Singh Newspaper Archive
+# Welcome to the Saroop Singh Archive
 
-Welcome to the historical newspaper archive documenting athletic meets from Malayan newspapers (1937-1954). This collection focuses on preserving and digitizing newspaper clippings featuring Saroop Singh and his contemporaries in the athletic scene of colonial Malaya.
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>{{ site.pages | where_exp: "page", "page.path contains 'output/articles'" | size }}</h3>
+        <p>Digitized Articles</p>
+    </div>
+    <div class="stat-card">
+        <h3>17</h3>
+        <p>Years Covered</p>
+    </div>
+    <div class="stat-card">
+        <h3>8+</h3>
+        <p>Newspaper Sources</p>
+    </div>
+</div>
 
-## About the Archive
+## About This Archive
 
-This digital archive contains:
-- **{{ site.pages | where_exp: "page", "page.path contains 'output/articles'" | size }}** digitized newspaper clippings
-- Coverage from 1937 to 1954
-- Articles from various Malayan newspapers including:
-  - Singapore Free Press
-  - Morning Tribune
-  - Straits Times
-  - Malaya Tribune
-  - And others
+This digital archive preserves historical newspaper clippings documenting athletic meets in colonial Malaya from 1937 to 1954. The collection focuses on **Saroop Singh**, a prominent runner of the era, and his contemporaries in the Malayan athletic scene.
 
-## Featured Athletes
+Each article has been carefully digitized from original newspaper clippings, with faithful transcriptions maintaining historical accuracy while making the content searchable and accessible for researchers, historians, and athletics enthusiasts.
 
-The archive primarily documents the athletic career of **Saroop Singh**, a prominent runner in colonial Malaya, along with his contemporaries and competitors.
+## Featured Content
 
-## Browse the Archive
+### Recent Additions
+{% assign recent_articles = site.pages | where_exp: "page", "page.path contains 'output/articles'" | sort: "date" | reverse | limit: 5 %}
+<div class="timeline">
+    <div class="timeline-items">
+        {% for article in recent_articles %}
+        <div class="timeline-item">
+            <h4><a href="{{ site.baseurl }}{{ article.url | replace: '.md', '' }}" style="color: var(--primary); text-decoration: none;">{{ article.title }}</a></h4>
+            <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                {{ article.date_text | default: article.date | default: "Date unknown" }} • {{ article.source | default: "Unknown source" }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-- [View All Articles →](/articles/)
-- [Browse by Year →](/browse-by-year/)
-- [Browse by Source →](/browse-by-source/)
+## Navigate the Archive
 
-## About the Project
+Use the **sidebar search** to find specific articles by title, source, or people mentioned. On mobile devices, tap the menu icon to access the search and article list.
 
-This project aims to preserve historical records of athletic achievements in pre-independence Malaya. Each article has been carefully transcribed from original newspaper clippings, maintaining historical accuracy while making the content searchable and accessible.
+### Quick Links
+- [View Timeline →]({{ site.baseurl }}/timeline)
+- [About the Project →]({{ site.baseurl }}/about)
+- [GitHub Repository →](https://github.com/lifeofgurpreet/saroop-singh-newspaper-archive)
 
-### Features
-- Faithful transcriptions of original newspaper text
-- Preserved newspaper clipping images
-- Searchable metadata including dates, sources, and people mentioned
-- Organized chronologically for easy browsing
+## Historical Context
+
+The articles in this archive capture a pivotal period in Malayan athletics, documenting:
+- Track and field championships
+- Inter-state athletic competitions  
+- Cross-country races
+- School and club sports meets
+- The emergence of local athletic talent
+
+These records provide valuable insights into the sporting culture of pre-independence Malaya and the athletes who competed during this era.
 
 ---
 
-*This archive is a work in progress. New articles are being added as they are digitized and transcribed.*
+*This archive is continuously growing as more historical materials are digitized and transcribed.*
