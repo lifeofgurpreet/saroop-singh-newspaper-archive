@@ -1039,10 +1039,16 @@ a:hover {
 
 .main-content {
     flex: 1;
-    margin-left: var(--sidebar-width);
+    margin-left: 0;
     padding: 2rem;
-    max-width: 1400px;
     background: transparent;
+    display: flex;
+    justify-content: center;
+}
+
+.main-content > * {
+    max-width: 1400px;
+    width: 100%;
 }
 
 /* ==================================
