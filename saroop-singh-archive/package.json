@@ -1,0 +1,50 @@
+{
+  "name": "@saroop-singh-archive/root",
+  "version": "1.0.0",
+  "description": "Saroop Singh Historical Archive - Monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "npm run dev --workspace=@saroop-singh-archive/web",
+    "dev": "npm run dev --workspace=@saroop-singh-archive/web",
+    "build": "npm run build --workspaces",
+    "cms": "npm run dev --workspace=@saroop-singh-archive/cms",
+    "restore": "npm run generate --workspace=@saroop-singh-archive/restorations",
+    "deploy": "npm run build",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "npm run format --workspaces",
+    "clean": "npm run clean --workspaces && rm -rf node_modules",
+    "install:all": "npm install",
+    "clippings:process": "npm run process --workspace=@saroop-singh-archive/clippings",
+    "web:start": "npm run start --workspace=@saroop-singh-archive/web",
+    "web:build": "npm run build --workspace=@saroop-singh-archive/web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/saroop-singh-archive.git"
+  },
+  "keywords": [
+    "historical-archive",
+    "newspaper-digitization",
+    "malayan-athletics",
+    "monorepo"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^24.17.1"
+  }
+}
